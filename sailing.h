@@ -6,6 +6,7 @@ private:
     std::string sailingID;
     double LCLLUsed;
     double HCLLUsed;
+    int passengers;
 
 public:
     Sailing();

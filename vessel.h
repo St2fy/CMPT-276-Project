@@ -5,6 +5,7 @@ private:
     std::string name;
     double LCLLCapacity;
     double HCLLCapacity;
+    int passengerCapacity;
 
 public:
     Vessel();
