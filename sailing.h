@@ -1,19 +1,17 @@
-#include <string>
-
 class Sailing {
 private: 
-    std::string vesselName;
-    std::string sailingID;
+    char vesselName[20];
+    char sailingID[9];
     double LCLLUsed;
     double HCLLUsed;
     int passengers;
 
 public:
     Sailing();
-    Sailing(std::string, std::string, double, double);
+    Sailing(char[], char[], double, double);
     ~Sailing();
     
-    std::string to_string();
+    char* to_string();
 
 
 

@@ -1,18 +1,16 @@
-#include <string>
-
 class Vehicle {
 private: 
-    std::string license;
-    std::string phone;
+    char license[10];
+    char phone[14];
     unsigned int height;
     unsigned int length;
 
 
 public:
     Vehicle();
-    Vehicle(std::string, std::string, unsigned int, unsigned int);
+    Vehicle(char[], char[], unsigned int, unsigned int);
     ~Vehicle();
-    std::string to_string();
+    char* to_string();
 
 
 

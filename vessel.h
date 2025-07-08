@@ -1,17 +1,15 @@
-#include <string>
-
 class Vessel {
 private: 
-    std::string name;
+    char name[20];
     double LCLLCapacity;
     double HCLLCapacity;
     int passengerCapacity;
 
 public:
     Vessel();
-    Vessel(std::string, double, double);
+    Vessel(char[], double, double);
     ~Vessel();
-    std::string to_string();
+    char* to_string();
 
 
 

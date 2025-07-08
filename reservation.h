@@ -1,17 +1,16 @@
-#include <string>
-
 class Reservation {
+
 private: 
-    std::string license;
-    std::string sailingID;
+    char license[10];
+    char sailingID[9];
     bool onBoard;
 
 public:
     Reservation();
-    Reservation(std::string, std::string);
+    Reservation(char[], char[]);
     ~Reservation();
     void checkIn();
-    std::string to_string();
+    char* to_string();
 
 
 
