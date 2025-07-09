@@ -1,4 +1,4 @@
-/**
+/**@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
  * @file main.cpp
  * @author Dimitri Vahlas, Louise Ho, Wailok He, Jason Li
  * @brief handles startup and shutdown entry to the menu
@@ -22,7 +22,8 @@ int main() {
 /**************************************************************
 Coding Conventions:
 
-General
+General 
+---------------------------------------------------------------
 camelCase for variable and function names.
 CAPITALIZED_SNAKE_CASE for constants.
 1 tab or 4 spaces for indentation.
@@ -31,11 +32,13 @@ CAPITALIZED_SNAKE_CASE for constants.
 opening brace on if/while/for statements are on the same line ex. while (y < z) {
 
 Classes
+---------------------------------------------------------------
 PascalCase for class names
 camelCase for fields and methods
 private members first, followed by public members
 
 Comments
+---------------------------------------------------------------
 use a block comment at the top of each module
 ex.
 /**

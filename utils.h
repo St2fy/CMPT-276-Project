@@ -1,4 +1,4 @@
-/**
+/**@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
  * @file utils.h
  * @author Dimitri Vahlas, Louise Ho, Wailok He, Jason Li
  * @brief collection of helper functions
@@ -27,7 +27,7 @@ public:
      * startup function
      */
     void init();
-    
+
     /**----------------------------------------------
      * shutdown function
      */

@@ -1,4 +1,4 @@
-/**
+/**@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
  * @file menu.cpp
  * @author Dimitri Vahlas, Louise Ho, Wailok He, Jason Li
  * @brief handles the user interface

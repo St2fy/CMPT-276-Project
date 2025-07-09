@@ -1,4 +1,4 @@
-/**
+/**@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
  * @file sailing.h
  * @author Dimitri Vahlas, Louise Ho, Wailok He, Jason Li
  * @brief manages sailing operations
@@ -51,7 +51,7 @@ public:
      * startup function
      */
     void init();
-    
+
     /**----------------------------------------------
      * shutdown function
      */
