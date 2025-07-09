@@ -12,14 +12,14 @@ class Sailing {
 private: 
     char vesselName[20];
     char sailingID[9];
-    double LCLLUsed;
-    double HCLLUsed;
+    float LCLLUsed;
+    float HCLLUsed;
     int passengers;
     Reservation* reservations;
 
 public:
     Sailing();
-    Sailing(char[], char[], double, double);
+    Sailing(char* vesselName, char* sailingID, float LCLLUsed, float HCLLUsed);
     ~Sailing();
     
     char* to_string();

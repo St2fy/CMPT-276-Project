@@ -10,12 +10,12 @@
 class Vessel {
 private: 
     char name[26];
-    double LCLLCapacity;
-    double HCLLCapacity;
+    float LCLLCapacity;
+    float HCLLCapacity;
     int passengerCapacity;
 
     Vessel();
-    Vessel(char[], double, double);
+    Vessel(char* name, float LCLL, float HCLL);
     ~Vessel();
     char* to_string();
 
