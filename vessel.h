@@ -1,6 +1,15 @@
+/**
+ * @file vessel.h
+ * @author Dimitri Vahlas, Louise Ho, Wailok He, Jason Li
+ * @brief 
+ * @version 1
+ * @date 2025-07-08
+ * 
+*/
+
 class Vessel {
 private: 
-    char name[20];
+    char name[26];
     double LCLLCapacity;
     double HCLLCapacity;
     int passengerCapacity;

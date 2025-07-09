@@ -51,7 +51,6 @@ void init();
 void shutdown();
 
 int main() {
-    init();
     
 
     return 0;
