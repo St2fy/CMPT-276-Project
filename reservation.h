@@ -1,7 +1,7 @@
 /**
  * @file Reservation.h
  * @author Dimitri Vahlas, Louise Ho, Wailok He, Jason Li
- * @brief 
+ * @brief manages reservation operations
  * @version 1
  * @date 2025-07-08
  * 
@@ -29,7 +29,8 @@ public:
     Reservation createReservation(char* license, char* sailingID, char* phoneNumber);
     void checkIn();
     void queryReservation();
-    
+    void init();
+    void shutdown();
 };
 
 

@@ -1,3 +1,24 @@
+/**
+ * @file main.cpp
+ * @author Dimitri Vahlas, Louise Ho, Wailok He, Jason Li
+ * @brief handles startup and shutdown entry to the menu
+ * @version 1
+ * @date 2025-07-08
+ * 
+*/
+#include "reservation.h"
+#include "sailing.h"
+#include "utils.h"
+#include "vessel.h"
+
+void init();
+void shutdown();
+
+int main() {
+    
+
+    return 0;
+}
 /**************************************************************
 Coding Conventions:
 
@@ -42,16 +63,3 @@ use single line comments after a line of code to explain what the line does
 use single line comments on its own line to explain the lines of code below it
 
 */
-#include "reservation.h"
-#include "sailing.h"
-#include "utils.h"
-#include "vessel.h"
-
-void init();
-void shutdown();
-
-int main() {
-    
-
-    return 0;
-}

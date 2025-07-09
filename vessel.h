@@ -1,7 +1,7 @@
 /**
  * @file vessel.h
  * @author Dimitri Vahlas, Louise Ho, Wailok He, Jason Li
- * @brief 
+ * @brief handles vessel operations
  * @version 1
  * @date 2025-07-08
  * 
@@ -22,6 +22,8 @@ private:
 public:
     Vessel createVessel(char* name, float LCLL, float HCLL);
     void queryVessel();
+    void init();
+    void shutdown();
 
 
 };

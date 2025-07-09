@@ -1,7 +1,7 @@
 /**
  * @file menu.cpp
  * @author Dimitri Vahlas, Louise Ho, Wailok He, Jason Li
- * @brief 
+ * @brief handles the user interface
  * @version 1
  * @date 2025-07-08
  * 

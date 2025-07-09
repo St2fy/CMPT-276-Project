@@ -1,7 +1,7 @@
 /**
  * @file sailing.h
  * @author Dimitri Vahlas, Louise Ho, Wailok He, Jason Li
- * @brief 
+ * @brief manages sailing operations
  * @version 1
  * @date 2025-07-08
  * 
@@ -24,6 +24,8 @@ private:
 
 public:
     Sailing createSailing(char* vesselName, char* sailingID, float LCLLUsed, float HCLLUsed);
-
+    bool deleteSailing(char* sailingID);
+    void init();
+    void shutdown();
 
 };
