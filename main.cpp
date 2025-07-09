@@ -26,11 +26,14 @@ use single line comments on its own line to explain the lines of code below it
 #include "reservation.h"
 #include "sailing.h"
 #include "utils.h"
-#include "vehicle.h"
 #include "vessel.h"
 
+void init();
+void shutdown();
 
 int main() {
-    Utils utils = Utils();
+    init();
+    
+
     return 0;
 }

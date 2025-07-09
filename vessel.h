@@ -5,12 +5,14 @@ private:
     double HCLLCapacity;
     int passengerCapacity;
 
-public:
     Vessel();
     Vessel(char[], double, double);
     ~Vessel();
     char* to_string();
 
+public:
+    Vessel createVessel();
+    void queryVessel();
 
 
 };
