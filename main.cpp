@@ -27,9 +27,10 @@ ex.
 */
 
 /*
-use a block comment after a function signature to describe what the function does
+use dividing line of -'s for a total line length of 50 characters
+and a block comment after a function signature to describe what the function does
 ex.
-/**
+/**----------------------------------------------
  * Describe the purpose of this function
  * @param x explaination of all parameters
  * @param y ...

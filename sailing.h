@@ -1,3 +1,4 @@
+#include "reservation.h"
 class Sailing {
 private: 
     char vesselName[20];
@@ -5,6 +6,7 @@ private:
     double LCLLUsed;
     double HCLLUsed;
     int passengers;
+    Reservation* reservations;
 
 public:
     Sailing();
