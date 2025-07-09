@@ -14,7 +14,14 @@
 
 class ReservationASM {
 public:
+    /**----------------------------------------------
+     * startup function
+     */
     static void init();
+
+    /**----------------------------------------------
+     * shutdown function
+     */
     static void shutdown();
     static void addReservation(const Reservation& reservation);
     static bool getNextReservation(Reservation& reservation);

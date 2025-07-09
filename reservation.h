@@ -27,10 +27,35 @@ private:
 
     
 public:
+    /**----------------------------------------------
+     * creates a reservation for a sailing, safe against duplicate reservations
+     * @param license
+     * @param sailingID
+     * @param phoneNumber
+     * @return Reservation
+     */
     Reservation createReservation(char* license, char* sailingID, char* phoneNumber);
+
+    /**----------------------------------------------
+     * sets the reservation's onBoard to true
+     */
     void checkIn();
-    void queryReservation();
+
+    /**----------------------------------------------
+     * initiates a search for a reservation
+     * @param sailingID
+     * @param phoneNumber
+     * @return Reservation - the reservation if found
+     */
+    Reservation queryReservation(char* sailingID, char* phoneNumber);
+    /**----------------------------------------------
+     * startup function
+     */
     void init();
+    
+    /**----------------------------------------------
+     * shutdown function
+     */
     void shutdown();
 };
 

@@ -14,10 +14,9 @@
 
 class Menu {
 private: 
-
+    Menu();
 
 public:
-    Menu();
     void runMenu();
     char* getInput();
     int handleSelection();

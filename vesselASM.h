@@ -14,7 +14,14 @@
 
 class VesselASM {
 public:
+    /**----------------------------------------------
+     * startup function
+     */
     static void init();
+
+    /**----------------------------------------------
+     * shutdown function
+     */
     static void shutdown();
     static void addVessel(const Vessel& vessel);
     static bool getNextVessel(Vessel& vessel);

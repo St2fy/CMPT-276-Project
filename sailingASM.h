@@ -14,7 +14,14 @@
 
 class SailingASM {
 public:
+    /**----------------------------------------------
+     * startup function
+     */
     static void init();
+
+    /**----------------------------------------------
+     * shutdown function
+     */
     static void shutdown();
     static void addSailing(const Sailing& sailing);
     static bool getNextSailing(Sailing& sailing);

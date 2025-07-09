@@ -14,7 +14,14 @@
 
 class VehicleASM {
 public:
+    /**----------------------------------------------
+     * startup function
+     */
     static void init();
+
+    /**----------------------------------------------
+     * shutdown function
+     */
     static void shutdown();
     static void addVehicle(const Vehicle& vehicle);
     static bool getNextVehicle(Vehicle& vehicle);

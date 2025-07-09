@@ -20,9 +20,30 @@ private:
     char* to_string();
 
 public:
+    /**----------------------------------------------
+     * creates a vessel, safe against duplicate vessels
+     * @param name
+     * @param LCLL
+     * @param HCLL
+     * @return Vessel
+     */
     Vessel createVessel(char* name, float LCLL, float HCLL);
-    void queryVessel();
+
+    /**----------------------------------------------
+     * initiates a search for a vessel
+     * @param name
+     * @return Vessel
+     */
+    Vessel queryVessel(char* name);
+
+    /**----------------------------------------------
+     * startup function
+     */
     void init();
+
+    /**----------------------------------------------
+     * shutdown function
+     */
     void shutdown();
 
 

@@ -53,8 +53,8 @@ and a block comment after a function signature to describe what the function doe
 ex.
 /**----------------------------------------------
  * Describe the purpose of this function
- * @param x explaination of all parameters
- * @param y ...
+ * @param x - explaination of all parameters if necessary
+ * @param y - ...
  * @return z explaination of return value
  * 
 /*

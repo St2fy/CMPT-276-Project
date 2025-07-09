@@ -11,10 +11,26 @@ class Utils {
 private:
     Utils();
 public:
-    static bool validateID();
+    /**----------------------------------------------
+     * checks if a sailingID exists
+     * @param id
+     * @return bool
+     */
+    static bool validateID(char* id);
+
+    /**----------------------------------------------
+     * generates a sailing report
+     */
     static void generateReport();
 
+    /**----------------------------------------------
+     * startup function
+     */
     void init();
+    
+    /**----------------------------------------------
+     * shutdown function
+     */
     void shutdown();
 
 

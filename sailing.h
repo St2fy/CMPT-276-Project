@@ -23,9 +23,37 @@ private:
     char* to_string();
 
 public:
+    /**----------------------------------------------
+     * creates a sailing, safe against duplicate sailings
+     * @param vesselName
+     * @param sailingID
+     * @param LCLLUsed
+     * @param HCLLUsed
+     * @return Sailing
+     */
     Sailing createSailing(char* vesselName, char* sailingID, float LCLLUsed, float HCLLUsed);
-    bool deleteSailing(char* sailingID);
-    void init();
-    void shutdown();
 
+    /**----------------------------------------------
+     * deletes a sailing
+     * @param sailingID
+     * @return bool - true if the deletion is successful false otherwise
+     */
+    bool deleteSailing(char* sailingID);
+
+    /**----------------------------------------------
+     * initiates a search for a sailing
+     * @param sailingID
+     * @return Sailing
+     */
+    Sailing querySailing(char* sailingID);
+
+    /**----------------------------------------------
+     * startup function
+     */
+    void init();
+    
+    /**----------------------------------------------
+     * shutdown function
+     */
+    void shutdown();
 };
