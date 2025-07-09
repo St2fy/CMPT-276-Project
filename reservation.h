@@ -21,8 +21,8 @@ private:
     char* to_string();
 
     struct Vehicle {
-        int height;
-        int length;
+        double height;
+        double length;
     };
 
 public:
