@@ -13,7 +13,7 @@ public:
     static bool getNextRecord(Sailing& sailing);
     static void seekToBeginning();
 
-    static bool overriteRecordAt(int index, const Sailing& sailing);
+    static bool overwriteRecordAt(int index, const Sailing& sailing);
     static bool getRecordAt(int index, Sailing& sailing);
 
     static int recordCount();

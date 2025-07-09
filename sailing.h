@@ -1,7 +1,7 @@
 class Sailing {
 private: 
-    char vesselName[20];
-    char sailingID[9];
+    char vesselName[25];
+    char sailingID[10];
     double LCLLUsed;
     double HCLLUsed;
     int passengers;
@@ -12,7 +12,4 @@ public:
     ~Sailing();
     
     char* to_string();
-
-
-
 };

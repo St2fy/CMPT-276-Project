@@ -21,8 +21,8 @@ Comments
 use a block comment after a function signature
 use single line comments after a line of code to explain what the line does
 use single line comments on its own line to explain the lines of code below it
-
 */
+
 #include "reservation.h"
 #include "sailing.h"
 #include "utils.h"

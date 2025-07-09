@@ -1,7 +1,7 @@
 class Vehicle {
 private: 
-    char license[10];
-    char phone[14];
+    char license[11];
+    char phone[15];
     unsigned int height;
     unsigned int length;
 
