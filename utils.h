@@ -11,8 +11,8 @@ class Utils {
 private:
     Utils();
 public:
-    bool validateID();
-    void generateReport();
+    static bool validateID();
+    static void generateReport();
 
     void init();
     void shutdown();

@@ -6,6 +6,10 @@
  * @date 2025-07-08
  * 
 */
+struct Vehicle {
+    double height;
+    double length;
+};
 
 class Reservation {
 
@@ -14,17 +18,14 @@ private:
     char sailingID[9];
     char phoneNumber[14];
     bool onBoard;
+    Vehicle vehicle;
 
     Reservation();
     Reservation(char* license, char* sailingID, char* phoneNumber);
     ~Reservation();
     char* to_string();
 
-    struct Vehicle {
-        double height;
-        double length;
-    };
-
+    
 public:
     Reservation createReservation(char* license, char* sailingID, char* phoneNumber);
     void checkIn();
