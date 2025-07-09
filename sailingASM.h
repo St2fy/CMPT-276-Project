@@ -4,7 +4,7 @@
 #include <string>
 #include "sailing.h"
 
-class SailingFileIO {
+class SailingASM {
 public:
     static void initialize();
     static void shutdown();

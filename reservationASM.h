@@ -4,7 +4,7 @@
 #include <string>
 #include "reservation.h"
 
-class ReservationFileIO {
+class ReservationASM {
 public:
     static void initialize();
     static void shutdown();

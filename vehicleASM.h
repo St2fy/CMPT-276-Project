@@ -2,19 +2,19 @@
 
 #include <fstream>
 #include <string>
-#include "vessel.h"
+#include "vehicle.h"
 
-class VesselFileIO {
+class VehicleASM {
 public:
     static void initialize();
     static void shutdown();
 
-    static void addRecord(const Vessel& vessel);
-    static bool getNextRecord(Vessel& vessel);
+    static void addRecord(const Vehicle& vehicle);
+    static bool getNextRecord(Vehicle& vehicle);
     static void seekToBeginning();
 
-    static bool overwriteRecordAt(int index, const Vessel& vessel);
-    static bool getRecordAt(int index, Vessel& vessel);
+    static bool overwriteRecordAt(int index, const Vehicle& vehicle);
+    static bool getRecordAt(int index, Vehicle& vehicle);
 
     static int recordCount();
     static int getRecordSize();
