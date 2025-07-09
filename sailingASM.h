@@ -5,7 +5,7 @@
 
 class SailingASM {
 public:
-    static void initialize();
+    static void init();
     static void shutdown();
     static void addSailing(const Sailing& sailing);
     static bool getNextSailing(Sailing& sailing);

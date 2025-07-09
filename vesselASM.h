@@ -5,7 +5,7 @@
 
 class VesselASM {
 public:
-    static void initialize();
+    static void init();
     static void shutdown();
     static void addVessel(const Vessel& vessel);
     static bool getNextVessel(Vessel& vessel);
