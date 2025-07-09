@@ -1,3 +1,17 @@
+/**
+ * @file menu.cpp
+ * @author Dimitri Vahlas, Louise Ho, Wailok He, Jason Li
+ * @brief 
+ * @version 1
+ * @date 2025-07-08
+ * 
+*/
+
+#include "reservation.h"
+#include "sailing.h"
+#include "utils.h"
+#include "vessel.h"
+
 class Menu {
 private: 
 
@@ -12,9 +26,9 @@ public:
     bool attemptSailing(char* vesselName, char* departureTerminal, char* date, char* hour);
     bool attemptVessel(char* vesselName, float HCLL, float LCLL);
 
-    bool queryReservation(char* sailingID, char* phoneNumber);
-    bool querySailing(char* sailingID);
-    bool queryVessel(char* vesselName);
+    Reservation queryReservation(char* sailingID, char* phoneNumber);
+    Sailing querySailing(char* sailingID);
+    Vessel queryVessel(char* vesselName);
 
     bool deleteSailing(char* sailingID);
 

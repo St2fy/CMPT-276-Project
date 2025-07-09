@@ -20,7 +20,7 @@ private:
     char* to_string();
 
 public:
-    Vessel createVessel();
+    Vessel createVessel(char* name, float LCLL, float HCLL);
     void queryVessel();
 
 

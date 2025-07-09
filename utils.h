@@ -9,8 +9,9 @@
 
 class Utils {
 private:
-public:
     Utils();
+public:
+    
     int startup();
     int shutdown();
     bool validateID();

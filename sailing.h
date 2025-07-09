@@ -15,15 +15,15 @@ private:
     float LCLLUsed;
     float HCLLUsed;
     int passengers;
-    Reservation* reservations;
 
-public:
     Sailing();
     Sailing(char* vesselName, char* sailingID, float LCLLUsed, float HCLLUsed);
     ~Sailing();
     
     char* to_string();
 
+public:
+    Sailing createSailing(char* vesselName, char* sailingID, float LCLLUsed, float HCLLUsed);
 
 
 };

@@ -12,11 +12,11 @@ class Reservation {
 private: 
     char license[10];
     char sailingID[9];
-    char phone[14];
+    char phoneNumber[14];
     bool onBoard;
 
     Reservation();
-    Reservation(char[], char[]);
+    Reservation(char* license, char* sailingID, char* phoneNumber);
     ~Reservation();
     char* to_string();
 
@@ -26,7 +26,7 @@ private:
     };
 
 public:
-    Reservation createReservation();
+    Reservation createReservation(char* license, char* sailingID, char* phoneNumber);
     void checkIn();
     void queryReservation();
     
