@@ -25,6 +25,7 @@ public:
     static void shutdown();
     static void addReservation(const Reservation& reservation);
     static bool getNextReservation(Reservation& reservation);
+    static bool overwriteReservation(const Reservation& reservation, int index);
     static void seekToBeginning();
     static int getCurrentID();
 private:

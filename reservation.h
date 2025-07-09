@@ -7,8 +7,8 @@
  * 
 */
 struct Vehicle {
-    double height;
-    double length;
+    float height;
+    float length;
 };
 
 class Reservation {
