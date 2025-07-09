@@ -1,3 +1,12 @@
+/**
+ * @file sailingASM.h
+ * @author Dimitri Vahlas, Louise Ho, Wailok He, Jason Li
+ * @brief handle IO file for sailings
+ * @version 1
+ * @date 2025-07-08
+ * 
+*/
+
 #pragma once
 #include <fstream>
 #include <string>
