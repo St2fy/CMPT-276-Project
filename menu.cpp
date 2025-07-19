@@ -15,6 +15,7 @@
 #include <string>
 #include <cstring>
 #include <iomanip>
+#include <vector>
 
 const int BAR_LENGTH = 40;
 const float LENGTH_RATE = 10;
@@ -51,6 +52,12 @@ bool checkReservation(const char* phoneNumber, const char* licenseNumber, float 
 void makeReservation(const char* phoneNumber, const char* licenseNumber, float length, float height) {
 
 }
+void makeSailing(const char* vessel, const char* sailingID) {
+    
+}
+void makeVessel(const char* vessel, float HCC, float LCC) {
+
+}
 
 bool queryLicense(const char* license) {
     return true;
@@ -61,8 +68,21 @@ Reservation* queryReservation(const char* license) {
     return r;
 }
 
+bool queryVessel(const char* vessel) {
+    return true;
+}
+
 float calculateFare(const Reservation* res) {
     return 40.5;
+}
+
+std::vector<Vessel>* getVessels() {
+    std::vector<Vessel>* v = new std::vector<Vessel>;
+    return v;
+}
+
+std::string makeSailingID(std::string terminal, std::string day, std::string hour) {
+    return std::string("abc-01-23");
 }
 
 
@@ -191,9 +211,115 @@ Result handleCheckIn() {
         return Exit;
     }
 }
-void handleCreateSailing() {
+Result handleCreateSailing() {
+    printBar(BAR_LENGTH);
+    std::cout << "Create New Vessel Sailing" << std::endl << std::endl;
+    std::cout << "Availiable Vessels: " << std::endl;
+    std::vector<Vessel>* vessels = getVessels();
+    for (int i = 0; i < vessels->size(); i++) {
+        std::cout << i + 1 << ". " << vessels->at(i).getName() << std::endl;
+    }
+    std::cout << std::endl << "Select Vessel: " << std::endl;
+    std::string vesselInput;
+    std::cin >> vesselInput;
+
+    bool validVessel = false;
+    for (int i = 0; i < vessels->size(); i++) {
+        if (atoi(vesselInput.c_str()) == i) {
+            validVessel = true;
+            break;
+        }
+    }
+    if (!validVessel) {
+        // invalid selection
+    }
+    printBar(BAR_LENGTH);
+    std::cout << "Enter Departure Terminal (3-letter code):" << std::endl;
+    std::string departureTerminal;
+    std::cin >> departureTerminal;
+
+    printBar(BAR_LENGTH);
+    std::cout << "Enter Departure Day (DD):" << std::endl;
+    std::string departureDay;
+    std::cin >> departureDay;
+
+    printBar(BAR_LENGTH);
+    std::cout << "Enter Departure Hour (DD):" << std::endl;
+    std::string departureHour;
+    std::cin >> departureHour;
+
+
+    printBar(BAR_LENGTH);
+    std::string sailingID = makeSailingID(departureTerminal, departureDay, departureHour);
+    std::cout << "Create New Sailing" << std::endl;
+    std::cout << "Sailing ID: " << sailingID << std::endl << std::endl;
+    std::cout << std::left << std::setw(20) << "Vessel Name: " << vesselInput << std::endl;
+    std::cout << std::left << std::setw(20) << "Departure Terminal: " << departureTerminal << std::endl;
+    std::cout << std::left << std::setw(20) << "Departure Day: " << departureDay << std::endl;
+    std::cout << std::left << std::setw(20) << "Departure Hour: " << departureHour << std::endl;
+    std::cout << "Confirm Create New Sailing: " << std::endl;
+    std::cout << "1. Yes" << std::endl << "2. Yes and Make Another" << std::endl << "3. Restart" << std::endl << "4. Exit" << std::endl;
+    std::string confirmOption;
+    std::cin >> confirmOption;
+    switch (atoi(confirmOption.c_str())) {
+        case 1:
+            makeSailing(vesselInput.c_str(), sailingID.c_str());
+            return Success;
+        case 2:
+            makeSailing(vesselInput.c_str(), sailingID.c_str());
+            return Restart;
+        case 3: 
+            return Restart;
+        case 4:
+            return Exit;
+        default:
+            return Exit;
+    }
 }
-void handleCreateVessel() {
+Result handleCreateVessel() {
+    printBar(BAR_LENGTH);
+    std::cout << "Create New Vessel" << std::endl << std::endl;
+    std::cout << "Enter Vessel Name: " << std::endl;
+    std::string vesselName;
+    std::cin >> vesselName;
+
+    while (!queryVessel(vesselName.c_str())) {
+        printBar(BAR_LENGTH);
+        std::cout << "Cannot Create Duplicate Vessel" << std::endl;
+        std::cout << "Re-enter Vessel Name" << std::endl;
+        std::cin >>vesselName;
+    }
+
+    printBar(BAR_LENGTH);
+    std::cout << "Enter High Ceiling Capacity (HCC):" << std::endl;
+    std::string HCC;
+    std::cin >> HCC;
+
+    printBar(BAR_LENGTH);
+    std::cout << "Enter Low Ceiling Capacity (LCC):" << std::endl;
+    std::string LCC;
+    std::cin >> LCC;
+
+    printBar(BAR_LENGTH);
+    std::cout << "Create New Vessel" << std::endl << std::endl;
+    std::cout << std::left << std::setw(16) << "Name: " << vesselName << std::endl;
+    std::cout << std::left << std::setw(16) << "HCC: " << HCC << std::endl;
+    std::cout << std::left << std::setw(16) << "LCC: " << LCC << std::endl;
+    std::cout << "Confirm Create New Vessel:" << std::endl;
+    std::cout << "1. Yes" << std::endl << "2. Restart" << std::endl << "3. Exit" << std::endl;
+    std::string confirmOption;
+    std::cin >> confirmOption;
+    switch (atoi(confirmOption.c_str())) {
+        case 1:
+            makeVessel(vesselName.c_str(), atof(HCC.c_str()), atof(LCC.c_str()));
+            return Success;
+        case 2:
+            return Restart;
+        case 3: 
+            return Exit;
+        default:
+            return Exit;
+    }
 }
 void handleSailingReport() {
 }
@@ -241,10 +367,14 @@ void handleMenu() {
                 } while (result == Success); 
                 break;
             case 4:
-                handleCreateSailing();
+                do {
+                    result = handleCreateSailing();
+                } while (result == Restart);
                 break;
             case 5:
-                handleCreateVessel();
+                do {
+                    result = handleCreateVessel();
+                } while (result == Restart);
                 break;
             case 6:
                 handleSailingReport();

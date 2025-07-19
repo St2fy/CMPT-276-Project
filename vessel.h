@@ -20,6 +20,7 @@ private:
     char* to_string();
 
 public:
+    char* getName();
     /**----------------------------------------------
      * creates a vessel, safe against duplicate vessels
      * @param name
