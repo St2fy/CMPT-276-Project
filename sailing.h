@@ -6,7 +6,7 @@
  * @date 2025-07-08
  * 
 */
-
+#pragma once
 #include "reservation.h"
 class Sailing {
 private: 

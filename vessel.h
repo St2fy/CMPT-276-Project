@@ -6,7 +6,7 @@
  * @date 2025-07-08
  * 
 */
-
+#pragma once
 class Vessel {
 private: 
     char name[26];

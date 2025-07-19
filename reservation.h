@@ -6,6 +6,7 @@
  * @date 2025-07-08
  * 
 */
+#pragma once
 struct Vehicle {
     float height;
     float length;
