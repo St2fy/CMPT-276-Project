@@ -7,6 +7,7 @@
  * 
 */
 #include "reservation.h"
+#include "reservation.cpp"
 #include "sailing.h"
 #include "utils.h"
 #include "vessel.h"
@@ -16,6 +17,7 @@
 #include <iomanip>
 
 const int BAR_LENGTH = 40;
+const float LENGTH_RATE = 10;
 enum Result { Success, Failure, Exit, Restart};
 
 void printBar(int len) {
@@ -49,6 +51,21 @@ bool checkReservation(const char* phoneNumber, const char* licenseNumber, float 
 void makeReservation(const char* phoneNumber, const char* licenseNumber, float length, float height) {
 
 }
+
+bool queryLicense(const char* license) {
+    return true;
+}
+
+Reservation* queryReservation(const char* license) {
+    Reservation* r = new Reservation();
+    return r;
+}
+
+float calculateFare(const Reservation* res) {
+    return 40.5;
+}
+
+
 
 Result handleCreateReservation() {
     printBar(BAR_LENGTH);
@@ -127,30 +144,64 @@ Result handleCreateReservation() {
 void handleCancelReservation() {
     
 }
-void handleCheckIn() {
-
+Result handleCheckIn() {
+    printBar(BAR_LENGTH);
+    std::cout << "Check-In Vehicles" << std::endl << std::endl;
+    std::cout << "Enter a License Number: " << std::endl;
+    std::string license;
+    std::cin >> license;
+    bool found = queryLicense(license.c_str());
+    Reservation *reservation = queryReservation(license.c_str());
+    if (!found) {
+        printBar(BAR_LENGTH);
+        std::cout << "Check-In Vehicles > Not Found" << std::endl << std::endl;
+        std::cout << "License Number " << license << " Not Found" << std::endl << std::endl;
+        std::cout << "Select an Option:" << std::endl;
+        std::cout << "1. Restart" << std::endl;
+        std::cout << "2. Exit" << std::endl;
+        std::string notFoundOption;
+        std::cin >> notFoundOption;
+        switch (atoi(notFoundOption.c_str())) {
+            case 1:
+                return Restart;
+            case 2:
+                return Exit;
+            default:
+                return Exit;
+        }
+    }
+    printBar(BAR_LENGTH);
+    std::cout << "Check-In Vehicles > LN:" << license << std::endl;
+    std::cout << "Reservation " << reservation->getPhoneNumber() << " for Sailing " << reservation->getSailingID() << std::endl << std::endl;
+    float fare = calculateFare(reservation);
+    reservation->checkIn();
+    std::cout << reservation->getVehicle().length << "m Long Vehicle @ $" << LENGTH_RATE << "/m" << std::endl << std::endl;
+    std::cout << "=> Amount to be Paid: $" << fare << " <=" << std::endl << std::endl;
+    std::cout << "Collect Payment and Select and Option:" << std::endl;
+    std::cout << "1. Continue" << std::endl;
+    std::cout << "2. Exit" << std::endl;
+    std::string option;
+    std::cin >> option;
+    switch (atoi(option.c_str())) {
+    case 1:
+        return Success;
+    case 2:
+        return Exit;
+    default:
+        return Exit;
+    }
 }
 void handleCreateSailing() {
-
-
 }
 void handleCreateVessel() {
-
 }
 void handleSailingReport() {
-
 }
 void handleSearch() {
-
-
 }
-
-
 
 bool attemptSailing(char* vesselName, char* departureTerminal, char* date, char* hour);
 bool attemptVessel(char* vesselName, float HCLL, float LCLL);
-
-Reservation queryReservation(char* sailingID, char* phoneNumber);
 
 Vessel queryVessel(char* vesselName);
 
@@ -182,9 +233,12 @@ void handleMenu() {
                 break;
             case 2:
                 handleCancelReservation();
+                
                 break;
             case 3:
-                handleCheckIn();
+                do {
+                    result = handleCheckIn();
+                } while (result == Success); 
                 break;
             case 4:
                 handleCreateSailing();
@@ -200,7 +254,7 @@ void handleMenu() {
                 break;
             default:
                 std::cout << "Invalid Selection" << std::endl;
-                break;
+                exit(0);
         }
 
     } while (true);

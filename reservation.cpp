@@ -1,38 +1,28 @@
-/**@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
- * @file Reservation.h
- * @author Dimitri Vahlas, Louise Ho, Wailok He, Jason Li
- * @brief manages reservation operations
- * @version 1
- * @date 2025-07-08
- * 
-*/
-#pragma once
-struct Vehicle {
-    float height;
-    float length;
-};
+#include "reservation.h"
+#include <cstring>
 
-class Reservation {
-
-private: 
-    char license[10];
-    char sailingID[9];
-    char phoneNumber[14];
-    bool onBoard;
-    Vehicle vehicle;
-
-    
-    Reservation(char* license, char* sailingID, char* phoneNumber);
-    ~Reservation();
-    char* to_string();
-
-    
-public:
-    char* getLicense();
-    char* getSailingID();
-    char* getPhoneNumber();
-    const Vehicle& getVehicle() const;
-    Reservation();
+    char* Reservation::getLicense() {
+        return license;
+    }
+    char* Reservation::getSailingID() {
+        return sailingID;
+    }
+    char* Reservation::getPhoneNumber() {
+        return phoneNumber;
+    }
+    const Vehicle& Reservation::getVehicle() const {
+        return vehicle;
+    }
+    Reservation::Reservation() {
+        strcpy(license, "license_t");
+        strcpy(sailingID, "sail_t");
+        strcpy(phoneNumber, "phone_t");
+        onBoard = false;
+        vehicle = {4, 5};
+    }
+    void Reservation::checkIn() {
+        onBoard = true;
+    }
     /**----------------------------------------------
      * creates a reservation for a sailing, safe against duplicate reservations
      * @param license
@@ -63,7 +53,3 @@ public:
      * shutdown function
      */
     void shutdown();
-};
-
-
-
