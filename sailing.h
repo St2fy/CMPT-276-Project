@@ -8,6 +8,7 @@
 */
 #pragma once
 #include "reservation.h"
+#include "vessel.h"
 class Sailing {
 private: 
     char vesselName[20];
@@ -15,14 +16,21 @@ private:
     float LCLLUsed;
     float HCLLUsed;
     int passengers;
-
-    Sailing();
+    Vessel* vessel;
+    
     Sailing(char* vesselName, char* sailingID, float LCLLUsed, float HCLLUsed);
-    ~Sailing();
+    
     
     char* to_string();
 
 public:
+    Sailing();
+    ~Sailing();
+    char* getSailingID();
+    char* getVesselName();
+    float getHCLLUsed();
+    float getLCLLUsed();
+    int getPassengers();
     /**----------------------------------------------
      * creates a sailing, safe against duplicate sailings
      * @param vesselName

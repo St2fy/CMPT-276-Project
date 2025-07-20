@@ -9,6 +9,7 @@
 #include "reservation.h"
 #include "reservation.cpp"
 #include "sailing.h"
+#include "sailing.cpp"
 #include "utils.h"
 #include "vessel.h"
 #include <iostream>
@@ -33,6 +34,8 @@ void printEndlines(int n) {
     }
 
 }
+
+// stub functions below
 bool querySailing(const char* sailingID) {
     if (strcmp(sailingID, "pass")) {
         return true;
@@ -80,11 +83,19 @@ std::vector<Vessel>* getVessels() {
     std::vector<Vessel>* v = new std::vector<Vessel>;
     return v;
 }
+std::vector<Sailing>* getSailings() {
+    std::vector<Sailing>* s  = new std::vector<Sailing>;
+    Sailing* s1 = new Sailing();
+    Sailing* s2 = new Sailing();
+    s->push_back(*s1);
+    s->push_back(*s2);
+    return s;
+}
 
 std::string makeSailingID(std::string terminal, std::string day, std::string hour) {
     return std::string("abc-01-23");
 }
-
+// end of stub functions
 
 
 Result handleCreateReservation() {
@@ -161,7 +172,7 @@ Result handleCreateReservation() {
     };
 
 }
-void handleCancelReservation() {
+Result handleCancelReservation() {
     
 }
 Result handleCheckIn() {
@@ -217,7 +228,8 @@ Result handleCreateSailing() {
     std::cout << "Availiable Vessels: " << std::endl;
     std::vector<Vessel>* vessels = getVessels();
     for (int i = 0; i < vessels->size(); i++) {
-        std::cout << i + 1 << ". " << vessels->at(i).getName() << std::endl;
+        // !!! uncomment when Vessel.getName() is implemented
+        // std::cout << i + 1 << ". " << vessels->at(i).getName() << std::endl;
     }
     std::cout << std::endl << "Select Vessel: " << std::endl;
     std::string vesselInput;
@@ -321,9 +333,71 @@ Result handleCreateVessel() {
             return Exit;
     }
 }
-void handleSailingReport() {
+
+void printSailingReportLines(int low, int high) {
+    std::vector<Sailing>* sailings = getSailings();
+    for (int i = low; i < high; i++) {
+        if (i == sailings->size()) {
+            std::cout << std::endl << "End of Sailings" << std::endl << std::endl;
+            return;
+        }
+        char day[3];
+        char hour[3];
+        char sailingID[9];
+        strcpy(sailingID, sailings->at(i).getSailingID());
+        strncpy(day, sailingID + 4, 2);
+        strncpy(hour, sailingID + 7, 2);
+        day[2] = '\0';
+        hour[2] = '\0';
+        std::cout << std::left << i << std::setw(5) << ")";
+        std::cout << std::setw(16) << sailings->at(i).getSailingID(); 
+        std::cout << std::setw(24) << sailings->at(i).getVesselName();
+        std::cout << day << std::setw(2) << "d";
+        std::cout << hour << std::setw(2) << "h";
+        // !!! add fractions once oop for vessel is done
+        std::cout << std::setw(12) << sailings->at(i).getPassengers();
+        std::cout << std::setw(12) << sailings->at(i).getLCLLUsed();
+        std::cout << std::setw(12) << sailings->at(i).getHCLLUsed() << std::endl;
+    }
+    std::cout << std::endl;
 }
-void handleSearch() {
+Result handleSailingReport() {
+    const int EXTENDED_BAR_LENGTH = 90;
+    const int SAILINGS_PER_REPORT = 5;
+    int lowIndex = 0;
+    int highIndex = 5;
+
+    std::string option;
+    do {
+        printBar(EXTENDED_BAR_LENGTH);
+        std::cout << "Print Sailing Report" << std::endl << std::endl;
+        std::cout << std::left << std::setw(6) << "#)" << std::setw(16) << "SailingID" << std::setw(24) << "Vessel" << std::setw(8) << "Depart" << std::setw(12) << "PGC" << std::setw(12) << "LCC" << std::setw(12) << "HCC" << std::endl;
+        printBar(EXTENDED_BAR_LENGTH);
+
+        printSailingReportLines(lowIndex, highIndex);
+
+        std::cout << "Select an Option:" << std::endl;
+        printBar(EXTENDED_BAR_LENGTH);
+        std::cout << "1. Print Current Selection" << std::endl << "2. Show Next" << std::endl << "3. Exit" << std::endl;
+        std::cin >> option;
+        switch (atoi(option.c_str())) {
+            case 1:
+                return Success;
+            case 2:
+                lowIndex += SAILINGS_PER_REPORT;
+                highIndex += SAILINGS_PER_REPORT;
+                break;
+            case 3:
+                return Exit;
+        }
+    } while (atoi(option.c_str()) != Exit);
+
+    
+    
+
+}
+Result handleSearch() {
+
 }
 
 bool attemptSailing(char* vesselName, char* departureTerminal, char* date, char* hour);
