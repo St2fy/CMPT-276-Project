@@ -1,4 +1,4 @@
-#include "SailingASM.h"
+#include "sailingASM.h"
 #include <iostream>
 std::fstream SailingASM::file;
 const std::string SailingASM::filename = "sailings.dat";
