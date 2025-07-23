@@ -97,6 +97,34 @@ std::string makeSailingID(std::string terminal, std::string day, std::string hou
 }
 // end of stub functions
 
+// helper function for handleSailingReport to print the lines of each sailing
+void printSailingReportLines(int low, int high) {
+    std::vector<Sailing>* sailings = getSailings();
+    for (int i = low; i < high; i++) {
+        if (i == sailings->size()) {
+            std::cout << std::endl << "End of Sailings" << std::endl << std::endl;
+            return;
+        }
+        char day[3];
+        char hour[3];
+        char sailingID[9];
+        strcpy(sailingID, sailings->at(i).getSailingID());
+        strncpy(day, sailingID + 4, 2);
+        strncpy(hour, sailingID + 7, 2);
+        day[2] = '\0';
+        hour[2] = '\0';
+        std::cout << std::left << i << std::setw(5) << ")";
+        std::cout << std::setw(16) << sailings->at(i).getSailingID(); 
+        std::cout << std::setw(24) << sailings->at(i).getVesselName();
+        std::cout << day << std::setw(2) << "d";
+        std::cout << hour << std::setw(2) << "h";
+        // !!! add fractions once oop for vessel is done
+        std::cout << std::setw(12) << sailings->at(i).getPassengers();
+        std::cout << std::setw(12) << sailings->at(i).getLCLLUsed();
+        std::cout << std::setw(12) << sailings->at(i).getHCLLUsed() << std::endl;
+    }
+    std::cout << std::endl;
+}
 
 Result handleCreateReservation() {
     printBar(BAR_LENGTH);
@@ -172,7 +200,7 @@ Result handleCreateReservation() {
     };
 
 }
-Result handleCancelReservation() {
+Result handleCancelSailing() {
     
 }
 Result handleCheckIn() {
@@ -333,34 +361,6 @@ Result handleCreateVessel() {
             return Exit;
     }
 }
-
-void printSailingReportLines(int low, int high) {
-    std::vector<Sailing>* sailings = getSailings();
-    for (int i = low; i < high; i++) {
-        if (i == sailings->size()) {
-            std::cout << std::endl << "End of Sailings" << std::endl << std::endl;
-            return;
-        }
-        char day[3];
-        char hour[3];
-        char sailingID[9];
-        strcpy(sailingID, sailings->at(i).getSailingID());
-        strncpy(day, sailingID + 4, 2);
-        strncpy(hour, sailingID + 7, 2);
-        day[2] = '\0';
-        hour[2] = '\0';
-        std::cout << std::left << i << std::setw(5) << ")";
-        std::cout << std::setw(16) << sailings->at(i).getSailingID(); 
-        std::cout << std::setw(24) << sailings->at(i).getVesselName();
-        std::cout << day << std::setw(2) << "d";
-        std::cout << hour << std::setw(2) << "h";
-        // !!! add fractions once oop for vessel is done
-        std::cout << std::setw(12) << sailings->at(i).getPassengers();
-        std::cout << std::setw(12) << sailings->at(i).getLCLLUsed();
-        std::cout << std::setw(12) << sailings->at(i).getHCLLUsed() << std::endl;
-    }
-    std::cout << std::endl;
-}
 Result handleSailingReport() {
     const int EXTENDED_BAR_LENGTH = 90;
     const int SAILINGS_PER_REPORT = 5;
@@ -396,17 +396,37 @@ Result handleSailingReport() {
     
 
 }
-Result handleSearch() {
+Result handleSearchSailing() {
 
 }
-
-bool attemptSailing(char* vesselName, char* departureTerminal, char* date, char* hour);
-bool attemptVessel(char* vesselName, float HCLL, float LCLL);
-
-Vessel queryVessel(char* vesselName);
-
-bool deleteSailing(char* sailingID);
-
+Result handleSearchVessel() {
+    
+}
+Result handleSearchReservation() {
+    
+}
+void handleSearch() {
+    printBar(BAR_LENGTH);
+    std::cout << "Search Options:" << std::endl;
+    printBar(BAR_LENGTH);
+    std::cout << "1. Sailing" << std::endl << "2. Vessel" << std::endl << "3. Reservation" << std::endl;
+    std::string searchOption;
+    std::cin >> searchOption;
+    switch (atoi(searchOption.c_str())) {
+    case 1:
+        handleSearchSailing();
+        break;
+    case 2: 
+        handleSearchVessel();
+        break;
+    case 3:
+        handleSearchReservation();
+        break;
+    
+    default:
+        break;
+    }
+}
 void handleMenu() {
     std::string input;
     do {
@@ -432,7 +452,7 @@ void handleMenu() {
                 } while (result == Restart); 
                 break;
             case 2:
-                handleCancelReservation();
+                handleCancelSailing();
                 
                 break;
             case 3:
@@ -462,8 +482,6 @@ void handleMenu() {
         }
 
     } while (true);
-
-
 }
 
 int main() {
