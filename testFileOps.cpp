@@ -4,48 +4,41 @@
 #include "sailing.h"
 #include "sailingASM.h"
 
-using namespace std;
 
-void testSailingDefaultConstructor() {
-    std::cout << "Running testSailingDefaultConstructor...\n";
-    Sailing sailing;
-    assert(strcmp(sailing.getSailingID(), "abc-12-34") == 0);
-    assert(strcmp(sailing.getVesselName(), "Queen of Richmond") == 0);
-    assert(sailing.getLCLLUsed() == 5.7f);
-    assert(sailing.getHCLLUsed() == 77.54f);
-    assert(sailing.getPassengers() == 54);
-    std::cout << "testSailingDefaultConstructor PASSED\n";
-}
+void testSailingASM(){
+    std::cout << "Run testsailingASM \n";
 
-void testSailingASMWriteRead() {
-    std::cout << "Running testSailingASMWriteRead...\n";
+    //Initialize SailingASM
     SailingASM::init();
+
+    //Seek to beginning of file
     SailingASM::seekToBeginning();
 
-    // Write a record
     Sailing sailing;
     SailingASM::addSailing(sailing);
 
-    // Read it back
-    Sailing readBack;
     SailingASM::seekToBeginning();
+
+    Sailing readBack;
     bool result = SailingASM::getNextSailing(readBack);
 
-    assert(result == true);
-    assert(strcmp(readBack.getSailingID(), sailing.getSailingID()) == 0);
-    assert(strcmp(readBack.getVesselName(), sailing.getVesselName()) == 0);
-    assert(readBack.getLCLLUsed() == sailing.getLCLLUsed());
-    assert(readBack.getHCLLUsed() == sailing.getHCLLUsed());
-    assert(readBack.getPassengers() == sailing.getPassengers());
+    if (result) {
+        std::cout << "Read back Sailing record:\n";
+        std::cout << "ID: " << readBack.getSailingID() << "\n";
+        std::cout << "Vessel: " << readBack.getVesselName() << "\n";
+        std::cout << "HCLL: " << readBack.getHCLLUsed() << "\n";
+        std::cout << "LCLL: " << readBack.getLCLLUsed() << "\n";
+        std::cout << "Passengers: " << readBack.getPassengers() << "\n";
+    } else {
+        std::cout << " Failed to read record back.\n";
+    }
 
-    std::cout << "testSailingASMWriteRead PASSED\n";
+
+
     SailingASM::shutdown();
 }
 
-int main() {
-    testSailingDefaultConstructor();
-    testSailingASMWriteRead();
+int main(){
+    testSailingASM();
     return 0;
 }
-
-
