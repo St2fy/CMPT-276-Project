@@ -6,7 +6,7 @@
  * @date 2025-07-08
  * 
 */
-
+#pragma once
 class Utils {
 private:
     Utils();

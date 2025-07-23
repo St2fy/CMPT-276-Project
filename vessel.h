@@ -6,7 +6,7 @@
  * @date 2025-07-08
  * 
 */
-
+#pragma once
 class Vessel {
 private: 
     char name[26];
@@ -20,6 +20,7 @@ private:
     char* to_string();
 
 public:
+    char* getName();
     /**----------------------------------------------
      * creates a vessel, safe against duplicate vessels
      * @param name

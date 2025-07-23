@@ -6,6 +6,7 @@
  * @date 2025-07-08
  * 
 */
+#pragma once
 struct Vehicle {
     float height;
     float length;
@@ -20,13 +21,18 @@ private:
     bool onBoard;
     Vehicle vehicle;
 
-    Reservation();
+    
     Reservation(char* license, char* sailingID, char* phoneNumber);
     ~Reservation();
     char* to_string();
 
     
 public:
+    char* getLicense();
+    char* getSailingID();
+    char* getPhoneNumber();
+    const Vehicle& getVehicle() const;
+    Reservation();
     /**----------------------------------------------
      * creates a reservation for a sailing, safe against duplicate reservations
      * @param license
@@ -34,7 +40,7 @@ public:
      * @param phoneNumber
      * @return Reservation
      */
-    Reservation createReservation(char* license, char* sailingID, char* phoneNumber);
+    Reservation* createReservation(char* license, char* sailingID, char* phoneNumber);
 
     /**----------------------------------------------
      * sets the reservation's onBoard to true
