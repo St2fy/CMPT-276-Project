@@ -11,18 +11,6 @@
 class Utils {
 public:
     /**----------------------------------------------
-     * checks if a sailingID exists
-     * @param id
-     * @return bool
-     */
-    static bool validateID(const char* id);
-
-    /**----------------------------------------------
-     * generates a sailing report
-     */
-    static void generateReport();
-
-    /**----------------------------------------------
      * startup function
      */
     static void init();

@@ -798,8 +798,3 @@ void handleMenu() {
         }
     } while (true);
 }
-
-int main() {
-    handleMenu();
-    return 0;
-}
