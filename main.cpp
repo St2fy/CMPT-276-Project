@@ -8,16 +8,26 @@
 */
 
 #include "reservation.h"
+#include "reservationASM.h"
 #include "sailing.h"
+#include "sailingASM.h"
 #include "utils.h"
 #include "vessel.h"
+#include "vesselASM.h"
 
-void init();
-void shutdown();
+#include "reservation.cpp"
+//#include "reservationASM.cpp"
+#include "sailing.cpp"
+#include "sailingASM.cpp"
+//#include "utils.cpp"
+#include "vessel.cpp"
+#include "vesselASM.cpp"
+#include "menu.cpp"
 
 int main() {
-    
-
+    Utils::init();
+    handleMenu();
+    Utils::shutdown();
     return 0;
 }
 /**************************************************************

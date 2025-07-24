@@ -13,6 +13,8 @@
 #include "utils.h"
 #include "vessel.h"
 #include "vessel.cpp"
+#include "utils.h"
+#include "utils.cpp"
 #include <iostream>
 #include <string>
 #include <cstring>
@@ -101,9 +103,7 @@ std::vector<Sailing>* getSailings() {
     return s;
 }
 
-std::string makeSailingID(std::string terminal, std::string day, std::string hour) {
-    return std::string("abc-01-23");
-}
+
 
 void deleteSailing(Sailing* sailing) {
 
@@ -327,7 +327,7 @@ Result handleCreateSailing() {
 
 
     printBar(BAR_LENGTH);
-    std::string sailingID = makeSailingID(departureTerminal, departureDay, departureHour);
+    std::string sailingID = Utils::makeSailingID(departureTerminal, departureDay, departureHour);
     std::cout << "Create New Sailing" << std::endl;
     std::cout << "Sailing ID: " << sailingID << std::endl << std::endl;
     std::cout << std::left << std::setw(20) << "Vessel Name: " << vesselInput << std::endl;
@@ -599,8 +599,8 @@ void handleMenu() {
         std::cout << "5. Create New Vessel" << std::endl;
         std::cout << "6. Print Sailing Report" << std::endl;
         std::cout << "7. Search" << std::endl;
+        std::cout << "8. Shutdown" << std::endl;
         std::cin >> input;
-
         Result result;
         switch (atoi(input.c_str())) {
             case 1:
@@ -634,11 +634,11 @@ void handleMenu() {
             case 7:
                 handleSearch();
                 break;
+            case 8:
+                return;
             default:
                 std::cout << "Invalid Selection" << std::endl;
-                exit(0);
         }
-
     } while (true);
 }
 

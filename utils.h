@@ -7,6 +7,7 @@
  * 
 */
 #pragma once
+#include <string>
 class Utils {
 private:
     Utils();
@@ -16,7 +17,7 @@ public:
      * @param id
      * @return bool
      */
-    static bool validateID(char* id);
+    static bool validateID(const char* id);
 
     /**----------------------------------------------
      * generates a sailing report
@@ -26,12 +27,12 @@ public:
     /**----------------------------------------------
      * startup function
      */
-    void init();
+    static void init();
 
     /**----------------------------------------------
      * shutdown function
      */
-    void shutdown();
+    static void shutdown();
 
-
+    static std::string makeSailingID(std::string terminal, std::string day, std::string hour);
 };

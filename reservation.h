@@ -28,12 +28,14 @@ private:
 
     
 public:
+    Reservation();
     char* getLicense();
     char* getSailingID();
     char* getPhoneNumber();
     bool getOnBoard();
     const Vehicle& getVehicle() const;
-    Reservation();
+    float calculateFare();
+    
     /**----------------------------------------------
      * creates a reservation for a sailing, safe against duplicate reservations
      * @param license
