@@ -1,6 +1,6 @@
 #include "sailing.h"
+#include "sailingASM.cpp"
 #include <cstring>
-// default constructor for testing purposes
 Sailing::Sailing() {
     strcpy(vesselName,"Queen of Richmond");
     strcpy(sailingID, "abc-12-34");
@@ -17,9 +17,7 @@ Sailing::Sailing(char* vn, char* sid, float lcllu, float hcllu, int p, Vessel* v
     passengers = p;
     vessel = v;
 }
-Sailing::~Sailing() {
-    return;
-}
+
 char* Sailing::getSailingID() {
     return sailingID;
 }
@@ -34,4 +32,45 @@ float Sailing::getLCLLUsed() {
 }
 int Sailing::getPassengers() {
     return passengers;
+}
+Sailing* Sailing::createSailing(char* vesselName, char* sailingID, float LCLLUsed, float HCLLUsed, int passengers, Vessel* vessel) {
+    SailingASM::seekToBeginning();
+    Sailing s;
+    while (SailingASM::getNextSailing(s)) {
+        if (strcmp(s.getSailingID(), sailingID) == 0) {
+            // Duplicate sailing ID found
+            return nullptr; // Return a null pointer
+        }
+    }
+    SailingASM::addSailing(Sailing(vesselName, sailingID, LCLLUsed, HCLLUsed, passengers, vessel));
+    return new Sailing(vesselName, sailingID, LCLLUsed, HCLLUsed, passengers, vessel);
+}
+bool Sailing::deleteSailing(char* sailingID) {
+    SailingASM::seekToBeginning();
+    Sailing s;
+    while (SailingASM::getNextSailing(s)) {
+        if (strcmp(s.getSailingID(), sailingID) == 0) {
+            SailingASM::deleteSailing();
+            return true; // Deletion successful
+        }
+    }
+    return false; // Sailing ID not found
+}
+Sailing* Sailing::querySailing(char* sailingID) {
+    SailingASM::seekToBeginning();
+    Sailing s;
+    while (SailingASM::getNextSailing(s)) {
+        if (strcmp(s.getSailingID(), sailingID) == 0) {
+            return new Sailing(s); // Return a copy of the found sailing
+        }
+    }
+    return nullptr; // Return a null pointer if not found
+}
+std::string Sailing::to_string() {
+    std::string result = "Sailing ID: " + std::string(sailingID) + "\n" +
+                         "Vessel Name: " + std::string(vesselName) + "\n" +
+                         "LCLL Used: " + std::to_string(LCLLUsed) + "\n" +
+                         "HCLL Used: " + std::to_string(HCLLUsed) + "\n" +
+                         "Passengers: " + std::to_string(passengers) + "\n";
+    return result;
 }

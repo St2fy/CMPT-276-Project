@@ -14,12 +14,13 @@ private:
     float HCLLCapacity;
     int passengerCapacity;
 
-    Vessel();
-    Vessel(char* name, float LCLL, float HCLL);
-    ~Vessel();
+    
     char* to_string();
 
 public:
+    Vessel();
+    Vessel(char* name, float LCLL, float HCLL);
+    ~Vessel();
     char* getName();
     float getLCLLCap();
     float getHCLLCap();
@@ -31,24 +32,12 @@ public:
      * @param HCLL
      * @return Vessel
      */
-    Vessel createVessel(char* name, float LCLL, float HCLL);
+    Vessel* createVessel(char* name, float LCLL, float HCLL);
 
     /**----------------------------------------------
      * initiates a search for a vessel
      * @param name
      * @return Vessel
      */
-    Vessel queryVessel(char* name);
-
-    /**----------------------------------------------
-     * startup function
-     */
-    void init();
-
-    /**----------------------------------------------
-     * shutdown function
-     */
-    void shutdown();
-
-
+    Vessel* queryVessel(char* name);
 };

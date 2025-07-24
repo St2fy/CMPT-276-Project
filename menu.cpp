@@ -419,8 +419,7 @@ Result handleCreateSailing() {
     std::cout << "Availiable Vessels: " << std::endl;
     std::vector<Vessel>* vessels = getVessels();
     for (int i = 0; i < vessels->size(); i++) {
-        // !!! uncomment when Vessel.getName() is implemented
-        // std::cout << i + 1 << ". " << vessels->at(i).getName() << std::endl;
+        std::cout << i + 1 << ". " << vessels->at(i).getName() << std::endl;
     }
     std::cout << std::endl << "Select Vessel: " << std::endl;
     std::string vesselInput;
@@ -491,6 +490,7 @@ Result handleCreateVessel() {
     std::string vesselName;
     std::cin >> vesselName;
 
+    // Check if the vessel already exists
     while (!queryVessel(vesselName.c_str())) {
         printBar(BAR_LENGTH);
         std::cout << "Cannot Create Duplicate Vessel" << std::endl;
@@ -759,6 +759,7 @@ void handleMenu() {
         std::cout << "8. Shutdown" << std::endl;
         std::cin >> input;
         Result result;
+        // Handle the input and call the appropriate function based on the selection, loop based on the result of the function
         switch (atoi(input.c_str())) {
             case 1:
                 do {

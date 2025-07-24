@@ -1,4 +1,6 @@
 #include "reservation.h"
+#include "reservationASM.cpp"
+#include "vehicleASM.cpp"
 #include <cstring>
 
 char* Reservation::getLicense() {
@@ -16,6 +18,12 @@ const Vehicle& Reservation::getVehicle() const {
 bool Reservation::getOnBoard() {
     return onBoard;
 }
+void Reservation::setOnBoard(bool status) {
+    onBoard = status;
+}
+Reservation::~Reservation() {
+    // Clean up any dynamic resources if needed
+}
 Reservation::Reservation() {
     strcpy(license, "license_t");
     strcpy(sailingID, "sail_t");
@@ -24,35 +32,90 @@ Reservation::Reservation() {
     vehicle = {4, 5};
 }
 void Reservation::checkIn() {
-    onBoard = true;
+    setOnBoard(true);
 }
-/**----------------------------------------------
- * creates a reservation for a sailing, safe against duplicate reservations
- * @param license
- * @param sailingID
- * @param phoneNumber
- * @return Reservation
- */
-Reservation* createReservation(char* license, char* sailingID, char* phoneNumber);
+Reservation* createReservation(char* license, char* sailingID, char* phoneNumber, Vehicle vehicle) {
+    ReservationASM::seekToBeginning();
+    Reservation* r = new Reservation(license, sailingID, phoneNumber, vehicle);
+    while (ReservationASM::getNextReservation(*r)) {
+        if (strcmp(r->getSailingID(), sailingID) == 0 && strcmp(r->getPhoneNumber(), phoneNumber) == 0) {
+            // Duplicate reservation found
+            delete r;
+            return nullptr; // Return a null pointer
+        }
+    }
+    ReservationASM::addReservation(*r);
+    return r;
+}
 
-/**----------------------------------------------
- * sets the reservation's onBoard to true
- */
-void checkIn();
+void Reservation::checkIn() {
+    setOnBoard(true);
+}
 
-/**----------------------------------------------
- * initiates a search for a reservation
- * @param sailingID
- * @param phoneNumber
- * @return Reservation - the reservation if found
- */
-Reservation queryReservation(char* sailingID, char* phoneNumber);
-/**----------------------------------------------
- * startup function
- */
-void init();
+Reservation* queryReservation(char* sailingID, char* phoneNumber) {
+    ReservationASM::seekToBeginning();
+    Reservation* r = new Reservation();
+    while (ReservationASM::getNextReservation(*r)) {
+        if (strcmp(r->getSailingID(), sailingID) == 0 && strcmp(r->getPhoneNumber(), phoneNumber) == 0) {
+            return r;
+        }
+    }
+    delete r; // Clean up if not found
+    return nullptr;
+}
 
-/**----------------------------------------------
- * shutdown function
- */
-void shutdown();
+Reservation* createReservation(char* license, char* sailingID, char* phoneNumber, Vehicle vehicle) {
+    ReservationASM::seekToBeginning();
+    
+    Reservation r(license, sailingID, phoneNumber, vehicle);
+    while (ReservationASM::getNextReservation(r)) {
+        if (strcmp(r.getSailingID(), sailingID) == 0 && strcmp(r.getPhoneNumber(), phoneNumber) == 0) {
+            // Duplicate reservation found
+            return nullptr; // Return a null pointer
+        }
+    }
+    VehicleASM::seekToBeginning();
+    while (VehicleASM::getNextVehicle(vehicle)) {
+        if (!(vehicle.height == r.getVehicle().height && vehicle.length == r.getVehicle().length)) {
+            VehicleASM::addVehicle(vehicle);
+        }
+    }
+    ReservationASM::addReservation(r);
+    return new Reservation(license, sailingID, phoneNumber, vehicle);
+}
+
+Reservation* Reservation::queryReservation(char* sailingID, char* phoneNumber) {
+    ReservationASM::seekToBeginning();
+    Reservation r;
+    while (ReservationASM::getNextReservation(r)) {
+        if (strcmp(r.getSailingID(), sailingID) == 0 && strcmp(r.getPhoneNumber(), phoneNumber) == 0) {
+            return new Reservation(r); // Return a copy of the found reservation
+        }
+    }
+    return nullptr; // Return a null pointer if not found
+}
+
+Reservation::Reservation(char* license, char* sailingID, char* phoneNumber, Vehicle vehicle) {
+    strcpy(this->license, license);
+    strcpy(this->sailingID, sailingID);
+    strcpy(this->phoneNumber, phoneNumber);
+    this->vehicle = vehicle;
+    this->onBoard = false;
+}
+float Reservation::calculateFare() {
+    // Example fare calculation based on vehicle length and height
+    return vehicle.length * 10 + vehicle.height * 5;
+}
+
+Reservation* createReservation(char* license, char* sailingID, char* phoneNumber, Vehicle vehicle) {
+    ReservationASM::seekToBeginning();
+    Reservation r(license, sailingID, phoneNumber, vehicle);
+    while (ReservationASM::getNextReservation(r)) {
+        if (strcmp(r.getSailingID(), sailingID) == 0 && strcmp(r.getPhoneNumber(), phoneNumber) == 0) {
+            // Duplicate reservation found
+            return nullptr; // Return a null pointer
+        }
+    }
+    ReservationASM::addReservation(r);
+    return new Reservation(license, sailingID, phoneNumber, vehicle);
+}

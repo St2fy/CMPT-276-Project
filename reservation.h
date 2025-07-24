@@ -20,14 +20,10 @@ private:
     char phoneNumber[14];
     bool onBoard;
     Vehicle vehicle;
-
-    
-    Reservation(char* license, char* sailingID, char* phoneNumber);
-    ~Reservation();
     char* to_string();
-
-    
 public:
+    Reservation(char* license, char* sailingID, char* phoneNumber, Vehicle vehicle);
+    ~Reservation();
     Reservation();
     char* getLicense();
     char* getSailingID();
@@ -35,7 +31,7 @@ public:
     bool getOnBoard();
     const Vehicle& getVehicle() const;
     float calculateFare();
-    
+    void setOnBoard(bool status);
     /**----------------------------------------------
      * creates a reservation for a sailing, safe against duplicate reservations
      * @param license
@@ -43,7 +39,7 @@ public:
      * @param phoneNumber
      * @return Reservation
      */
-    Reservation* createReservation(char* license, char* sailingID, char* phoneNumber);
+    Reservation* createReservation(char* license, char* sailingID, char* phoneNumber, Vehicle vehicle);
 
     /**----------------------------------------------
      * sets the reservation's onBoard to true
@@ -56,16 +52,7 @@ public:
      * @param phoneNumber
      * @return Reservation - the reservation if found
      */
-    Reservation queryReservation(char* sailingID, char* phoneNumber);
-    /**----------------------------------------------
-     * startup function
-     */
-    void init();
-
-    /**----------------------------------------------
-     * shutdown function
-     */
-    void shutdown();
+    Reservation* queryReservation(char* sailingID, char* phoneNumber);
 };
 
 
