@@ -12,6 +12,7 @@
 #include "sailing.cpp"
 #include "utils.h"
 #include "vessel.h"
+#include "vessel.cpp"
 #include <iostream>
 #include <string>
 #include <cstring>
@@ -219,6 +220,7 @@ Result handleCancelSailing() {
     std::string sailingID;
     std::cin >> sailingID;
     if (validSailing(sailingID.c_str())) {
+        std::cout << "Deleted Sailing " << sailingID.c_str() << std::endl;
         deleteSailing(querySailing(sailingID.c_str()));
     }
     else {

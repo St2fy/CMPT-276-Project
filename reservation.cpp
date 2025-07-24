@@ -13,6 +13,9 @@ char* Reservation::getPhoneNumber() {
 const Vehicle& Reservation::getVehicle() const {
     return vehicle;
 }
+bool Reservation::getOnBoard() {
+    return onBoard;
+}
 Reservation::Reservation() {
     strcpy(license, "license_t");
     strcpy(sailingID, "sail_t");
