@@ -25,11 +25,11 @@ Reservation::~Reservation() {
     // Clean up any dynamic resources if needed
 }
 Reservation::Reservation() {
-    strcpy(license, "license_t");
-    strcpy(sailingID, "sail_t");
-    strcpy(phoneNumber, "phone_t");
+    strcpy(license, "123456");
+    strcpy(sailingID, "cde-45-56");
+    strcpy(phoneNumber, "604-123-4567");
     onBoard = false;
-    vehicle = {4, 5};
+    vehicle = {4.6f, 5.9f};
 }
 void Reservation::checkIn() {
     setOnBoard(true);
