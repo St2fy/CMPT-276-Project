@@ -1,4 +1,12 @@
-#include "VehicleASM.h"
+/**@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+ * @file vehicleASM.cpp
+ * @author Dimitri Vahlas, Louise Ho, Wailok He, Jason Li
+ * @manages vehicle file operations
+ * @version 1
+ * @date 2025-07-23
+ * 
+*/
+#include "vehicleASM.h"
 #include <iostream>
 #include "reservation.h"
 std::fstream VehicleASM::file;
@@ -20,19 +28,23 @@ void VehicleASM::shutdown() {
 }
 void VehicleASM::addVehicle(const Vehicle& vehicle) {
     if (!file.is_open()) return;
-
-    file.clear(); // ensure stream is good
+    // ensure stream is good
+    file.clear(); 
     file.seekp(0, std::ios::end);
+    //reinterpret cast to create new vehicle
     file.write(reinterpret_cast<const char*>(&vehicle), sizeof(Vehicle));
 }
 bool VehicleASM::getNextVehicle(Vehicle& vehicle){
     file.clear();
-    return static_cast<bool>(file.read(reinterpret_cast<char*>(&vehicle), sizeof(Vehicle)));
-
+    if(!file.read(reinterpret_cast<char*>(&vehicle), sizeof(Vehicle))){
+        return false;
+    }
+    return true;
 }
 void VehicleASM::seekToBeginning() {
     if (file.is_open()) {
         file.clear();
+        //go back to the start with 0  offset
         file.seekg(0);
     }
 }
@@ -41,7 +53,7 @@ int VehicleASM::getCurrentID() {
     if (!file.is_open()) return -1;
 
     file.clear();
-    file.seekg(0, std::ios::end);
+    //finding the index of current file pointer
     std::streampos size = file.tellg();
 
     return static_cast<int>(size / sizeof(Vehicle));

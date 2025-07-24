@@ -49,6 +49,8 @@ int main() {
     }
     std::cout << "Total records read: " << count << "\n\n";
 
+    //std::cout << "Total records read: " << count << "\n\n";
+
     // Test 4: Verify ID consistency
     std::cout << "=== ID Verification ===\n";
     std::cout << "getCurrentID() reports: " << VehicleASM::getCurrentID() << "\n";

@@ -1,3 +1,11 @@
+/**@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+ * @file vesselASM.cpp
+ * @author Dimitri Vahlas, Louise Ho, Wailok He, Jason Li
+ * @manages vessel file operations
+ * @version 1
+ * @date 2025-07-23
+ * 
+*/
 #include "VesselASM.h"
 #include <iostream>
 std::fstream VesselASM::file;
@@ -19,15 +27,18 @@ void VesselASM::shutdown() {
 }
 void VesselASM::addVessel(const Vessel& vessel) {
     if (!file.is_open()) return;
-
-    file.clear(); // ensure stream is good
+    // ensure stream is good
+    file.clear(); 
     file.seekp(0, std::ios::end);
     file.write(reinterpret_cast<const char*>(&vessel), sizeof(Vessel));
 }
 bool VesselASM::getNextVessel(Vessel& vessel) {
-    if (!file.is_open()) return false;
-    
-    return static_cast<bool>( file.read(reinterpret_cast<char*>(&vessel), sizeof(Vessel)));
+    file.clear();
+    if (!file.read(reinterpret_cast<char*>(&vessel), sizeof(Vessel))) {
+        // At the end already or error
+        return false; 
+    }
+    return true;
 }
 void VesselASM::seekToBeginning() {
     if (file.is_open()) {
@@ -37,11 +48,12 @@ void VesselASM::seekToBeginning() {
 }
 
 int VesselASM::getCurrentID() {
-    if (!file.is_open()) return -1;
-
+    if (!file.is_open()) {
+        return 0;
+    }
+    // ensure stream is good
     file.clear();
-    file.seekg(0, std::ios::end);
+    //finding the index of current file pointer
     std::streampos size = file.tellg();
-
     return static_cast<int>(size / sizeof(Vessel));
 }

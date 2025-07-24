@@ -1,5 +1,16 @@
+/**@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+ * @file sailingASM.cpp
+ * @author Dimitri Vahlas, Louise Ho, Wailok He, Jason Li
+ * @manages sailing file operations
+ * @version 1
+ * @date 2025-07-23
+ * 
+*/
 #include "sailingASM.h"
 #include <iostream>
+#include <io.h>
+#include <fstream>
+
 std::fstream SailingASM::file;
 const std::string SailingASM::filename = "sailings.dat";
 
@@ -11,10 +22,6 @@ void SailingASM::init() {
         file.open(filename, std::ios::binary | std::ios::out);
         file.close();
         file.open(filename, std::ios::binary | std::ios::in | std::ios::out);
-    }
-
-    if (!file.is_open()) {
-        std::cerr << "Error: Could not open file '" << filename << "'\n";
     }
 }
 void SailingASM::shutdown() {
@@ -39,7 +46,6 @@ void SailingASM::seekToBeginning() {
 }
 int SailingASM::getCurrentID() {
     file.clear();
-    file.seekg(0, std::ios::end);
     std::streampos size = file.tellg();
     return static_cast<int>(size / sizeof(Sailing));
 }
@@ -62,7 +68,6 @@ void SailingASM::deleteSailing() {
     }
     
     // Calculate position of last record
-   // std::streampos lastRecordPos = endPos - sizeof(Sailing);
    std::streampos lastRecordPos = endPos - static_cast<std::streamoff>(sizeof(Sailing));
 
     
@@ -70,11 +75,10 @@ void SailingASM::deleteSailing() {
     if (deletePos == lastRecordPos) {
         file.seekp(deletePos);
         file.close();
-        
+        FILE*cFile=fopen("sailings.dat","rb+");
         // Truncate the file
-        std::ofstream truncFile(filename, std::ios::binary | std::ios::trunc);
-        truncFile.close();
-        
+        int fd = _fileno(cFile);
+        _chsize(fd, static_cast<long>(lastRecordPos));
         // Reopen the file
         file.open(filename, std::ios::in | std::ios::out | std::ios::binary);
         file.seekg(deletePos);
@@ -90,16 +94,16 @@ void SailingASM::deleteSailing() {
     }
     
     // Write the last record over the record to be deleted
-    file.seekp(deletePos);
-    file.write(reinterpret_cast<const char*>(&lastRecord), sizeof(Sailing));
-    
-    // Truncate the file to remove the duplicate last record
-    file.flush();
-    file.close();
-    
-    // Truncate the file to new size wrong implementation
-    std::ofstream truncFile(filename, std::ios::binary | std::ios::app);
-    truncFile.close();
+    FILE* cFile = fopen("sailings.dat", "rb+");
+    if (!cFile) {
+        std::cerr << "Error: Failed to open file for truncation.\n";
+        return;
+    }
+    // Truncate the file
+    int fd = _fileno(cFile);
+    _chsize(fd, static_cast<long>(lastRecordPos));
+    // Truncate the file
+    fclose(cFile);
     
     // Reopen the file
     file.open(filename, std::ios::in | std::ios::out | std::ios::binary);
