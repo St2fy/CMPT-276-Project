@@ -9,6 +9,14 @@ Sailing::Sailing() {
     passengers = 54;
     vessel = nullptr;
 }
+Sailing::Sailing(char* vn, char* sid, float lcllu, float hcllu, int p, Vessel* v) {
+    strcpy(vesselName, vn);
+    strcpy(sailingID, sid);
+    LCLLUsed = lcllu;
+    HCLLUsed = hcllu;
+    passengers = p;
+    vessel = v;
+}
 Sailing::~Sailing() {
     return;
 }

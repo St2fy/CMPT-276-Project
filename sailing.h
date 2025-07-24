@@ -18,12 +18,13 @@ private:
     int passengers;
     Vessel* vessel;
     
-    Sailing(char* vesselName, char* sailingID, float LCLLUsed, float HCLLUsed);
+    
     
     
     char* to_string();
 
 public:
+    Sailing(char* vesselName, char* sailingID, float LCLLUsed, float HCLLUsed, int passengers, Vessel* vessel);
     Sailing();
     ~Sailing();
     char* getSailingID();

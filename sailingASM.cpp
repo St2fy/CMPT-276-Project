@@ -1,4 +1,4 @@
-#include "SailingASM.h"
+#include "sailingASM.h"
 #include <iostream>
 std::fstream SailingASM::file;
 const std::string SailingASM::filename = "sailings.dat";
@@ -62,7 +62,9 @@ void SailingASM::deleteSailing() {
     }
     
     // Calculate position of last record
-    std::streampos lastRecordPos = endPos - sizeof(Sailing);
+   // std::streampos lastRecordPos = endPos - sizeof(Sailing);
+   std::streampos lastRecordPos = endPos - static_cast<std::streamoff>(sizeof(Sailing));
+
     
     // If we're deleting the last record, just truncate
     if (deletePos == lastRecordPos) {
