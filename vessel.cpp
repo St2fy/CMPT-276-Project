@@ -1,6 +1,26 @@
+/**@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+ * @file vessel.cpp
+ * @author Dimitri Vahlas, Louise Ho, Wailok He, Jason Li
+ * @brief handles vessel operations
+ * @version 1
+ * @date 2025-07-23
+ * 
+*/
+
 #include "vessel.h"
-#include "vesselASM.cpp"
+#include "vesselASM.h"
 #include <cstring>
+
+Vessel::Vessel(char* n, float lcll, float hcll) {
+    strcpy(name, n);
+    LCLLCapacity = lcll;
+    HCLLCapacity = hcll;
+    passengerCapacity = 0;
+}
+
+Vessel::~Vessel() {
+    // No dynamic memory to clean up
+}
 
 char* Vessel::getName() {
     return name;
@@ -17,37 +37,53 @@ float Vessel::getHCLLCap() {
 int Vessel::getPassengerCap() {
     return passengerCapacity;
 }
-Vessel::Vessel() {
-    strcpy(name, "Default Vessel");
-    LCLLCapacity = 0.0f;
-    HCLLCapacity = 0.0f;
-    passengerCapacity = 0;
-}
-Vessel::Vessel(char* name, float LCLL, float HCLL) {
-    strcpy(this->name, name);
-    this->LCLLCapacity = LCLL;
-    this->HCLLCapacity = HCLL;
-    this->passengerCapacity = 0;
-}
-Vessel* createVessel(char* name, float LCLL, float HCLL) {
+
+/**----------------------------------------------
+ * creates a vessel, safe against duplicate vessels
+ * @param name
+ * @param LCLL
+ * @param HCLL
+ * @return Vessel
+ */
+Vessel* Vessel::createVessel(char* name, float LCLL, float HCLL) {
     VesselASM::seekToBeginning();
     Vessel v(name, LCLL, HCLL);
     while (VesselASM::getNextVessel(v)) {
         if (strcmp(v.getName(), name) == 0) {
             // Duplicate vessel found
-            return nullptr; // Return a null pointer
+            return nullptr;
         }
     }
     VesselASM::addVessel(v);
     return new Vessel(name, LCLL, HCLL);
 }
-Vessel* Vessel::queryVessel(char* name) {
+
+/**----------------------------------------------
+ * initiates a search for a vessel
+ * @param name
+ * @return Vessel
+ */
+Vessel Vessel::queryVessel(char* name) {
     VesselASM::seekToBeginning();
     Vessel v;
     while (VesselASM::getNextVessel(v)) {
         if (strcmp(v.getName(), name) == 0) {
-            return new Vessel(v); // Return a copy of the found vessel
+            return v;
         }
     }
-    return nullptr; // Return a null pointer if not found
+    return Vessel(); // Not found
+}
+
+/**----------------------------------------------
+ * startup function
+ */
+void Vessel::init() {
+    VesselASM::init();
+}
+
+/**----------------------------------------------
+ * shutdown function
+ */
+void Vessel::shutdown() {
+    VesselASM::shutdown();
 }

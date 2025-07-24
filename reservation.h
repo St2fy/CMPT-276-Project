@@ -1,11 +1,12 @@
 /**@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
- * @file Reservation.h
+ * @file reservation.h
  * @author Dimitri Vahlas, Louise Ho, Wailok He, Jason Li
  * @brief manages reservation operations
  * @version 1
  * @date 2025-07-08
  * 
 */
+
 #pragma once
 struct Vehicle {
     float height;
@@ -14,24 +15,24 @@ struct Vehicle {
 
 class Reservation {
 
-private: 
+private:
     char license[10];
     char sailingID[9];
     char phoneNumber[14];
     bool onBoard;
     Vehicle vehicle;
     char* to_string();
+
 public:
     Reservation(char* license, char* sailingID, char* phoneNumber, Vehicle vehicle);
     ~Reservation();
-    Reservation();
     char* getLicense();
     char* getSailingID();
     char* getPhoneNumber();
     bool getOnBoard();
     const Vehicle& getVehicle() const;
     float calculateFare();
-    void setOnBoard(bool status);
+
     /**----------------------------------------------
      * creates a reservation for a sailing, safe against duplicate reservations
      * @param license
@@ -39,7 +40,7 @@ public:
      * @param phoneNumber
      * @return Reservation
      */
-    Reservation* createReservation(char* license, char* sailingID, char* phoneNumber, Vehicle vehicle);
+    static Reservation* createReservation(char* license, char* sailingID, char* phoneNumber, Vehicle vehicle);
 
     /**----------------------------------------------
      * sets the reservation's onBoard to true
@@ -52,8 +53,15 @@ public:
      * @param phoneNumber
      * @return Reservation - the reservation if found
      */
-    Reservation* queryReservation(char* sailingID, char* phoneNumber);
+    static Reservation queryReservation(char* sailingID, char* phoneNumber);
+
+    /**----------------------------------------------
+     * startup function
+     */
+    static void init();
+
+    /**----------------------------------------------
+     * shutdown function
+     */
+    static void shutdown();
 };
-
-
-

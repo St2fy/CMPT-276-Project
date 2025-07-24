@@ -14,7 +14,8 @@ private:
     float HCLLCapacity;
     int passengerCapacity;
 
-    
+    Vessel(char* name, float LCLL, float HCLL);
+    ~Vessel();
     char* to_string();
 
 public:
@@ -32,12 +33,24 @@ public:
      * @param HCLL
      * @return Vessel
      */
-    Vessel* createVessel(char* name, float LCLL, float HCLL);
+    static Vessel* createVessel(char* name, float LCLL, float HCLL);
 
     /**----------------------------------------------
      * initiates a search for a vessel
      * @param name
      * @return Vessel
      */
-    Vessel* queryVessel(char* name);
+    static Vessel queryVessel(char* name);
+
+    /**----------------------------------------------
+     * startup function
+     */
+    static void init();
+
+    /**----------------------------------------------
+     * shutdown function
+     */
+    static void shutdown();
+
+
 };

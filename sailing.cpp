@@ -1,14 +1,18 @@
+/**@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+ * @file sailing.cpp
+ * @author Dimitri Vahlas, Louise Ho, Wailok He, Jason Li
+ * @brief manages sailing operations
+ * @version 1
+ * @date 2025-07-21
+ * 
+*/
+
 #include "sailing.h"
-#include "sailingASM.cpp"
+#include "sailingASM.h"
+#include "vessel.h"
+#include "vesselASM.h"
 #include <cstring>
-Sailing::Sailing() {
-    strcpy(vesselName,"Queen of Richmond");
-    strcpy(sailingID, "abc-12-34");
-    LCLLUsed = 5.7;
-    HCLLUsed = 77.54;
-    passengers = 54;
-    vessel = nullptr;
-}
+
 Sailing::Sailing(char* vn, char* sid, float lcllu, float hcllu, int p, Vessel* v) {
     strcpy(vesselName, vn);
     strcpy(sailingID, sid);
@@ -18,21 +22,39 @@ Sailing::Sailing(char* vn, char* sid, float lcllu, float hcllu, int p, Vessel* v
     vessel = v;
 }
 
+Sailing::~Sailing() {
+    vessel = nullptr;
+}
+
 char* Sailing::getSailingID() {
     return sailingID;
 }
+
 char* Sailing::getVesselName() {
     return vesselName;
 }
+
 float Sailing::getHCLLUsed() {
     return HCLLUsed;
 }
+
 float Sailing::getLCLLUsed() {
     return LCLLUsed;
 }
+
 int Sailing::getPassengers() {
     return passengers;
 }
+
+/**----------------------------------------------
+ * creates a sailing, safe against duplicate sailings
+ * @param vesselName
+ * @param sailingID
+ * @param LCLLUsed
+ * @param HCLLUsed
+ * @param 
+ * @return Sailing
+ */
 Sailing* Sailing::createSailing(char* vesselName, char* sailingID, float LCLLUsed, float HCLLUsed, int passengers, Vessel* vessel) {
     SailingASM::seekToBeginning();
     Sailing s;
@@ -45,32 +67,49 @@ Sailing* Sailing::createSailing(char* vesselName, char* sailingID, float LCLLUse
     SailingASM::addSailing(Sailing(vesselName, sailingID, LCLLUsed, HCLLUsed, passengers, vessel));
     return new Sailing(vesselName, sailingID, LCLLUsed, HCLLUsed, passengers, vessel);
 }
+
+/**----------------------------------------------
+ * deletes a sailing
+ * @param sailingID
+ * @return bool - true if the deletion is successful false otherwise
+ */
 bool Sailing::deleteSailing(char* sailingID) {
     SailingASM::seekToBeginning();
     Sailing s;
     while (SailingASM::getNextSailing(s)) {
-        if (strcmp(s.getSailingID(), sailingID) == 0) {
-            SailingASM::deleteSailing();
-            return true; // Deletion successful
+        if (std::strcmp(s.getSailingID(), sailingID) == 0) {
+            return SailingASM::deleteSailing(sailingID);
         }
     }
-    return false; // Sailing ID not found
+    return false;
 }
-Sailing* Sailing::querySailing(char* sailingID) {
+
+/**----------------------------------------------
+ * initiates a search for a sailing
+ * @param sailingID
+ * @return Sailing
+ */
+Sailing Sailing::querySailing(char* sailingID) {
     SailingASM::seekToBeginning();
     Sailing s;
     while (SailingASM::getNextSailing(s)) {
-        if (strcmp(s.getSailingID(), sailingID) == 0) {
-            return new Sailing(s); // Return a copy of the found sailing
+        if (std::strcmp(s.getSailingID(), sailingID) == 0) {
+            return s;
         }
     }
-    return nullptr; // Return a null pointer if not found
+    return Sailing(); // empty sailing
 }
-std::string Sailing::to_string() {
-    std::string result = "Sailing ID: " + std::string(sailingID) + "\n" +
-                         "Vessel Name: " + std::string(vesselName) + "\n" +
-                         "LCLL Used: " + std::to_string(LCLLUsed) + "\n" +
-                         "HCLL Used: " + std::to_string(HCLLUsed) + "\n" +
-                         "Passengers: " + std::to_string(passengers) + "\n";
-    return result;
+
+/**----------------------------------------------
+ * startup function
+ */
+void Sailing::init() {
+    SailingASM::init();
+}
+
+/**----------------------------------------------
+ * shutdown function
+ */
+void Sailing::shutdown() {
+    SailingASM::shutdown();
 }

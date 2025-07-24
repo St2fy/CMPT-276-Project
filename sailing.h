@@ -17,7 +17,8 @@ private:
     float HCLLUsed;
     int passengers;
     Vessel* vessel;
-    
+    char* to_string();
+
 public:
     /**
      * Construct a new Sailing object
@@ -30,10 +31,7 @@ public:
      * @param vessel 
      */
     Sailing(char* vesselName, char* sailingID, float LCLLUsed, float HCLLUsed, int passengers, Vessel* vessel);
-    /**
-     * Default constructor for testing purposes
-     */
-    Sailing();
+    ~Sailing();
     char* getSailingID();
     char* getVesselName();
     float getHCLLUsed();
@@ -49,24 +47,30 @@ public:
      * @param HCLLUsed
      * @return Sailing
      */
-    Sailing* createSailing(char* vesselName, char* sailingID, float LCLLUsed, float HCLLUsed , int passengers, Vessel* vessel);
+    static Sailing* createSailing(char* vesselName, char* sailingID, float LCLLUsed, float HCLLUsed, int passengers, Vessel* vessel);
 
     /**----------------------------------------------
      * deletes a sailing
      * @param sailingID
      * @return bool - true if the deletion is successful false otherwise
      */
-    bool deleteSailing(char* sailingID);
+    static bool deleteSailing(char* sailingID);
 
     /**----------------------------------------------
      * initiates a search for a sailing
      * @param sailingID
      * @return Sailing
      */
-    Sailing* querySailing(char* sailingID);
+    static Sailing querySailing(char* sailingID);
+
     /**----------------------------------------------
      * converts the sailing information to a string
      * @return string
      */
-    std::string to_string();
+    static void init();
+
+    /**----------------------------------------------
+     * shutdown function
+     */
+    static void shutdown();
 };
