@@ -13,6 +13,15 @@
 #include "vesselASM.h"
 #include <cstring>
 
+Sailing::Sailing() {
+    vesselName[0] = '\0';
+    sailingID[0] = '\0';
+    LCLLUsed = 0.0f;
+    HCLLUsed = 0.0f;
+    passengers = 0;
+    vessel = nullptr;
+}
+
 Sailing::Sailing(char* vn, char* sid, float lcllu, float hcllu, int p, Vessel* v) {
     strcpy(vesselName, vn);
     strcpy(sailingID, sid);
@@ -78,7 +87,8 @@ bool Sailing::deleteSailing(char* sailingID) {
     Sailing s;
     while (SailingASM::getNextSailing(s)) {
         if (std::strcmp(s.getSailingID(), sailingID) == 0) {
-            return SailingASM::deleteSailing(sailingID);
+            SailingASM::deleteSailing();
+            return true;
         }
     }
     return false;

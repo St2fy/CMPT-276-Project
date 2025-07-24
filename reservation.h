@@ -25,6 +25,7 @@ private:
 
 public:
     Reservation(char* license, char* sailingID, char* phoneNumber, Vehicle vehicle);
+    Reservation();
     ~Reservation();
     char* getLicense();
     char* getSailingID();

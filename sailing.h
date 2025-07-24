@@ -20,6 +20,7 @@ private:
     char* to_string();
 
 public:
+    Sailing();
     /**
      * Construct a new Sailing object
      * 

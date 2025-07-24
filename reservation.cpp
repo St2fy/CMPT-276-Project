@@ -12,6 +12,15 @@
 #include "vehicleASM.h"
 #include <cstring>
 
+Reservation::Reservation() {
+    license[0] = '\0';
+    sailingID[0] = '\0';
+    phoneNumber[0] = '\0';
+    onBoard = false;
+    vehicle.height = 0.0f;
+    vehicle.length = 0.0f;
+}
+
 Reservation::Reservation(char* license, char* sailingID, char* phoneNumber, Vehicle vehicle) {
     strcpy(this->license, license);
     strcpy(this->sailingID, sailingID);
