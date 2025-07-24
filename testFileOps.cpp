@@ -13,7 +13,7 @@
 #include "sailingASM.h"
 
 void testMultipleSailingRecords() {
-    std::cout << "Running multi-record Sailing file test...\n";
+    std::cout << "Running multi-record Sailing file test\n";
 
     //Init the ASM and start fresh
     SailingASM::init();
@@ -21,7 +21,7 @@ void testMultipleSailingRecords() {
 
     //Create two Sailing records
     Sailing s1; // default one
-    Sailing s2((char*)"Spirit of Vancouver", (char*)"xyz-99-88", 15.5f, 50.0f, 30, nullptr); // custom one
+    Sailing s2((char*)"Spirit of Vancouver", (char*)"xyz-99-88", 15.5f, 50.0f, 30, nullptr);
 
     //Add both to file
     SailingASM::addSailing(s1);
@@ -32,7 +32,7 @@ void testMultipleSailingRecords() {
     Sailing r1, r2;
     bool got1 = SailingASM::getNextSailing(r1);
     bool got2 = SailingASM::getNextSailing(r2);
-    bool got3 = SailingASM::getNextSailing(r2); // Should be false (EOF)
+    bool got3 = SailingASM::getNextSailing(r2); 
 
     //Validate r1
     assert(got1);
@@ -53,7 +53,7 @@ void testMultipleSailingRecords() {
     //EOF reached
     assert(!got3);
 
-    std::cout << "PASS: All records written, read, and validated.\n";
+    std::cout << "PASS: All records written, read, and validated. \n";
 
     SailingASM::shutdown();
 }
