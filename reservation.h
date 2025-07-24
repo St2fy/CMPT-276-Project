@@ -31,6 +31,7 @@ public:
     char* getLicense();
     char* getSailingID();
     char* getPhoneNumber();
+    bool getOnBoard();
     const Vehicle& getVehicle() const;
     Reservation();
     /**----------------------------------------------
