@@ -21,33 +21,57 @@
 #include <iomanip>
 #include <vector>
 
-const int BAR_LENGTH = 40;
-const float LENGTH_RATE = 10;
-enum Result { Success, Failure, Exit, Restart};
+const int BAR_LENGTH = 40; // constants for the length of the - bar in the menu
+const float LENGTH_RATE = 10; // !!!temporary rate for vehicle cost per meter of length
+enum Result { Success, Failure, Exit, Restart }; // enum for the result of the menu operations, more readable than integers
 
-void printBar(int len) {
-    for (int i = 0; i < len; i++) {
-        std::cout << "=";
+void printBar(int length) {
+    for (int i = 0; i < length; i++) {
+        std::cout << "-";
     }
     std::cout << std::endl;
 }
-void printEndlines(int n) {
-    for (int i = 0; i < n; i++) {
-        std::cout << std::endl;
-    }
-
-}
-
 // stub functions below
+/**
+ * Validates the sailing ID
+ * 
+ * !!! This is a stub function, replace with actual validation logic
+ * 
+ * @param sailingID 
+ * @return true 
+ * @return false 
+ */
 bool validSailing(const char* sailingID) {
     if (strcmp(sailingID, "pass")) {
         return true;
     }
     return false;
 }
+/**
+ * Queries the sailing space availability
+ * 
+ * !!! This is a stub function, replace with actual query logic
+ * 
+ * @param length 
+ * @param height 
+ * @return true 
+ * @return false 
+ */
 bool querySailingSpace(float length, float height) {
     return true;
 }
+/**
+ * Checks if a reservation can be made
+ * 
+ * !!! This is a stub function, replace with actual check logic
+ * 
+ * @param phoneNumber 
+ * @param licenseNumber 
+ * @param length 
+ * @param height 
+ * @return true 
+ * @return false 
+ */
 bool checkReservation(const char* phoneNumber, const char* licenseNumber, float length, float height) {
     if (!querySailingSpace(length, height)) {
         return false;
@@ -55,45 +79,118 @@ bool checkReservation(const char* phoneNumber, const char* licenseNumber, float 
     //make the reservation
     return true;
 }
+/**
+ * Makes a reservation
+ * 
+ * !!! This is a stub function, replace with actual reservation logic
+ * 
+ * @param phoneNumber 
+ * @param licenseNumber 
+ * @param length 
+ * @param height 
+ */
 void makeReservation(const char* phoneNumber, const char* licenseNumber, float length, float height) {
 
 }
+/**
+ * Makes a sailing
+ * 
+ * !!! This is a stub function, replace with actual sailing logic
+ * 
+ * @param vessel 
+ * @param sailingID 
+ */
 void makeSailing(const char* vessel, const char* sailingID) {
     
 }
+/**
+ * Makes a vessel
+ * 
+ * !!! This is a stub function, replace with actual vessel logic
+ * 
+ * @param vessel 
+ * @param HCC 
+ * @param LCC 
+ */
 void makeVessel(const char* vessel, float HCC, float LCC) {
 
 }
-
+/**
+ * Queries the license information
+ * 
+ * !!! This is a stub function, replace with actual query logic
+ * 
+ * @param license 
+ * @return true 
+ * @return false 
+ */
 bool queryLicense(const char* license) {
     return true;
 }
-
+/**
+ * Queries the reservation information
+ * 
+ * !!! This is a stub function, replace with actual query logic
+ * 
+ * @param license 
+ * @return Reservation* 
+ */
 Reservation* queryReservation(const char* license) {
     Reservation* r = new Reservation();
     return r;
 }
-
+/**
+ * Queries the sailing information
+ * 
+ * !!! This is a stub function, replace with actual query logic
+ * 
+ * @param sailingID 
+ * @return Sailing* 
+ */
 Sailing* querySailing(const char* sailingID) {
     Sailing* s = new Sailing();
     return s;
 }
+/**
+ * Queries the reservations by phone number
+ * 
+ * !!! This is a stub function, replace with actual query logic
+ * 
+ * @param phone 
+ * @return std::vector<Reservation*> 
+ */
 std::vector<Reservation*> queryReservationsByPhone(const char* phone) {
 
 }
-
+/**
+ * Queries the vessel information
+ * 
+ * !!! This is a stub function, replace with actual query logic
+ * 
+ * @param vessel 
+ * @return Vessel* 
+ */
 Vessel* queryVessel(const char* vessel) {
     return nullptr;
 }
-
+// temporary function to calculate a fare, refactor to Reservation
 float calculateFare(const Reservation* res) {
     return 40.5;
 }
-
+/**
+ * Gets the list of vessels
+ * 
+ * @return std::vector<Vessel>* 
+ */
 std::vector<Vessel>* getVessels() {
     std::vector<Vessel>* v = new std::vector<Vessel>;
     return v;
 }
+/**
+ * Gets the list of sailings
+ * 
+ * @return std::vector<Sailing>* 
+ */
 std::vector<Sailing>* getSailings() {
     std::vector<Sailing>* s  = new std::vector<Sailing>;
     Sailing* s1 = new Sailing();
@@ -102,15 +199,25 @@ std::vector<Sailing>* getSailings() {
     s->push_back(*s2);
     return s;
 }
-
-
-
+/**
+ * Deletes a sailing
+ * 
+ * !!! This is a stub function, replace with actual deletion logic
+ * 
+ * @param sailing 
+ */
 void deleteSailing(Sailing* sailing) {
 
 }
 // end of stub functions
 
-// helper function for handleSailingReport to print the lines of each sailing
+/**
+ * helper function for handleSailingReport to print the lines of each sailing
+ * Prints the sailing report lines from low to high index
+ * 
+ * @param low 
+ * @param high 
+ */
 void printSailingReportLines(int low, int high) {
     std::vector<Sailing>* sailings = getSailings();
     for (int i = low; i < high; i++) {
@@ -138,7 +245,11 @@ void printSailingReportLines(int low, int high) {
     }
     std::cout << std::endl;
 }
-
+/**
+ * Handles the creation of a reservation
+ * 
+ * @return Result 
+ */
 Result handleCreateReservation() {
     printBar(BAR_LENGTH);
     std::cout << "Make a Reservation" << std::endl << std::endl;
@@ -213,6 +324,11 @@ Result handleCreateReservation() {
     };
 
 }
+/**
+ * Handles the cancellation of a sailing
+ * 
+ * @return Result 
+ */
 Result handleCancelSailing() {
     printBar(BAR_LENGTH);
     std::cout << "Cancel Sailing" << std::endl <<std::endl;
@@ -224,7 +340,7 @@ Result handleCancelSailing() {
         deleteSailing(querySailing(sailingID.c_str()));
     }
     else {
-        std::cout << "Sailing Not Found" << std::endl;
+        std::cout << "Sailing " << sailingID.c_str() << " Not Found" << std::endl;
     }
     std::cout << "Select an Option:" << std::endl;
     printBar(BAR_LENGTH);
@@ -240,6 +356,11 @@ Result handleCancelSailing() {
         return Success;
     }
 }
+/**
+ * Handles the check-in of a reservation
+ * 
+ * @return Result 
+ */
 Result handleCheckIn() {
     printBar(BAR_LENGTH);
     std::cout << "Check-In Vehicles" << std::endl << std::endl;
@@ -287,6 +408,11 @@ Result handleCheckIn() {
         return Exit;
     }
 }
+/**
+ * Handles the creation of a sailing
+ * 
+ * @return Result 
+ */
 Result handleCreateSailing() {
     printBar(BAR_LENGTH);
     std::cout << "Create New Vessel Sailing" << std::endl << std::endl;
@@ -353,6 +479,11 @@ Result handleCreateSailing() {
             return Exit;
     }
 }
+/**
+ * Handles the creation of a vessel
+ * 
+ * @return Result 
+ */
 Result handleCreateVessel() {
     printBar(BAR_LENGTH);
     std::cout << "Create New Vessel" << std::endl << std::endl;
@@ -398,6 +529,11 @@ Result handleCreateVessel() {
             return Exit;
     }
 }
+/**
+ * Handles the printing of the sailing report
+ * 
+ * @return Result 
+ */
 Result handleSailingReport() {
     const int EXTENDED_BAR_LENGTH = 90;
     const int SAILINGS_PER_REPORT = 5;
@@ -428,11 +564,12 @@ Result handleSailingReport() {
                 return Exit;
         }
     } while (atoi(option.c_str()) != Exit);
-
-    
-    
-
 }
+/**
+ * Handles the search of a sailing
+ * 
+ * @return Result 
+ */
 Result handleSearchSailing() {
     printBar(BAR_LENGTH);
     std::cout << "Search > Sailing" << std::endl << std::endl;
@@ -472,6 +609,11 @@ Result handleSearchSailing() {
     std::cin >> exit;
     return Success;
 }
+/**
+ * Handles the search of a vessel
+ * 
+ * @return Result 
+ */
 Result handleSearchVessel() {
     printBar(BAR_LENGTH);
     std::cout << "Search > Vessel" << std::endl << std::endl;
@@ -510,6 +652,11 @@ Result handleSearchVessel() {
     std::cin >> exit;
     return Success;
 }
+/**
+ * Handles the search of a reservation
+ * 
+ * @return Result 
+ */
 Result handleSearchReservation() {
     printBar(BAR_LENGTH);
     std::cout << "Search > Reservation" << std::endl << std::endl;
@@ -555,6 +702,10 @@ Result handleSearchReservation() {
     std::cin >> exit;
     return Success;
 }
+/**
+ * Handles the search menu
+ * Branches further into specific search options for Sailing, Vessel, or Reservation. 
+ */
 void handleSearch() {
     printBar(BAR_LENGTH);
     std::cout << "Search Options:" << std::endl;
@@ -585,6 +736,12 @@ void handleSearch() {
         break;
     }
 }
+
+/**
+ * Handles the main menu
+ * Displays the main menu options and handles user input to navigate through the application.
+ * Branches into different submenus based on user selection.
+ */
 void handleMenu() {
     std::string input;
     do {

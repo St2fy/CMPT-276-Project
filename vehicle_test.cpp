@@ -1,4 +1,5 @@
-#include "VehicleASM.h"
+#include "vehicleASM.h"
+#include "vehicleASM.cpp"
 #include <iostream>
 #include <iomanip> // for std::setprecision
 #include "reservation.h"

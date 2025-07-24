@@ -9,8 +9,6 @@
 #pragma once
 #include <string>
 class Utils {
-private:
-    Utils();
 public:
     /**----------------------------------------------
      * checks if a sailingID exists
@@ -33,6 +31,12 @@ public:
      * shutdown function
      */
     static void shutdown();
-
+    /**----------------------------------------------
+     * creates a sailing ID string from terminal, day, and hour
+     * @param terminal
+     * @param day
+     * @param hour
+     * @return std::string - the sailing ID in the format "terminal-day-hour"
+     */
     static std::string makeSailingID(std::string terminal, std::string day, std::string hour);
 };
