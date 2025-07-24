@@ -1,8 +1,11 @@
-// testFileOps.cpp
-// Version History:
-// v1.0 – Unit test for SailingASM file writing
-//        Tests addSailing() by writing and reading back a Sailing record
-
+/**@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+ * @file vessel.h
+ * @author Dimitri Vahlas, Louise Ho, Wailok He, Jason Li
+ * @handles testing file operations
+ * @version 1
+ * @date 2025-07-08
+ * 
+*/
 #include <iostream>
 #include <cassert>
 #include <cstring>
