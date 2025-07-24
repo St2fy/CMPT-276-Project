@@ -7,16 +7,15 @@
  * 
 */
 #pragma once
+#include <string>
 class Utils {
-private:
-    Utils();
 public:
     /**----------------------------------------------
      * checks if a sailingID exists
      * @param id
      * @return bool
      */
-    static bool validateID(char* id);
+    static bool validateID(const char* id);
 
     /**----------------------------------------------
      * generates a sailing report
@@ -26,12 +25,18 @@ public:
     /**----------------------------------------------
      * startup function
      */
-    void init();
+    static void init();
 
     /**----------------------------------------------
      * shutdown function
      */
-    void shutdown();
-
-
+    static void shutdown();
+    /**----------------------------------------------
+     * creates a sailing ID string from terminal, day, and hour
+     * @param terminal
+     * @param day
+     * @param hour
+     * @return std::string - the sailing ID in the format "terminal-day-hour"
+     */
+    static std::string makeSailingID(std::string terminal, std::string day, std::string hour);
 };

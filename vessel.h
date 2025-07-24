@@ -21,6 +21,9 @@ private:
 
 public:
     char* getName();
+    float getLCLLCap();
+    float getHCLLCap();
+    int getPassengerCap();
     /**----------------------------------------------
      * creates a vessel, safe against duplicate vessels
      * @param name

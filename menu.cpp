@@ -12,39 +12,66 @@
 #include "sailing.cpp"
 #include "utils.h"
 #include "vessel.h"
+#include "vessel.cpp"
+#include "utils.h"
+#include "utils.cpp"
 #include <iostream>
 #include <string>
 #include <cstring>
 #include <iomanip>
 #include <vector>
 
-const int BAR_LENGTH = 40;
-const float LENGTH_RATE = 10;
-enum Result { Success, Failure, Exit, Restart};
+const int BAR_LENGTH = 40; // constants for the length of the - bar in the menu
+const float LENGTH_RATE = 10; // !!!temporary rate for vehicle cost per meter of length
+enum Result { Success, Failure, Exit, Restart }; // enum for the result of the menu operations, more readable than integers
 
-void printBar(int len) {
-    for (int i = 0; i < len; i++) {
-        std::cout << "=";
+void printBar(int length) {
+    for (int i = 0; i < length; i++) {
+        std::cout << "-";
     }
     std::cout << std::endl;
 }
-void printEndlines(int n) {
-    for (int i = 0; i < n; i++) {
-        std::cout << std::endl;
-    }
-
-}
-
 // stub functions below
-bool querySailing(const char* sailingID) {
+/**
+ * Validates the sailing ID
+ * 
+ * !!! This is a stub function, replace with actual validation logic
+ * 
+ * @param sailingID 
+ * @return true 
+ * @return false 
+ */
+bool validSailing(const char* sailingID) {
     if (strcmp(sailingID, "pass")) {
         return true;
     }
     return false;
 }
+/**
+ * Queries the sailing space availability
+ * 
+ * !!! This is a stub function, replace with actual query logic
+ * 
+ * @param length 
+ * @param height 
+ * @return true 
+ * @return false 
+ */
 bool querySailingSpace(float length, float height) {
     return true;
 }
+/**
+ * Checks if a reservation can be made
+ * 
+ * !!! This is a stub function, replace with actual check logic
+ * 
+ * @param phoneNumber 
+ * @param licenseNumber 
+ * @param length 
+ * @param height 
+ * @return true 
+ * @return false 
+ */
 bool checkReservation(const char* phoneNumber, const char* licenseNumber, float length, float height) {
     if (!querySailingSpace(length, height)) {
         return false;
@@ -52,37 +79,118 @@ bool checkReservation(const char* phoneNumber, const char* licenseNumber, float 
     //make the reservation
     return true;
 }
+/**
+ * Makes a reservation
+ * 
+ * !!! This is a stub function, replace with actual reservation logic
+ * 
+ * @param phoneNumber 
+ * @param licenseNumber 
+ * @param length 
+ * @param height 
+ */
 void makeReservation(const char* phoneNumber, const char* licenseNumber, float length, float height) {
 
 }
+/**
+ * Makes a sailing
+ * 
+ * !!! This is a stub function, replace with actual sailing logic
+ * 
+ * @param vessel 
+ * @param sailingID 
+ */
 void makeSailing(const char* vessel, const char* sailingID) {
     
 }
+/**
+ * Makes a vessel
+ * 
+ * !!! This is a stub function, replace with actual vessel logic
+ * 
+ * @param vessel 
+ * @param HCC 
+ * @param LCC 
+ */
 void makeVessel(const char* vessel, float HCC, float LCC) {
 
 }
-
+/**
+ * Queries the license information
+ * 
+ * !!! This is a stub function, replace with actual query logic
+ * 
+ * @param license 
+ * @return true 
+ * @return false 
+ */
 bool queryLicense(const char* license) {
     return true;
 }
-
+/**
+ * Queries the reservation information
+ * 
+ * !!! This is a stub function, replace with actual query logic
+ * 
+ * @param license 
+ * @return Reservation* 
+ */
 Reservation* queryReservation(const char* license) {
     Reservation* r = new Reservation();
     return r;
 }
-
-bool queryVessel(const char* vessel) {
-    return true;
+/**
+ * Queries the sailing information
+ * 
+ * !!! This is a stub function, replace with actual query logic
+ * 
+ * @param sailingID 
+ * @return Sailing* 
+ */
+Sailing* querySailing(const char* sailingID) {
+    Sailing* s = new Sailing();
+    return s;
 }
+/**
+ * Queries the reservations by phone number
+ * 
+ * !!! This is a stub function, replace with actual query logic
+ * 
+ * @param phone 
+ * @return std::vector<Reservation*> 
+ */
+std::vector<Reservation*> queryReservationsByPhone(const char* phone) {
 
+}
+/**
+ * Queries the vessel information
+ * 
+ * !!! This is a stub function, replace with actual query logic
+ * 
+ * @param vessel 
+ * @return Vessel* 
+ */
+Vessel* queryVessel(const char* vessel) {
+    return nullptr;
+}
+// temporary function to calculate a fare, refactor to Reservation
 float calculateFare(const Reservation* res) {
     return 40.5;
 }
-
+/**
+ * Gets the list of vessels
+ * 
+ * @return std::vector<Vessel>* 
+ */
 std::vector<Vessel>* getVessels() {
     std::vector<Vessel>* v = new std::vector<Vessel>;
     return v;
 }
+/**
+ * Gets the list of sailings
+ * 
+ * @return std::vector<Sailing>* 
+ */
 std::vector<Sailing>* getSailings() {
     std::vector<Sailing>* s  = new std::vector<Sailing>;
     Sailing* s1 = new Sailing();
@@ -91,13 +199,25 @@ std::vector<Sailing>* getSailings() {
     s->push_back(*s2);
     return s;
 }
+/**
+ * Deletes a sailing
+ * 
+ * !!! This is a stub function, replace with actual deletion logic
+ * 
+ * @param sailing 
+ */
+void deleteSailing(Sailing* sailing) {
 
-std::string makeSailingID(std::string terminal, std::string day, std::string hour) {
-    return std::string("abc-01-23");
 }
 // end of stub functions
 
-// helper function for handleSailingReport to print the lines of each sailing
+/**
+ * helper function for handleSailingReport to print the lines of each sailing
+ * Prints the sailing report lines from low to high index
+ * 
+ * @param low 
+ * @param high 
+ */
 void printSailingReportLines(int low, int high) {
     std::vector<Sailing>* sailings = getSailings();
     for (int i = low; i < high; i++) {
@@ -125,7 +245,11 @@ void printSailingReportLines(int low, int high) {
     }
     std::cout << std::endl;
 }
-
+/**
+ * Handles the creation of a reservation
+ * 
+ * @return Result 
+ */
 Result handleCreateReservation() {
     printBar(BAR_LENGTH);
     std::cout << "Make a Reservation" << std::endl << std::endl;
@@ -139,7 +263,7 @@ Result handleCreateReservation() {
         }
         
         std::cin >> sailingID;
-        found = querySailing(sailingID.c_str());
+        found = validSailing(sailingID.c_str());
     } while (found);
     printBar(BAR_LENGTH);
     std::cout << "Sailing " << sailingID << " found " << std::endl << std::endl;
@@ -200,9 +324,43 @@ Result handleCreateReservation() {
     };
 
 }
+/**
+ * Handles the cancellation of a sailing
+ * 
+ * @return Result 
+ */
 Result handleCancelSailing() {
-    
+    printBar(BAR_LENGTH);
+    std::cout << "Cancel Sailing" << std::endl <<std::endl;
+    std::cout << "Enter the SailingID:" << std::endl;
+    std::string sailingID;
+    std::cin >> sailingID;
+    if (validSailing(sailingID.c_str())) {
+        std::cout << "Deleted Sailing " << sailingID.c_str() << std::endl;
+        deleteSailing(querySailing(sailingID.c_str()));
+    }
+    else {
+        std::cout << "Sailing " << sailingID.c_str() << " Not Found" << std::endl;
+    }
+    std::cout << "Select an Option:" << std::endl;
+    printBar(BAR_LENGTH);
+    std::cout << "1. Restart" << std::endl << "2. Exit" << std::endl;
+    std::string option;
+    std::cin >> option;
+    switch (atoi(option.c_str())) {
+    case 1:
+        return Restart;
+    case 2:
+        return Success;
+    default:
+        return Success;
+    }
 }
+/**
+ * Handles the check-in of a reservation
+ * 
+ * @return Result 
+ */
 Result handleCheckIn() {
     printBar(BAR_LENGTH);
     std::cout << "Check-In Vehicles" << std::endl << std::endl;
@@ -250,6 +408,11 @@ Result handleCheckIn() {
         return Exit;
     }
 }
+/**
+ * Handles the creation of a sailing
+ * 
+ * @return Result 
+ */
 Result handleCreateSailing() {
     printBar(BAR_LENGTH);
     std::cout << "Create New Vessel Sailing" << std::endl << std::endl;
@@ -290,7 +453,7 @@ Result handleCreateSailing() {
 
 
     printBar(BAR_LENGTH);
-    std::string sailingID = makeSailingID(departureTerminal, departureDay, departureHour);
+    std::string sailingID = Utils::makeSailingID(departureTerminal, departureDay, departureHour);
     std::cout << "Create New Sailing" << std::endl;
     std::cout << "Sailing ID: " << sailingID << std::endl << std::endl;
     std::cout << std::left << std::setw(20) << "Vessel Name: " << vesselInput << std::endl;
@@ -316,6 +479,11 @@ Result handleCreateSailing() {
             return Exit;
     }
 }
+/**
+ * Handles the creation of a vessel
+ * 
+ * @return Result 
+ */
 Result handleCreateVessel() {
     printBar(BAR_LENGTH);
     std::cout << "Create New Vessel" << std::endl << std::endl;
@@ -361,6 +529,11 @@ Result handleCreateVessel() {
             return Exit;
     }
 }
+/**
+ * Handles the printing of the sailing report
+ * 
+ * @return Result 
+ */
 Result handleSailingReport() {
     const int EXTENDED_BAR_LENGTH = 90;
     const int SAILINGS_PER_REPORT = 5;
@@ -391,20 +564,148 @@ Result handleSailingReport() {
                 return Exit;
         }
     } while (atoi(option.c_str()) != Exit);
-
-    
-    
-
 }
+/**
+ * Handles the search of a sailing
+ * 
+ * @return Result 
+ */
 Result handleSearchSailing() {
-
+    printBar(BAR_LENGTH);
+    std::cout << "Search > Sailing" << std::endl << std::endl;
+    std::cout << "Enter Sailing ID:" << std::endl;
+    std::string sailingID;
+    std::cin >> sailingID;
+    Sailing* sailing = querySailing(sailingID.c_str());
+    printBar(BAR_LENGTH);
+    std::cout << "Search > Sailing > " << sailingID.c_str() << std::endl << std::endl;
+    // sailing not found
+    if (sailing == nullptr) {
+        std::cout << "Sailing ID '" << sailingID.c_str() << "' does not exist." << std::endl << std::endl;
+        std::cout << "1. Try Again" << std::endl << "2. Return to Main Menu" << std::endl;
+        std::cout << "Select an Option:" << std::endl;
+        std::string option;
+        std::cin >> option;
+        switch (atoi(option.c_str())) {
+        case 1:
+            return Restart;
+        case 2:
+            return Success;
+        default:
+            return Success;
+        }
+    }
+    // sailing found
+    else {
+        std::cout << std::left << std::setw(18) << "Vessel Name:" << sailing->getVesselName() << std::endl;
+        std::cout << std::left << std::setw(18) << "Sailing ID:" << sailing->getSailingID() << std::endl;
+        std::cout << std::left << std::setw(18) << "High Ceiling Used:" << sailing->getHCLLUsed() << "m" << std::endl;
+        std::cout << std::left << std::setw(18) << "Low Ceiling Used:" << sailing->getLCLLUsed() << "m" << std::endl;
+        std::cout << std::left << std::setw(18) << "Passengers:" << sailing->getPassengers() << std::endl;
+    }
+    printBar(BAR_LENGTH);
+    std::cout << "Enter any Key to Return to the Main Menu." << std::endl;
+    std::string exit;
+    std::cin >> exit;
+    return Success;
 }
+/**
+ * Handles the search of a vessel
+ * 
+ * @return Result 
+ */
 Result handleSearchVessel() {
-    
+    printBar(BAR_LENGTH);
+    std::cout << "Search > Vessel" << std::endl << std::endl;
+    std::cout << "Enter Vessel Name:" << std::endl;
+    std::string vesselName;
+    std::cin >> vesselName;
+    Vessel* vessel = queryVessel(vesselName.c_str());
+    printBar(BAR_LENGTH);
+    std::cout << "Search > Vessel > " << vesselName.c_str() << std::endl << std::endl;
+    // vessel not found
+    if (vessel == nullptr) {
+        std::cout << "Vessel '" << vesselName.c_str() << "' does not exist." << std::endl << std::endl;
+        std::cout << "1. Try Again" << std::endl << "2. Return to Main Menu" << std::endl;
+        std::cout << "Select an Option:" << std::endl;
+        std::string option;
+        std::cin >> option;
+        switch (atoi(option.c_str())) {
+        case 1:
+            return Restart;
+        case 2:
+            return Success;
+        default:
+            return Success;
+        }
+    }
+    // vessel found
+    else {
+        std::cout << std::left << std::setw(26) << "Vessel Name:" << vessel->getName() << std::endl;
+        std::cout << std::left << std::setw(26) << "High Ceiling Capacity:" << vessel->getHCLLCap() << std::endl;
+        std::cout << std::left << std::setw(26) << "Low Ceiling Capacity:" << vessel->getLCLLCap() << std::endl;
+        std::cout << std::left << std::setw(26) << "Passenger Capacity:" << vessel->getPassengerCap() << std::endl;
+    }
+    printBar(BAR_LENGTH);
+    std::cout << "Enter any Key to Return to the Main Menu." << std::endl;
+    std::string exit;
+    std::cin >> exit;
+    return Success;
 }
+/**
+ * Handles the search of a reservation
+ * 
+ * @return Result 
+ */
 Result handleSearchReservation() {
-    
+    printBar(BAR_LENGTH);
+    std::cout << "Search > Reservation" << std::endl << std::endl;
+    std::cout << "Enter Phone Number:" << std::endl;
+    std::string phoneNumber;
+    std::cin >> phoneNumber;
+    std::vector<Reservation*> reservations = queryReservationsByPhone(phoneNumber.c_str());
+    printBar(BAR_LENGTH);
+    std::cout << "Search > Reservation > " << phoneNumber.c_str() << std::endl << std::endl;
+    // no reservations found
+    if (reservations.size() == 0) {
+        std::cout << "No Reservations Found" << std::endl;
+        printBar(BAR_LENGTH);
+        std::cout << "1. Try Again" << std::endl << "Return to Main Menu" << std::endl;
+        std::cout << "Select an Option:" << std::endl;
+        std::string option;
+        std::cin >> option;
+        switch (atoi(option.c_str())) {
+            case 1:
+                return Restart;
+            case 2:
+                return Success;
+            default:
+                return Success;
+        }
+    }
+    //some reservation(s) found
+    else {
+        std::cout << "Reservation(s) Found:" << std::endl;
+        printBar(BAR_LENGTH);
+        for (int i = 0; i < reservations.size(); i++) {
+            std::cout << std::left << std::setw(18) << "Sailing ID:" << reservations[i]->getSailingID() << std::endl;
+            std::cout << std::left << std::setw(18) << "Licence Plate" << reservations[i]->getLicense() << std::endl;
+            // handle special vehicles
+            std::cout << std::left << std::setw(18) << "Vehicle Type:" << reservations[i]->getVehicle().height << std::endl;
+            // handle yes/no
+            std::cout << std::left << std::setw(18) << "Checked In:" << reservations[i]->getOnBoard() << std::endl;
+        }
+    }
+    printBar(BAR_LENGTH);
+    std::cout << "Enter any Key to Return to the Main Menu." << std::endl;
+    std::string exit;
+    std::cin >> exit;
+    return Success;
 }
+/**
+ * Handles the search menu
+ * Branches further into specific search options for Sailing, Vessel, or Reservation. 
+ */
 void handleSearch() {
     printBar(BAR_LENGTH);
     std::cout << "Search Options:" << std::endl;
@@ -412,27 +713,40 @@ void handleSearch() {
     std::cout << "1. Sailing" << std::endl << "2. Vessel" << std::endl << "3. Reservation" << std::endl;
     std::string searchOption;
     std::cin >> searchOption;
+    Result result;
     switch (atoi(searchOption.c_str())) {
     case 1:
-        handleSearchSailing();
+        do {
+            result = handleSearchSailing();
+        } while (result == Restart);
+        break;
         break;
     case 2: 
-        handleSearchVessel();
+        do {
+            result = handleSearchVessel();
+        } while (result == Restart);
+        break;
         break;
     case 3:
-        handleSearchReservation();
+        do {
+            result = handleSearchReservation();
+        } while (result == Restart);
         break;
-    
     default:
         break;
     }
 }
+
+/**
+ * Handles the main menu
+ * Displays the main menu options and handles user input to navigate through the application.
+ * Branches into different submenus based on user selection.
+ */
 void handleMenu() {
     std::string input;
     do {
         printBar(BAR_LENGTH);
         std::cout << "Main Menu" << std::endl << std::endl;
-        
         std::cout << "Select an Option:" << std::endl;
         printBar(BAR_LENGTH);
         std::cout << "1. Make a Reservation" << std::endl;
@@ -442,8 +756,8 @@ void handleMenu() {
         std::cout << "5. Create New Vessel" << std::endl;
         std::cout << "6. Print Sailing Report" << std::endl;
         std::cout << "7. Search" << std::endl;
+        std::cout << "8. Shutdown" << std::endl;
         std::cin >> input;
-
         Result result;
         switch (atoi(input.c_str())) {
             case 1:
@@ -452,8 +766,9 @@ void handleMenu() {
                 } while (result == Restart); 
                 break;
             case 2:
-                handleCancelSailing();
-                
+                do {
+                    result = handleCancelSailing();
+                } while (result == Restart); 
                 break;
             case 3:
                 do {
@@ -476,11 +791,11 @@ void handleMenu() {
             case 7:
                 handleSearch();
                 break;
+            case 8:
+                return;
             default:
                 std::cout << "Invalid Selection" << std::endl;
-                exit(0);
         }
-
     } while (true);
 }
 
