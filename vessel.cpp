@@ -11,6 +11,13 @@
 #include "vesselASM.h"
 #include <cstring>
 
+Vessel::Vessel() {
+    name[0] = '\0'; // Initialize name to an empty string
+    LCLLCapacity = 0.0f;
+    HCLLCapacity = 0.0f;
+    passengerCapacity = 0;
+}
+
 Vessel::Vessel(char* n, float lcll, float hcll) {
     strcpy(name, n);
     LCLLCapacity = lcll;

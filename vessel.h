@@ -14,8 +14,6 @@ private:
     float HCLLCapacity;
     int passengerCapacity;
 
-    Vessel(char* name, float LCLL, float HCLL);
-    ~Vessel();
     char* to_string();
 
 public:
