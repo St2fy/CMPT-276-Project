@@ -32,21 +32,32 @@ void SailingASM::shutdown() {
 void SailingASM::addSailing(const Sailing& sailing){
     file.seekp(0, std::ios::end);
     file.write(reinterpret_cast<const char *>(&sailing), sizeof(Sailing));
+    file.flush(); // Force write to disk
+    file.clear(); // Clear any error flags
 }
 bool SailingASM::getNextSailing(Sailing& sailing){
     if (!file.read(reinterpret_cast<char*>(&sailing), sizeof(Sailing))) {
+        file.clear(); // Clear EOF flag for subsequent operations
         return false; // Reached end or error
     }
     return true;
 }
 void SailingASM::seekToBeginning() {
     if (file.is_open()) {
+        file.clear(); // Clear any error flags first
         file.seekg(0, std::ios::beg); // Seek to beginning for reading
+        file.seekp(0, std::ios::beg); // Also reset write position
     }
 }
 int SailingASM::getCurrentID() {
-    file.clear();
-    std::streampos size = file.tellg();
+    if (!file.is_open()) {
+        return 0;
+    }
+    file.clear(); // Clear any error flags
+    std::streampos currentPos = file.tellg(); // Save current position
+    file.seekg(0, std::ios::end); // Seek to end
+    std::streampos size = file.tellg(); // Get file size
+    file.seekg(currentPos); // Restore position
     return static_cast<int>(size / sizeof(Sailing));
 }
 void SailingASM::deleteSailing() {
@@ -55,30 +66,30 @@ void SailingASM::deleteSailing() {
         return;
     }
     
-    // Get current position (record to delete)
-    std::streampos deletePos = file.tellg();
+    // Get current position (record to delete) - should be just after the record we found
+    std::streampos deletePos = file.tellg() - static_cast<std::streamoff>(sizeof(Sailing));
     
     // Seek to end to find last record
     file.seekg(0, std::ios::end);
     std::streampos endPos = file.tellg();
     
-    // If we're already at end or file is empty, nothing to do
-    if (deletePos == endPos || endPos == 0) {
+    // If file is empty, nothing to do
+    if (endPos == 0) {
         return;
     }
     
     // Calculate position of last record
-   std::streampos lastRecordPos = endPos - static_cast<std::streamoff>(sizeof(Sailing));
-
+    std::streampos lastRecordPos = endPos - static_cast<std::streamoff>(sizeof(Sailing));
     
     // If we're deleting the last record, just truncate
     if (deletePos == lastRecordPos) {
-        file.seekp(deletePos);
         file.close();
-        FILE*cFile=fopen("sailings.dat","rb+");
-        // Truncate the file
-        int fd = _fileno(cFile);
-        _chsize(fd, static_cast<long>(lastRecordPos));
+        FILE* cFile = fopen("sailings.dat", "rb+");
+        if (cFile) {
+            int fd = _fileno(cFile);
+            _chsize(fd, static_cast<long>(deletePos));
+            fclose(cFile);
+        }
         // Reopen the file
         file.open(filename, std::ios::in | std::ios::out | std::ios::binary);
         file.seekg(deletePos);
@@ -88,22 +99,24 @@ void SailingASM::deleteSailing() {
     // Read the last record
     file.seekg(lastRecordPos);
     Sailing lastRecord;
-    if (!file.read(reinterpret_cast<char*>(&lastRecord),sizeof(Sailing))) {
+    if (!file.read(reinterpret_cast<char*>(&lastRecord), sizeof(Sailing))) {
         std::cerr << "Error: Failed to read last record for deletion." << std::endl;
         return;
     }
     
     // Write the last record over the record to be deleted
+    file.seekp(deletePos);
+    file.write(reinterpret_cast<const char*>(&lastRecord), sizeof(Sailing));
+    file.flush();
+    
+    // Truncate the file to remove the last record
+    file.close();
     FILE* cFile = fopen("sailings.dat", "rb+");
-    if (!cFile) {
-        std::cerr << "Error: Failed to open file for truncation.\n";
-        return;
+    if (cFile) {
+        int fd = _fileno(cFile);
+        _chsize(fd, static_cast<long>(lastRecordPos));
+        fclose(cFile);
     }
-    // Truncate the file
-    int fd = _fileno(cFile);
-    _chsize(fd, static_cast<long>(lastRecordPos));
-    // Truncate the file
-    fclose(cFile);
     
     // Reopen the file
     file.open(filename, std::ios::in | std::ios::out | std::ios::binary);

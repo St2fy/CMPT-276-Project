@@ -60,6 +60,7 @@ float Reservation::calculateFare() {
 
 /**----------------------------------------------
  * creates a reservation for a sailing, safe against duplicate reservations
+ * todo: update the corresponding sailing to add the hcll and lcll used + 5m margin and the number of passengers
  * @param license
  * @param sailingID
  * @param phoneNumber

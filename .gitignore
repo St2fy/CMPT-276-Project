@@ -1,0 +1,37 @@
+# Build artifacts
+build/
+*.o
+*.exe
+*.obj
+*.dll
+*.lib
+*.a
+
+# Data files (optional - you might want to track some sample data)
+data/*.dat
+
+# IDE and editor files
+.vscode/
+.vs/
+*.vcxproj*
+*.sln
+*.suo
+*.user
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+*~
+
+# Debug files
+*.pdb
+*.ilk
+*.idb
+
+# Log files
+*.log

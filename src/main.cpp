@@ -7,23 +7,17 @@
  * 
 */
 
-//#include "reservation.h"
+#include "reservation.h"
 #include "reservationASM.h"
-//#include "sailing.h"
+#include "sailing.h"
 #include "sailingASM.h"
 #include "utils.h"
-//#include "vessel.h"
+#include "vessel.h"
 #include "vesselASM.h"
+#include "vehicleASM.h"
 
-//#include "reservation.cpp"
-#include "reservationASM.cpp"
-//#include "sailing.cpp"
-#include "sailingASM.cpp"
-//#include "utils.cpp"
-//#include "vessel.cpp"
-#include "vesselASM.cpp"
-#include "vehicleASM.cpp"
-#include "menu.cpp"
+// Forward declaration for menu function
+void handleMenu();
 
 int main() {
     Utils::init();

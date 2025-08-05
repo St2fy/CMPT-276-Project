@@ -7,14 +7,9 @@
  * 
 */
 #include "reservation.h"
-#include "reservation.cpp"
 #include "sailing.h"
-#include "sailing.cpp"
 #include "utils.h"
 #include "vessel.h"
-#include "vessel.cpp"
-#include "utils.h"
-#include "utils.cpp"
 #include <iostream>
 #include <string>
 #include <cstring>
