@@ -2,8 +2,8 @@
  * @file testFileOps.cpp
  * @author Dimitri Vahlas, Louise Ho, Wailok He, Jason Li
  * @brief Unit test for low-level file write and read (SailingASM)
- * @version 1.0
- * @date 2025-07-08
+ * @version 2
+ * @date 2025-08-05
  * 
  * This test validates that SailingASM correctly writes and reads
  * multiple sailing records to and from a binary file.

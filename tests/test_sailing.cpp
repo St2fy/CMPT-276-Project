@@ -1,3 +1,12 @@
+/**@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+ * @file test_sailing.cpp
+ * @author Dimitri Vahlas, Louise Ho, Wailok He, Jason Li
+ * @brief Adds and deletes sailing records to test file-level operations in SailingASM
+ * @version 2
+ * @date 2025-08-04
+ * 
+*/
+
 #include <iostream>
 #include "../include/sailingASM.h"
 #include "../include/sailing.h"

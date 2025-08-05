@@ -2,8 +2,8 @@
  * @file testVesselGetHCLL.cpp
  * @author Dimitri Vahlas, Louise Ho, Wailok He, Jason Li
  * @brief Unit test for getHCLLCap() function
- * @version 1.0
- * @date 2025-07-08
+ * @version 2
+ * @date 2025-08-05
  * 
  * This test validates that vessel.cpp correctly creates a
  * Vessel and getHCLLCap() returns the correct value for 

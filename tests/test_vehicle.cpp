@@ -1,3 +1,12 @@
+/**@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+ * @file test_vehicle.cpp
+ * @author Dimitri Vahlas, Louise Ho, Wailok He, Jason Li
+ * @brief Tests adding and reading multiple vehicles using VehicleASM
+ * @version 2
+ * @date 2025-08-04
+ * 
+*/
+
 #include "VehicleASM.h"
 #include <iostream>
 #include "reservation.h"

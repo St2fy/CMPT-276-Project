@@ -1,8 +1,8 @@
 /**@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
  * @file test_sailing_functionality.cpp
- * @author Test File
+ * @author Dimitri Vahlas, Louise Ho, Wailok He, Jason Li
  * @brief Comprehensive test for Sailing class functionality
- * @version 1
+ * @version 2
  * @date 2025-08-04
  * 
 */

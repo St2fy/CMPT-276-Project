@@ -1,5 +1,13 @@
+/**@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+ * @file vehicle_test.cpp
+ * @author Dimitri Vahlas, Louise Ho, Wailok He, Jason Li
+ * @brief Validates VehicleASM operations
+ * @version 2
+ * @date 2025-08-05
+ * 
+ */
+
 #include "vehicleASM.h"
-#include "vehicleASM.cpp"
 #include <iostream>
 #include <iomanip> // for std::setprecision
 #include "reservation.h"
