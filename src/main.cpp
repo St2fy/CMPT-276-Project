@@ -85,16 +85,30 @@ void preloadData() {
     Reservation::createReservation("BC5678", "DEF-15-13", "604-777-8888", vehicle3, false);
 }
 
-int main() {
-    preloadData();
-    // Clear all existing data files to start with empty system
-    // std::remove("data/vessels.dat");
-    // std::remove("data/vehicles.dat");
-    // std::remove("data/sailings.dat");
-    // std::remove("data/reservations.dat");
+/**----------------------------------------------
+ * Clears all data files and initializes with empty system
+ */
+void initializeEmptySystem() {
+    // Clear all existing data files
+    std::remove("data/vessels.dat");
+    std::remove("data/vehicles.dat");
+    std::remove("data/sailings.dat");
+    std::remove("data/reservations.dat");
     
-    // // Initialize the system with empty files
-    // Utils::init();
+    // Also clear any files that might be in the root directory
+    std::remove("vessels.dat");
+    std::remove("vehicles.dat");
+    std::remove("sailings.dat");
+    std::remove("reservations.dat");
+    
+    // Initialize the system with empty files
+    Utils::init();
+}
+
+int main() {
+    // Toggle between modes by commenting/uncommenting one of these lines:
+    preloadData();              // DEFAULT: Start with test data (vessels, sailings, reservations)
+    // initializeEmptySystem();  // ALTERNATE: Start with empty data files
     
     handleMenu();
     Utils::shutdown();
