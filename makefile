@@ -1,5 +1,5 @@
-# Organized Makefile for CMPT-276 Project
-# Use with: make (standard) or mingw32-make (Windows MinGW)
+# Makefile for CMPT-276 Project
+# Use with: make or mingw32-make 
 
 # Compiler and flags
 CXX = g++
@@ -7,17 +7,13 @@ CXXFLAGS = -std=c++17 -Wall -g -Iinclude
 
 # Directories
 SRC_DIR = src
-INCLUDE_DIR = include
 BUILD_DIR = build
 DATA_DIR = data
 TEST_DIR = tests
 
-# Source files (without directory prefix)
+# Source files
 SOURCES = main.cpp menu.cpp vessel.cpp vesselASM.cpp sailing.cpp sailingASM.cpp \
           reservation.cpp reservationASM.cpp vehicleASM.cpp utils.cpp
-
-# Full source file paths
-SRC_FILES = $(addprefix $(SRC_DIR)/, $(SOURCES))
 
 # Object files in build directory
 OBJECTS = $(addprefix $(BUILD_DIR)/, $(SOURCES:.cpp=.o))
@@ -25,7 +21,7 @@ OBJECTS = $(addprefix $(BUILD_DIR)/, $(SOURCES:.cpp=.o))
 # Target executable
 TARGET = $(BUILD_DIR)/easy_book.exe
 
-# Test files
+# Test files that actually exist
 TEST_SOURCES = test_sailing_functionality.cpp test_sailing.cpp test_vehicle.cpp \
                vehicle_test.cpp testVesselGetHCLL.cpp testFileOps.cpp
 TEST_TARGETS = $(addprefix $(BUILD_DIR)/, $(TEST_SOURCES:.cpp=.exe))
@@ -49,7 +45,7 @@ $(TARGET): $(OBJECTS) | $(BUILD_DIR)
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp | $(BUILD_DIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# Build tests
+# Build tests (optional - exclude main.o to avoid multiple main functions)
 $(BUILD_DIR)/%.exe: $(TEST_DIR)/%.cpp $(filter-out $(BUILD_DIR)/main.o, $(OBJECTS)) | $(BUILD_DIR)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
@@ -60,10 +56,6 @@ tests: $(TEST_TARGETS)
 run: $(TARGET) | $(DATA_DIR)
 	$(TARGET)
 
-# Run tests
-test-sailing: $(BUILD_DIR)/test_sailing_functionality.exe | $(DATA_DIR)
-	$<
-
 # Clean build artifacts
 clean:
 	del /Q "$(BUILD_DIR)\*.o" 2>nul || echo "No object files to clean"
@@ -72,6 +64,7 @@ clean:
 # Clean everything including directories
 distclean: clean
 	rmdir /S /Q $(BUILD_DIR) 2>nul || echo "Build directory cleaned"
+	rmdir /S /Q $(DATA_DIR) 2>nul || echo "Data directory cleaned"
 
 # Help
 help:

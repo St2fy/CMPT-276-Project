@@ -72,7 +72,7 @@ void preloadData() {
 
 int main() {
     Utils::init();
-    preloadData();
+    //preloadData();
     handleMenu();
     Utils::shutdown();
     return 0;

@@ -271,7 +271,7 @@ Result handleCheckIn() {
     std::cin >> option;
     switch (atoi(option.c_str())) {
     case 1:
-        return Success;
+        return Restart;
     case 2:
         return Exit;
     default:
@@ -377,6 +377,14 @@ Result handleCreateVessel() {
     std::string vesselName;
     std::cin >> vesselName;
 
+    // check if the vessel name is > 25 characters
+    while (vesselName.length() > 25) {
+        printBar(BAR_LENGTH);
+        std::cout << "Vessel Name is too long. Please enter a name with 25 characters or less." << std::endl;
+        std::cout << "Re-enter Vessel Name: " << std::endl;
+        std::cin >> vesselName;
+    }
+
     // Check if the vessel already exists
     while (Utils::queryVessel(vesselName.c_str()) != nullptr) {
         printBar(BAR_LENGTH);
@@ -384,6 +392,8 @@ Result handleCreateVessel() {
         std::cout << "Re-enter Vessel Name" << std::endl;
         std::cin >>vesselName;
     }
+
+    
 
     printBar(BAR_LENGTH);
     std::cout << "Enter High Ceiling Capacity (HCC):" << std::endl;
@@ -500,6 +510,7 @@ Result handleSearchSailing() {
         std::cout << std::left << std::setw(18) << "High Ceiling Used:" << sailing->getHCLLUsed() << "m" << std::endl;
         std::cout << std::left << std::setw(18) << "Low Ceiling Used:" << sailing->getLCLLUsed() << "m" << std::endl;
         std::cout << std::left << std::setw(18) << "Passengers:" << sailing->getPassengers() << std::endl;
+        delete sailing; // Clean up memory
     }
     printBar(BAR_LENGTH);
     std::cout << "Enter any Key to Return to the Main Menu." << std::endl;
@@ -543,6 +554,7 @@ Result handleSearchVessel() {
         std::cout << std::left << std::setw(26) << "High Ceiling Capacity:" << vessel->getHCLLCap() << std::endl;
         std::cout << std::left << std::setw(26) << "Low Ceiling Capacity:" << vessel->getLCLLCap() << std::endl;
         std::cout << std::left << std::setw(26) << "Passenger Capacity:" << vessel->getPassengerCap() << std::endl;
+        delete vessel; // Clean up memory
     }
     printBar(BAR_LENGTH);
     std::cout << "Enter any Key to Return to the Main Menu." << std::endl;
@@ -568,7 +580,7 @@ Result handleSearchReservation() {
     if (reservations.size() == 0) {
         std::cout << "No Reservations Found" << std::endl;
         printBar(BAR_LENGTH);
-        std::cout << "1. Try Again" << std::endl << "Return to Main Menu" << std::endl;
+        std::cout << "1. Try Again" << std::endl << "2. Return to Main Menu" << std::endl;
         std::cout << "Select an Option:" << std::endl;
         std::string option;
         std::cin >> option;
@@ -587,11 +599,13 @@ Result handleSearchReservation() {
         printBar(BAR_LENGTH);
         for (size_t i = 0; i < reservations.size(); i++) {
             std::cout << std::left << std::setw(18) << "Sailing ID:" << reservations[i]->getSailingID() << std::endl;
-            std::cout << std::left << std::setw(18) << "Licence Plate" << reservations[i]->getLicense() << std::endl;
-            // handle special vehicles
-            std::cout << std::left << std::setw(18) << "Vehicle Type:" << reservations[i]->getVehicle().height << std::endl;
-            // handle yes/no
-            std::cout << std::left << std::setw(18) << "Checked In:" << reservations[i]->getOnBoard() << std::endl;
+            std::cout << std::left << std::setw(18) << "Licence Plate:" << reservations[i]->getLicense() << std::endl;
+            // Display vehicle type based on special vehicle classification
+            bool isSpecial = Utils::isSpecialVehicle(reservations[i]->getVehicle().length, reservations[i]->getVehicle().height);
+            std::cout << std::left << std::setw(18) << "Vehicle Type:" << (isSpecial ? "Special" : "Regular") << std::endl;
+            // Display check-in status
+            std::cout << std::left << std::setw(18) << "Checked In:" << (reservations[i]->getOnBoard() ? "Yes" : "No") << std::endl;
+            std::cout << std::endl; // Add spacing between reservations
         }
     }
     printBar(BAR_LENGTH);
@@ -618,12 +632,10 @@ void handleSearch() {
             result = handleSearchSailing();
         } while (result == Restart);
         break;
-        break;
     case 2: 
         do {
             result = handleSearchVessel();
         } while (result == Restart);
-        break;
         break;
     case 3:
         do {
@@ -672,7 +684,7 @@ void handleMenu() {
             case 3:
                 do {
                     result = handleCheckIn();
-                } while (result == Success); 
+                } while (result == Restart); 
                 break;
             case 4:
                 do {
