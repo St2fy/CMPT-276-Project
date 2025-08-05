@@ -669,7 +669,7 @@ void handleMenu() {
         std::cout << "6. Print Sailing Report" << std::endl;
         std::cout << "7. Search" << std::endl;
         std::cout << "8. Shutdown" << std::endl;
-        std::cout << "9. Print Data Files (Debug)" << std::endl;
+        // std::cout << "9. Print Data Files (Debug)" << std::endl;  // DISABLED: Debug option
         std::cin >> input;
         Result result;
         // Handle the input and call the appropriate function based on the selection, loop based on the result of the function
@@ -707,9 +707,9 @@ void handleMenu() {
                 break;
             case 8:
                 return;
-            case 9:
-                Utils::printAllDataFiles();
-                break;
+            // case 9:  // DISABLED: Debug option
+            //     Utils::printAllDataFiles();
+            //     break;
             default:
                 std::cout << "Invalid Selection" << std::endl;
         }

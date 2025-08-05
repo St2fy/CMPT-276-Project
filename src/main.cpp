@@ -86,8 +86,16 @@ void preloadData() {
 }
 
 int main() {
-    // preloadData() will handle initialization and shutdown
     preloadData();
+    // Clear all existing data files to start with empty system
+    // std::remove("data/vessels.dat");
+    // std::remove("data/vehicles.dat");
+    // std::remove("data/sailings.dat");
+    // std::remove("data/reservations.dat");
+    
+    // // Initialize the system with empty files
+    // Utils::init();
+    
     handleMenu();
     Utils::shutdown();
     return 0;
