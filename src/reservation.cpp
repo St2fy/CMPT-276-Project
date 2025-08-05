@@ -12,21 +12,25 @@
 #include "vehicleASM.h"
 #include <cstring>
 
+const int VEHICLE_LENGTH_MARGIN = 5; // Safety margin for vehicle length in meters
+
 Reservation::Reservation() {
     license[0] = '\0';
     sailingID[0] = '\0';
     phoneNumber[0] = '\0';
     onBoard = false;
+    special = false;
     vehicle.height = 0.0f;
     vehicle.length = 0.0f;
 }
 
-Reservation::Reservation(char* license, char* sailingID, char* phoneNumber, Vehicle vehicle) {
+Reservation::Reservation(char* license, char* sailingID, char* phoneNumber, Vehicle vehicle, bool special) {
     strcpy(this->license, license);
     strcpy(this->sailingID, sailingID);
     strcpy(this->phoneNumber, phoneNumber);
     this->vehicle = vehicle;
     this->onBoard = false;
+    this->special = special;
 }
 
 Reservation::~Reservation() {
@@ -53,6 +57,14 @@ bool Reservation::getOnBoard() {
     return onBoard;
 }
 
+bool Reservation::getSpecial() {
+    return special;
+}
+
+void Reservation::setSpecial(bool isSpecial) {
+    special = isSpecial;
+}
+
 float Reservation::calculateFare() {
     // Example fare calculation based on vehicle length and height
     return vehicle.length * 10 + vehicle.height * 5;
@@ -64,25 +76,56 @@ float Reservation::calculateFare() {
  * @param license
  * @param sailingID
  * @param phoneNumber
+ * @param vehicle
+ * @param special - whether this is a special reservation (uses HCLL)
  * @return Reservation
  */
-Reservation* Reservation::createReservation(char* license, char* sailingID, char* phoneNumber, Vehicle vehicle) {
+Reservation* Reservation::createReservation(char* license, char* sailingID, char* phoneNumber, Vehicle vehicle, bool special) {
     ReservationASM::seekToBeginning();
-    Reservation r(license, sailingID, phoneNumber, vehicle);
+    Reservation r(license, sailingID, phoneNumber, vehicle, special);
     while (ReservationASM::getNextReservation(r)) {
         if (strcmp(r.getSailingID(), sailingID) == 0 && strcmp(r.getPhoneNumber(), phoneNumber) == 0) {
             // Duplicate reservation found
             return nullptr; // Return a null pointer
         }
     }
+    
+    // Add vehicle to VehicleASM if not already exists
     VehicleASM::seekToBeginning();
-    while (VehicleASM::getNextVehicle(vehicle)) {
-        if (!(vehicle.height == r.getVehicle().height && vehicle.length == r.getVehicle().length)) {
-            VehicleASM::addVehicle(vehicle);
+    Vehicle existingVehicle;
+    bool vehicleExists = false;
+    while (VehicleASM::getNextVehicle(existingVehicle)) {
+        if (existingVehicle.height == vehicle.height && existingVehicle.length == vehicle.length) {
+            vehicleExists = true;
+            break;
         }
     }
+    if (!vehicleExists) {
+        VehicleASM::addVehicle(vehicle);
+    }
     ReservationASM::addReservation(r);
-    return new Reservation(license, sailingID, phoneNumber, vehicle);
+    
+    // Update the corresponding sailing with vehicle capacity usage
+    Sailing currentSailing = Sailing::querySailing(sailingID);
+    if (strcmp(currentSailing.getSailingID(), sailingID) == 0) { // Sailing found
+        // Vehicle length + safety margin
+        float vehicleSpace = vehicle.length + VEHICLE_LENGTH_MARGIN;
+
+        // Determine lane usage: special reservations always use HCLL
+        if (special) {
+            // High clearance lane (special reservations)
+            currentSailing.setHCLLUsed(currentSailing.getHCLLUsed() + vehicleSpace);
+        } else {
+            // Low clearance lane  
+            currentSailing.setLCLLUsed(currentSailing.getLCLLUsed() + vehicleSpace);
+        }
+
+        currentSailing.setPassengers(currentSailing.getPassengers() + 1);
+
+        Sailing::updateSailing(sailingID, currentSailing);
+    }
+    
+    return new Reservation(license, sailingID, phoneNumber, vehicle, special);
 }
 
 /**----------------------------------------------
