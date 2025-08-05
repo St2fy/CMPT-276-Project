@@ -10,7 +10,7 @@
 #include <iostream>
 
 std::fstream ReservationASM::file;
-const std::string ReservationASM::filename = "reservations.dat";
+const std::string ReservationASM::filename = "data/reservations.dat";
 
 void ReservationASM::init(){
     file.open(filename, std::ios::in | std::ios::out | std::ios::binary);

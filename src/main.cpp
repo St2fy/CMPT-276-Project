@@ -22,10 +22,10 @@ void handleMenu();
 
 void preloadData() {
     // Clear all existing data files first
-    std::remove("vessels.dat");
-    std::remove("vehicles.dat");
-    std::remove("sailings.dat"); 
-    std::remove("reservations.dat"); 
+    std::remove("data/vessels.dat");
+    std::remove("data/vehicles.dat");
+    std::remove("data/sailings.dat"); 
+    std::remove("data/reservations.dat"); 
     Utils::shutdown();
     Utils::init();
     

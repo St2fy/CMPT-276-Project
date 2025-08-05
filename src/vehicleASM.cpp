@@ -10,7 +10,7 @@
 #include <iostream>
 #include "reservation.h"
 std::fstream VehicleASM::file;
-const std::string VehicleASM::filename = "vehicles.dat";
+const std::string VehicleASM::filename = "data/vehicles.dat";
 
 void VehicleASM::init(){
     file.open(filename, std::ios::in | std::ios::out | std::ios::binary);

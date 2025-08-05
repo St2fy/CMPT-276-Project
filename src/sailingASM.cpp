@@ -12,7 +12,7 @@
 #include <fstream>
 
 std::fstream SailingASM::file;
-const std::string SailingASM::filename = "sailings.dat";
+const std::string SailingASM::filename = "data/sailings.dat";
 
 void SailingASM::init() {
     file.open(filename, std::ios::in | std::ios::out | std::ios::binary);
