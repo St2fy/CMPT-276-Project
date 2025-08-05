@@ -29,7 +29,7 @@ void testSailingCreation() {
     Sailing* newSailing = Sailing::createSailing(vesselName, sailingID, LCLLUsed, HCLLUsed, passengers, testVessel);
     
     if (newSailing != nullptr) {
-        std::cout << "✓ Sailing created successfully\n";
+        std::cout << "Sailing created successfully\n";
         std::cout << "  Vessel Name: " << newSailing->getVesselName() << "\n";
         std::cout << "  Sailing ID: " << newSailing->getSailingID() << "\n";
         std::cout << "  LCLL Used: " << newSailing->getLCLLUsed() << "\n";
@@ -40,15 +40,15 @@ void testSailingCreation() {
         std::cout << "\n--- Testing Duplicate Prevention ---\n";
         Sailing* duplicateSailing = Sailing::createSailing(vesselName, sailingID, 20.0f, 10.0f, 75, testVessel);
         if (duplicateSailing == nullptr) {
-            std::cout << "✓ Duplicate sailing creation prevented\n";
+            std::cout << "Duplicate sailing creation prevented\n";
         } else {
-            std::cout << "✗ Duplicate sailing was created (should not happen)\n";
+            std::cout << "Duplicate sailing was created (should not happen)\n";
             delete duplicateSailing;
         }
         
         delete newSailing;
     } else {
-        std::cout << "✗ Failed to create sailing\n";
+        std::cout << "Failed to create sailing\n";
     }
     
     delete testVessel;

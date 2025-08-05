@@ -31,19 +31,21 @@ void VesselASM::addVessel(const Vessel& vessel) {
     file.clear(); 
     file.seekp(0, std::ios::end);
     file.write(reinterpret_cast<const char*>(&vessel), sizeof(Vessel));
+    file.flush(); // Force write to disk
+    file.clear(); // Clear any error flags
 }
 bool VesselASM::getNextVessel(Vessel& vessel) {
-    file.clear();
     if (!file.read(reinterpret_cast<char*>(&vessel), sizeof(Vessel))) {
-        // At the end already or error
-        return false; 
+        file.clear(); // Clear EOF flag for subsequent operations
+        return false; // Reached end or error
     }
     return true;
 }
 void VesselASM::seekToBeginning() {
     if (file.is_open()) {
-        file.clear();
-        file.seekg(0);
+        file.clear(); // Clear any error flags first
+        file.seekg(0, std::ios::beg); // Seek to beginning for reading
+        file.seekp(0, std::ios::beg); // Also reset write position
     }
 }
 
@@ -51,9 +53,10 @@ int VesselASM::getCurrentID() {
     if (!file.is_open()) {
         return 0;
     }
-    // ensure stream is good
-    file.clear();
-    //finding the index of current file pointer
-    std::streampos size = file.tellg();
+    file.clear(); // Clear any error flags
+    std::streampos currentPos = file.tellg(); // Save current position
+    file.seekg(0, std::ios::end); // Seek to end
+    std::streampos size = file.tellg(); // Get file size
+    file.seekg(currentPos); // Restore position
     return static_cast<int>(size / sizeof(Vessel));
 }
