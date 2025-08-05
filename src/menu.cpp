@@ -27,7 +27,7 @@ void printBar(int length) {
     }
     std::cout << std::endl;
 }
-// stub functions below
+
 /**
  * Checks if a reservation can be made for a specific sailing
  * Validates space availability considering special vehicles (>2m height OR >7m length)
@@ -50,7 +50,6 @@ bool checkReservation(const char* sailingID, const char* phoneNumber, const char
 float calculateFare(const Reservation* res) {
     return 40.5;
 }
-// end of stub functions
 
 /**
  * helper function for handleSailingReport to print the lines of each sailing
@@ -182,7 +181,7 @@ Result handleCreateReservation() {
                 vehicle.length = std::stof(length);
                 vehicle.height = std::stof(height);
                 bool special = Utils::isSpecialVehicle(vehicle.length, vehicle.height);
-                Reservation::createReservation(const_cast<char*>(license.c_str()), const_cast<char*>(sailingID.c_str()), const_cast<char*>(phoneNumber.c_str()), vehicle, special);
+                Reservation::createReservation(license.c_str(), sailingID.c_str(), phoneNumber.c_str(), vehicle, special);
             }
             return Success;
         case 2:
@@ -207,7 +206,7 @@ Result handleCancelSailing() {
     std::cin >> sailingID;
     if (Utils::validSailing(sailingID.c_str())) {
         std::cout << "Deleted Sailing " << sailingID.c_str() << std::endl;
-        Sailing::deleteSailing(const_cast<char*>(sailingID.c_str()));
+        Sailing::deleteSailing(sailingID.c_str());
     }
     else {
         std::cout << "Sailing " << sailingID.c_str() << " Not Found" << std::endl;
@@ -346,14 +345,14 @@ Result handleCreateSailing() {
         case 1:
             {
                 Vessel* vessel = Utils::queryVessel(selectedVesselName.c_str());
-                Sailing::createSailing(const_cast<char*>(selectedVesselName.c_str()), const_cast<char*>(sailingID.c_str()), 0.0f, 0.0f, 0, vessel);
+                Sailing::createSailing(selectedVesselName.c_str(), sailingID.c_str(), 0.0f, 0.0f, 0, vessel);
                 delete vessel; // Clean up memory
             }
             return Success;
         case 2:
             {
                 Vessel* vessel = Utils::queryVessel(selectedVesselName.c_str());
-                Sailing::createSailing(const_cast<char*>(selectedVesselName.c_str()), const_cast<char*>(sailingID.c_str()), 0.0f, 0.0f, 0, vessel);
+                Sailing::createSailing(selectedVesselName.c_str(), sailingID.c_str(), 0.0f, 0.0f, 0, vessel);
                 delete vessel; // Clean up memory
             }
             return Restart;
@@ -417,7 +416,7 @@ Result handleCreateVessel() {
     std::cin >> confirmOption;
     switch (atoi(confirmOption.c_str())) {
         case 1:
-            Vessel::createVessel(const_cast<char*>(vesselName.c_str()), atof(LCC.c_str()), atof(HCC.c_str()));
+            Vessel::createVessel(vesselName.c_str(), atof(LCC.c_str()), atof(HCC.c_str()));
             return Success;
         case 2:
             return Restart;
@@ -669,6 +668,7 @@ void handleMenu() {
         std::cout << "6. Print Sailing Report" << std::endl;
         std::cout << "7. Search" << std::endl;
         std::cout << "8. Shutdown" << std::endl;
+        std::cout << "9. Print Data Files (Debug)" << std::endl;
         std::cin >> input;
         Result result;
         // Handle the input and call the appropriate function based on the selection, loop based on the result of the function
@@ -706,6 +706,9 @@ void handleMenu() {
                 break;
             case 8:
                 return;
+            case 9:
+                Utils::printAllDataFiles();
+                break;
             default:
                 std::cout << "Invalid Selection" << std::endl;
         }

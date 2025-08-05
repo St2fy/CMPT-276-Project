@@ -11,7 +11,7 @@
 #include "vessel.h"
 class Sailing {
 private: 
-    char vesselName[20];
+    char vesselName[26];
     char sailingID[9];
     float LCLLUsed;
     float HCLLUsed;
@@ -31,15 +31,14 @@ public:
      * @param passengers 
      * @param vessel 
      */
-    Sailing(char* vesselName, char* sailingID, float LCLLUsed, float HCLLUsed, int passengers, Vessel* vessel);
+    Sailing(const char* vesselName, const char* sailingID, float LCLLUsed, float HCLLUsed, int passengers, Vessel* vessel);
     ~Sailing();
-    char* getSailingID();
-    char* getVesselName();
-    float getHCLLUsed();
-    float getLCLLUsed();
-    int getPassengers();
+    const char* getSailingID() const;
+    const char* getVesselName() const;
+    float getHCLLUsed() const;
+    float getLCLLUsed() const;
+    int getPassengers() const;
     
-    // Setter methods for updating capacity usage
     void setHCLLUsed(float hcllUsed);
     void setLCLLUsed(float lcllUsed);
     void setPassengers(int passengerCount);
@@ -53,21 +52,21 @@ public:
      * @param HCLLUsed
      * @return Sailing
      */
-    static Sailing* createSailing(char* vesselName, char* sailingID, float LCLLUsed, float HCLLUsed, int passengers, Vessel* vessel);
+    static Sailing* createSailing(const char* vesselName, const char* sailingID, float LCLLUsed, float HCLLUsed, int passengers, Vessel* vessel);
 
     /**----------------------------------------------
      * deletes a sailing
      * @param sailingID
      * @return bool - true if the deletion is successful false otherwise
      */
-    static bool deleteSailing(char* sailingID);
+    static bool deleteSailing(const char* sailingID);
 
     /**----------------------------------------------
      * initiates a search for a sailing
      * @param sailingID
      * @return Sailing
      */
-    static Sailing querySailing(char* sailingID);
+    static Sailing querySailing(const char* sailingID);
 
     /**----------------------------------------------
      * updates an existing sailing
@@ -75,7 +74,7 @@ public:
      * @param sailing - the updated sailing object
      * @return bool - true if the update is successful false otherwise
      */
-    static bool updateSailing(char* sailingID, const Sailing& sailing);
+    static bool updateSailing(const char* sailingID, const Sailing& sailing);
 
     /**----------------------------------------------
      * converts the sailing information to a string

@@ -114,4 +114,9 @@ public:
      * @return std::vector<Vessel>* - vector containing all vessels
      */
     static std::vector<Vessel>* getVessels();
+
+    /**----------------------------------------------
+     * prints the contents of all data files for debugging/inspection
+     */
+    static void printAllDataFiles();
 };

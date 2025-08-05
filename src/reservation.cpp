@@ -24,7 +24,7 @@ Reservation::Reservation() {
     vehicle.length = 0.0f;
 }
 
-Reservation::Reservation(char* license, char* sailingID, char* phoneNumber, Vehicle vehicle, bool special) {
+Reservation::Reservation(const char* license, const char* sailingID, const char* phoneNumber, Vehicle vehicle, bool special) {
     strcpy(this->license, license);
     strcpy(this->sailingID, sailingID);
     strcpy(this->phoneNumber, phoneNumber);
@@ -37,15 +37,15 @@ Reservation::~Reservation() {
     // No dynamic memory to free
 }
 
-char* Reservation::getLicense() {
+const char* Reservation::getLicense() const {
     return license;
 }
 
-char* Reservation::getSailingID() {
+const char* Reservation::getSailingID() const {
     return sailingID;
 }
 
-char* Reservation::getPhoneNumber() {
+const char* Reservation::getPhoneNumber() const {
     return phoneNumber;
 }
 
@@ -53,11 +53,11 @@ const Vehicle& Reservation::getVehicle() const {
     return vehicle;
 }
 
-bool Reservation::getOnBoard() {
+bool Reservation::getOnBoard() const {
     return onBoard;
 }
 
-bool Reservation::getSpecial() {
+bool Reservation::getSpecial() const {
     return special;
 }
 
@@ -65,7 +65,7 @@ void Reservation::setSpecial(bool isSpecial) {
     special = isSpecial;
 }
 
-float Reservation::calculateFare() {
+float Reservation::calculateFare() const {
     // Example fare calculation based on vehicle length and height
     return vehicle.length * 10 + vehicle.height * 5;
 }
@@ -79,7 +79,7 @@ float Reservation::calculateFare() {
  * @param special - whether this is a special reservation (uses HCLL)
  * @return Reservation
  */
-Reservation* Reservation::createReservation(char* license, char* sailingID, char* phoneNumber, Vehicle vehicle, bool special) {
+Reservation* Reservation::createReservation(const char* license, const char* sailingID, const char* phoneNumber, Vehicle vehicle, bool special) {
     ReservationASM::seekToBeginning();
     Reservation r(license, sailingID, phoneNumber, vehicle, special);
     while (ReservationASM::getNextReservation(r)) {
@@ -133,7 +133,7 @@ void Reservation::checkIn() {
  * @param phoneNumber
  * @return Reservation - the reservation if found
  */
-Reservation Reservation::queryReservation(char* sailingID, char* phoneNumber) {
+Reservation Reservation::queryReservation(const char* sailingID, const char* phoneNumber) {
     ReservationASM::seekToBeginning();
     Reservation r;
     while (ReservationASM::getNextReservation(r)) {

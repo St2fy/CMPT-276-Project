@@ -17,6 +17,8 @@
 #include "sailingASM.h"
 #include <string>
 #include <cstring>
+#include <iostream>
+#include <fstream>
 
 void Utils::init() {
     ReservationASM::init();
@@ -76,13 +78,13 @@ std::vector<Reservation*> Utils::queryReservationsByPhone(const char* phone) {
 }
 
 bool Utils::validSailing(const char* sailingID) {
-    Sailing sailing = Sailing::querySailing(const_cast<char*>(sailingID));
+    Sailing sailing = Sailing::querySailing(sailingID);
     // Check if sailing was found by verifying the sailingID is not empty
     return strlen(sailing.getSailingID()) > 0;
 }
 
 Sailing* Utils::querySailing(const char* sailingID) {
-    Sailing sailing = Sailing::querySailing(const_cast<char*>(sailingID));
+    Sailing sailing = Sailing::querySailing(sailingID);
     // Check if sailing was found
     if (strlen(sailing.getSailingID()) > 0) {
         return new Sailing(sailing);
@@ -91,7 +93,7 @@ Sailing* Utils::querySailing(const char* sailingID) {
 }
 
 Vessel* Utils::queryVessel(const char* vessel) {
-    Vessel vesselObj = Vessel::queryVessel(const_cast<char*>(vessel));
+    Vessel vesselObj = Vessel::queryVessel(vessel);
     // Check if vessel was found
     if (strlen(vesselObj.getName()) > 0) {
         return new Vessel(vesselObj);
@@ -194,4 +196,100 @@ std::vector<Vessel>* Utils::getVessels() {
     }
     
     return vessels;
+}
+
+void Utils::printAllDataFiles() {
+    const int BAR_LENGTH = 60;
+    
+    // Helper function to print a separator bar
+    auto printBar = [](int length, char c = '=') {
+        for (int i = 0; i < length; i++) {
+            std::cout << c;
+        }
+        std::cout << std::endl;
+    };
+    
+    printBar(BAR_LENGTH);
+    std::cout << "                    DATA FILES CONTENTS" << std::endl;
+    printBar(BAR_LENGTH);
+    
+    // Print vessels data
+    std::cout << "\nVESSELS:" << std::endl;
+    printBar(BAR_LENGTH, '-');
+    VesselASM::seekToBeginning();
+    Vessel vessel;
+    int vesselCount = 0;
+    while (VesselASM::getNextVessel(vessel)) {
+        std::cout << "Vessel #" << ++vesselCount << ":" << std::endl;
+        std::cout << "  Name: " << vessel.getName() << std::endl;
+        std::cout << "  LCLL Capacity: " << vessel.getLCLLCap() << " meters" << std::endl;
+        std::cout << "  HCLL Capacity: " << vessel.getHCLLCap() << " meters" << std::endl;
+        std::cout << "  Passenger Capacity: " << vessel.getPassengerCap() << std::endl;
+        std::cout << std::endl;
+    }
+    if (vesselCount == 0) {
+        std::cout << "  No vessels found." << std::endl;
+    }
+    
+    // Print vehicles data  
+    std::cout << "\nVEHICLES:" << std::endl;
+    printBar(BAR_LENGTH, '-');
+    VehicleASM::seekToBeginning();
+    Vehicle vehicle;
+    int vehicleCount = 0;
+    while (VehicleASM::getNextVehicle(vehicle)) {
+        std::cout << "Vehicle #" << ++vehicleCount << ":" << std::endl;
+        std::cout << "  Length: " << vehicle.length << " meters" << std::endl;
+        std::cout << "  Height: " << vehicle.height << " meters" << std::endl;
+        std::cout << "  Special: " << (isSpecialVehicle(vehicle.length, vehicle.height) ? "Yes" : "No") << std::endl;
+        std::cout << std::endl;
+    }
+    if (vehicleCount == 0) {
+        std::cout << "  No vehicles found." << std::endl;
+    }
+    
+    // Print sailings data
+    std::cout << "\nSAILINGS:" << std::endl;
+    printBar(BAR_LENGTH, '-');
+    SailingASM::seekToBeginning();
+    Sailing sailing;
+    int sailingCount = 0;
+    while (SailingASM::getNextSailing(sailing)) {
+        std::cout << "Sailing #" << ++sailingCount << ":" << std::endl;
+        std::cout << "  Sailing ID: " << sailing.getSailingID() << std::endl;
+        std::cout << "  Vessel Name: " << sailing.getVesselName() << std::endl;
+        std::cout << "  Passengers: " << sailing.getPassengers() << std::endl;
+        std::cout << "  LCLL Used: " << sailing.getLCLLUsed() << " meters" << std::endl;
+        std::cout << "  HCLL Used: " << sailing.getHCLLUsed() << " meters" << std::endl;
+        std::cout << std::endl;
+    }
+    if (sailingCount == 0) {
+        std::cout << "  No sailings found." << std::endl;
+    }
+    
+    // Print reservations data
+    std::cout << "\nRESERVATIONS:" << std::endl;
+    printBar(BAR_LENGTH, '-');
+    ReservationASM::seekToBeginning();
+    Reservation reservation;
+    int reservationCount = 0;
+    while (ReservationASM::getNextReservation(reservation)) {
+        std::cout << "Reservation #" << ++reservationCount << ":" << std::endl;
+        std::cout << "  License Plate: " << reservation.getLicense() << std::endl;
+        std::cout << "  Sailing ID: " << reservation.getSailingID() << std::endl;
+        std::cout << "  Phone Number: " << reservation.getPhoneNumber() << std::endl;
+        std::cout << "  Vehicle Length: " << reservation.getVehicle().length << " meters" << std::endl;
+        std::cout << "  Vehicle Height: " << reservation.getVehicle().height << " meters" << std::endl;
+        std::cout << "  Special Vehicle: " << (reservation.getSpecial() ? "Yes" : "No") << std::endl;
+        std::cout << "  Checked In: " << (reservation.getOnBoard() ? "Yes" : "No") << std::endl;
+        std::cout << std::endl;
+    }
+    if (reservationCount == 0) {
+        std::cout << "  No reservations found." << std::endl;
+    }
+    
+    printBar(BAR_LENGTH);
+    std::cout << "Summary: " << vesselCount << " vessels, " << vehicleCount << " vehicles, " 
+              << sailingCount << " sailings, " << reservationCount << " reservations" << std::endl;
+    printBar(BAR_LENGTH);
 }

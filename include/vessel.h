@@ -18,12 +18,12 @@ private:
 
 public:
     Vessel();
-    Vessel(char* name, float LCLL, float HCLL);
+    Vessel(const char* name, float LCLL, float HCLL);
     ~Vessel();
-    char* getName();
-    float getLCLLCap();
-    float getHCLLCap();
-    int getPassengerCap();
+    const char* getName() const;
+    float getLCLLCap() const;
+    float getHCLLCap() const;
+    int getPassengerCap() const;
     /**----------------------------------------------
      * creates a vessel, safe against duplicate vessels
      * @param name
@@ -31,14 +31,14 @@ public:
      * @param HCLL
      * @return Vessel
      */
-    static Vessel* createVessel(char* name, float LCLL, float HCLL);
+    static Vessel* createVessel(const char* name, float LCLL, float HCLL);
 
     /**----------------------------------------------
      * initiates a search for a vessel
      * @param name
      * @return Vessel
      */
-    static Vessel queryVessel(char* name);
+    static Vessel queryVessel(const char* name);
 
     /**----------------------------------------------
      * startup function

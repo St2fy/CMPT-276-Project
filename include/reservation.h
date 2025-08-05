@@ -25,17 +25,17 @@ private:
     char* to_string();
 
 public:
-    Reservation(char* license, char* sailingID, char* phoneNumber, Vehicle vehicle, bool special = false);
+    Reservation(const char* license, const char* sailingID, const char* phoneNumber, Vehicle vehicle, bool special = false);
     Reservation();
     ~Reservation();
-    char* getLicense();
-    char* getSailingID();
-    char* getPhoneNumber();
-    bool getOnBoard();
-    bool getSpecial();
+    const char* getLicense() const;
+    const char* getSailingID() const;
+    const char* getPhoneNumber() const;
+    bool getOnBoard() const;
+    bool getSpecial() const;
     void setSpecial(bool isSpecial);
     const Vehicle& getVehicle() const;
-    float calculateFare();
+    float calculateFare() const;
 
     /**----------------------------------------------
      * creates a reservation for a sailing, safe against duplicate reservations
@@ -46,7 +46,7 @@ public:
      * @param special - whether this is a special reservation (uses HCLL)
      * @return Reservation
      */
-    static Reservation* createReservation(char* license, char* sailingID, char* phoneNumber, Vehicle vehicle, bool special = false);
+    static Reservation* createReservation(const char* license, const char* sailingID, const char* phoneNumber, Vehicle vehicle, bool special = false);
 
     /**----------------------------------------------
      * sets the reservation's onBoard to true
@@ -59,7 +59,7 @@ public:
      * @param phoneNumber
      * @return Reservation - the reservation if found
      */
-    static Reservation queryReservation(char* sailingID, char* phoneNumber);
+    static Reservation queryReservation(const char* sailingID, const char* phoneNumber);
 
     /**----------------------------------------------
      * startup function

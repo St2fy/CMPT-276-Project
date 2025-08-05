@@ -18,7 +18,7 @@ Vessel::Vessel() {
     passengerCapacity = 0;
 }
 
-Vessel::Vessel(char* n, float lcll, float hcll) {
+Vessel::Vessel(const char* n, float lcll, float hcll) {
     strcpy(name, n);
     LCLLCapacity = lcll;
     HCLLCapacity = hcll;
@@ -29,19 +29,19 @@ Vessel::~Vessel() {
     // No dynamic memory to clean up
 }
 
-char* Vessel::getName() {
+const char* Vessel::getName() const {
     return name;
 }
 
-float Vessel::getLCLLCap() {
+float Vessel::getLCLLCap() const {
     return LCLLCapacity;
 }
 
-float Vessel::getHCLLCap() {
+float Vessel::getHCLLCap() const {
     return HCLLCapacity;
 }
 
-int Vessel::getPassengerCap() {
+int Vessel::getPassengerCap() const {
     return passengerCapacity;
 }
 
@@ -52,7 +52,7 @@ int Vessel::getPassengerCap() {
  * @param HCLL
  * @return Vessel
  */
-Vessel* Vessel::createVessel(char* name, float LCLL, float HCLL) {
+Vessel* Vessel::createVessel(const char* name, float LCLL, float HCLL) {
     VesselASM::seekToBeginning();
     
     // Check for duplicates using a separate vessel object
@@ -75,7 +75,7 @@ Vessel* Vessel::createVessel(char* name, float LCLL, float HCLL) {
  * @param name
  * @return Vessel
  */
-Vessel Vessel::queryVessel(char* name) {
+Vessel Vessel::queryVessel(const char* name) {
     VesselASM::seekToBeginning();
     Vessel v;
     while (VesselASM::getNextVessel(v)) {

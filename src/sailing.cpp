@@ -22,7 +22,7 @@ Sailing::Sailing() {
     vessel = nullptr;
 }
 
-Sailing::Sailing(char* vn, char* sid, float lcllu, float hcllu, int p, Vessel* v) {
+Sailing::Sailing(const char* vn, const char* sid, float lcllu, float hcllu, int p, Vessel* v) {
     strcpy(vesselName, vn);
     strcpy(sailingID, sid);
     LCLLUsed = lcllu;
@@ -35,23 +35,23 @@ Sailing::~Sailing() {
     vessel = nullptr;
 }
 
-char* Sailing::getSailingID() {
+const char* Sailing::getSailingID() const {
     return sailingID;
 }
 
-char* Sailing::getVesselName() {
+const char* Sailing::getVesselName() const {
     return vesselName;
 }
 
-float Sailing::getHCLLUsed() {
+float Sailing::getHCLLUsed() const {
     return HCLLUsed;
 }
 
-float Sailing::getLCLLUsed() {
+float Sailing::getLCLLUsed() const {
     return LCLLUsed;
 }
 
-int Sailing::getPassengers() {
+int Sailing::getPassengers() const {
     return passengers;
 }
 
@@ -76,7 +76,7 @@ void Sailing::setPassengers(int passengerCount) {
  * @param 
  * @return Sailing
  */
-Sailing* Sailing::createSailing(char* vesselName, char* sailingID, float LCLLUsed, float HCLLUsed, int passengers, Vessel* vessel) {
+Sailing* Sailing::createSailing(const char* vesselName, const char* sailingID, float LCLLUsed, float HCLLUsed, int passengers, Vessel* vessel) {
     SailingASM::seekToBeginning();
     Sailing s;
     while (SailingASM::getNextSailing(s)) {
@@ -94,7 +94,7 @@ Sailing* Sailing::createSailing(char* vesselName, char* sailingID, float LCLLUse
  * @param sailingID
  * @return bool - true if the deletion is successful false otherwise
  */
-bool Sailing::deleteSailing(char* sailingID) {
+bool Sailing::deleteSailing(const char* sailingID) {
     SailingASM::seekToBeginning();
     Sailing s;
     while (SailingASM::getNextSailing(s)) {
@@ -111,7 +111,7 @@ bool Sailing::deleteSailing(char* sailingID) {
  * @param sailingID
  * @return Sailing
  */
-Sailing Sailing::querySailing(char* sailingID) {
+Sailing Sailing::querySailing(const char* sailingID) {
     SailingASM::seekToBeginning();
     Sailing s;
     while (SailingASM::getNextSailing(s)) {
@@ -128,7 +128,7 @@ Sailing Sailing::querySailing(char* sailingID) {
  * @param sailing - the updated sailing object
  * @return bool - true if the update is successful false otherwise
  */
-bool Sailing::updateSailing(char* sailingID, const Sailing& sailing) {
+bool Sailing::updateSailing(const char* sailingID, const Sailing& sailing) {
     SailingASM::seekToBeginning();
     Sailing s;
     int index = 0;
