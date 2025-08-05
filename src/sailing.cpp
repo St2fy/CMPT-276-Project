@@ -2,8 +2,8 @@
  * @file sailing.cpp
  * @author Dimitri Vahlas, Louise Ho, Wailok He, Jason Li
  * @brief manages sailing operations
- * @version 1
- * @date 2025-07-21
+ * @version 2
+ * @date 2025-08-04
  * 
 */
 
