@@ -50,22 +50,21 @@ void preloadData() {
     Vessel::createVessel("Island Voyager", 0.0f, 70.0f); 
     Vessel::createVessel("Wave Dancer", 15.0f, 59.0f); 
     
-    // Create sailings
     Vessel* coastalRunner = Utils::queryVessel("Coastal Runner");
     Vessel* islandVoyager = Utils::queryVessel("Island Voyager");
     Vessel* waveDancer = Utils::queryVessel("Wave Dancer");
     
     // Sailings for Coastal Runner
-    Sailing::createSailing("Coastal Runner", "ABC-01-07", 0.0f, 0.0f, 0, coastalRunner);
-    Sailing::createSailing("Coastal Runner", "DEF-15-13", 0.0f, 0.0f, 0, coastalRunner);
+    Sailing::createSailing("Coastal Runner", "ABC-01-07", 0.0f, 0.0f, coastalRunner);
+    Sailing::createSailing("Coastal Runner", "DEF-15-13", 0.0f, 0.0f, coastalRunner);
     
     // Sailings for Island Voyager
-    Sailing::createSailing("Island Voyager", "LMN-27-18", 0.0f, 0.0f, 0, islandVoyager);
-    Sailing::createSailing("Island Voyager", "XYZ-28-24", 0.0f, 0.0f, 0, islandVoyager);
-    Sailing::createSailing("Island Voyager", "QWE-10-09", 0.0f, 0.0f, 0, islandVoyager);
+    Sailing::createSailing("Island Voyager", "LMN-27-18", 0.0f, 0.0f, islandVoyager);
+    Sailing::createSailing("Island Voyager", "XYZ-28-24", 0.0f, 0.0f, islandVoyager);
+    Sailing::createSailing("Island Voyager", "QWE-10-09", 0.0f, 0.0f, islandVoyager);
     
     // Sailing for Wave Dancer
-    Sailing::createSailing("Wave Dancer", "RTY-03-01", 0.0f, 0.0f, 0, waveDancer);
+    Sailing::createSailing("Wave Dancer", "RTY-03-01", 0.0f, 0.0f, waveDancer);
     
     delete coastalRunner;
     delete islandVoyager;

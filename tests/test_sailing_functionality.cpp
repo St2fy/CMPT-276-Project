@@ -211,9 +211,7 @@ void testSailingGetters() {
 }
 
 int main() {
-    std::cout << "=== Sailing Functionality Test Suite ===\n";
-    std::cout << "Testing high-level Sailing class methods...\n";
-    
+    std::cout << "=== Sailing Functionality Test ===\n";
     // Initialize the sailing system
     Sailing::init();
     
@@ -226,7 +224,6 @@ int main() {
         
         std::cout << "\n=== Test Suite Complete ===\n";
         std::cout << "All tests have been executed.\n";
-        std::cout << "Check the output above for any failed tests (marked with ✗).\n";
         
     } catch (const std::exception& e) {
         std::cout << "Exception caught during testing: " << e.what() << "\n";

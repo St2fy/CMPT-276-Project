@@ -18,16 +18,14 @@ Sailing::Sailing() {
     sailingID[0] = '\0';
     LCLLUsed = 0.0f;
     HCLLUsed = 0.0f;
-    passengers = 0;
     vessel = nullptr;
 }
 
-Sailing::Sailing(const char* vn, const char* sid, float lcllu, float hcllu, int p, Vessel* v) {
+Sailing::Sailing(const char* vn, const char* sid, float lcllu, float hcllu, Vessel* v) {
     strcpy(vesselName, vn);
     strcpy(sailingID, sid);
     LCLLUsed = lcllu;
     HCLLUsed = hcllu;
-    passengers = p;
     vessel = v;
 }
 
@@ -51,20 +49,12 @@ float Sailing::getLCLLUsed() const {
     return LCLLUsed;
 }
 
-int Sailing::getPassengers() const {
-    return passengers;
-}
-
 void Sailing::setHCLLUsed(float hcllUsed) {
     HCLLUsed = hcllUsed;
 }
 
 void Sailing::setLCLLUsed(float lcllUsed) {
     LCLLUsed = lcllUsed;
-}
-
-void Sailing::setPassengers(int passengerCount) {
-    passengers = passengerCount;
 }
 
 /**----------------------------------------------
@@ -76,7 +66,7 @@ void Sailing::setPassengers(int passengerCount) {
  * @param 
  * @return Sailing
  */
-Sailing* Sailing::createSailing(const char* vesselName, const char* sailingID, float LCLLUsed, float HCLLUsed, int passengers, Vessel* vessel) {
+Sailing* Sailing::createSailing(const char* vesselName, const char* sailingID, float LCLLUsed, float HCLLUsed, Vessel* vessel) {
     SailingASM::seekToBeginning();
     Sailing s;
     while (SailingASM::getNextSailing(s)) {
@@ -85,8 +75,8 @@ Sailing* Sailing::createSailing(const char* vesselName, const char* sailingID, f
             return nullptr; // Return a null pointer
         }
     }
-    SailingASM::addSailing(Sailing(vesselName, sailingID, LCLLUsed, HCLLUsed, passengers, vessel));
-    return new Sailing(vesselName, sailingID, LCLLUsed, HCLLUsed, passengers, vessel);
+    SailingASM::addSailing(Sailing(vesselName, sailingID, LCLLUsed, HCLLUsed, vessel));
+    return new Sailing(vesselName, sailingID, LCLLUsed, HCLLUsed, vessel);
 }
 
 /**----------------------------------------------

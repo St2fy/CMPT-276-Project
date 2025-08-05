@@ -16,6 +16,7 @@
 #include <cstring>
 #include <iomanip>
 #include <vector>
+#include <sstream>
 
 const int BAR_LENGTH = 40; // constants for the length of the - bar in the menu
 const float LENGTH_RATE = 10; // !!!temporary rate for vehicle cost per meter of length
@@ -84,17 +85,21 @@ void printSailingReportLines(int low, int high) {
         std::cout << std::left << (low + i) << std::setw(5) << ")"; // Use actual index
         std::cout << std::setw(16) << sailings->at(i).getSailingID(); 
         std::cout << std::setw(24) << sailings->at(i).getVesselName();
-        std::cout << day << std::setw(2) << "d";
-        std::cout << hour << std::setw(2) << "h";
+        std::cout << day << std::setw(3) << "d";
+        std::cout << hour << std::setw(6) << "h";
         
         // Display fractions: used/capacity
         if (vessel != nullptr) {
-            std::cout << std::setw(12) << (std::to_string(sailings->at(i).getPassengers()) + "/" + std::to_string(vessel->getPassengerCap()));
-            std::cout << std::setw(12) << (std::to_string(static_cast<int>(sailings->at(i).getLCLLUsed())) + "/" + std::to_string(static_cast<int>(vessel->getLCLLCap())));
-            std::cout << std::setw(12) << (std::to_string(static_cast<int>(sailings->at(i).getHCLLUsed())) + "/" + std::to_string(static_cast<int>(vessel->getHCLLCap()))) << std::endl;
+            // Format floating point numbers with 1 decimal place
+            std::ostringstream lcllStream, hcllStream;
+            lcllStream << std::fixed << std::setprecision(1) << sailings->at(i).getLCLLUsed() << "/" << vessel->getLCLLCap();
+            hcllStream << std::fixed << std::setprecision(1) << sailings->at(i).getHCLLUsed() << "/" << vessel->getHCLLCap();
+            
+            std::cout << std::setw(12) << lcllStream.str();
+            std::cout << std::setw(12) << hcllStream.str() << std::endl;
         } else {
             // Fallback if vessel not found
-            std::cout << std::setw(12) << sailings->at(i).getPassengers();
+            std::cout << std::fixed << std::setprecision(1);
             std::cout << std::setw(12) << sailings->at(i).getLCLLUsed();
             std::cout << std::setw(12) << sailings->at(i).getHCLLUsed() << std::endl;
         }
@@ -130,7 +135,7 @@ Result handleCreateReservation() {
     } while (!found);
     printBar(BAR_LENGTH);
     std::cout << "Sailing " << sailingID << " found " << std::endl << std::endl;
-    std::cout << "Enter Phone Number dddddddddd: " << std::endl;
+    std::cout << "Enter Phone Number (10 digits): " << std::endl;
     std::string phoneNumber;
     std::cin >> phoneNumber;
     printBar(BAR_LENGTH);
@@ -345,14 +350,14 @@ Result handleCreateSailing() {
         case 1:
             {
                 Vessel* vessel = Utils::queryVessel(selectedVesselName.c_str());
-                Sailing::createSailing(selectedVesselName.c_str(), sailingID.c_str(), 0.0f, 0.0f, 0, vessel);
+                Sailing::createSailing(selectedVesselName.c_str(), sailingID.c_str(), 0.0f, 0.0f, vessel);
                 delete vessel; // Clean up memory
             }
             return Success;
         case 2:
             {
                 Vessel* vessel = Utils::queryVessel(selectedVesselName.c_str());
-                Sailing::createSailing(selectedVesselName.c_str(), sailingID.c_str(), 0.0f, 0.0f, 0, vessel);
+                Sailing::createSailing(selectedVesselName.c_str(), sailingID.c_str(), 0.0f, 0.0f, vessel);
                 delete vessel; // Clean up memory
             }
             return Restart;
@@ -441,7 +446,7 @@ Result handleSailingReport() {
     do {
         printBar(EXTENDED_BAR_LENGTH);
         std::cout << "Print Sailing Report" << std::endl << std::endl;
-        std::cout << std::left << std::setw(6) << "#)" << std::setw(16) << "SailingID" << std::setw(24) << "Vessel" << std::setw(8) << "Depart" << std::setw(12) << "PGC" << std::setw(12) << "LCC" << std::setw(12) << "HCC" << std::endl;
+        std::cout << std::left << std::setw(6) << "#)" << std::setw(16) << "SailingID" << std::setw(24) << "Vessel" << std::setw(13) << "Depart" << std::setw(12) << "LCC" << std::setw(12) << "HCC" << std::endl;
         printBar(EXTENDED_BAR_LENGTH);
 
         printSailingReportLines(lowIndex, highIndex);
@@ -509,7 +514,6 @@ Result handleSearchSailing() {
         std::cout << std::left << std::setw(18) << "Sailing ID:" << sailing->getSailingID() << std::endl;
         std::cout << std::left << std::setw(18) << "High Ceiling Used:" << sailing->getHCLLUsed() << "m" << std::endl;
         std::cout << std::left << std::setw(18) << "Low Ceiling Used:" << sailing->getLCLLUsed() << "m" << std::endl;
-        std::cout << std::left << std::setw(18) << "Passengers:" << sailing->getPassengers() << std::endl;
         delete sailing; // Clean up memory
     }
     printBar(BAR_LENGTH);
@@ -554,7 +558,6 @@ Result handleSearchVessel() {
         std::cout << std::left << std::setw(26) << "Vessel Name:" << vessel->getName() << std::endl;
         std::cout << std::left << std::setw(26) << "High Ceiling Capacity:" << vessel->getHCLLCap() << std::endl;
         std::cout << std::left << std::setw(26) << "Low Ceiling Capacity:" << vessel->getLCLLCap() << std::endl;
-        std::cout << std::left << std::setw(26) << "Passenger Capacity:" << vessel->getPassengerCap() << std::endl;
         delete vessel; // Clean up memory
     }
     printBar(BAR_LENGTH);

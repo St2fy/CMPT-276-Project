@@ -15,14 +15,12 @@ Vessel::Vessel() {
     name[0] = '\0'; // Initialize name to an empty string
     LCLLCapacity = 0.0f;
     HCLLCapacity = 0.0f;
-    passengerCapacity = 0;
 }
 
 Vessel::Vessel(const char* n, float lcll, float hcll) {
     strcpy(name, n);
     LCLLCapacity = lcll;
     HCLLCapacity = hcll;
-    passengerCapacity = 0;
 }
 
 Vessel::~Vessel() {
@@ -39,10 +37,6 @@ float Vessel::getLCLLCap() const {
 
 float Vessel::getHCLLCap() const {
     return HCLLCapacity;
-}
-
-int Vessel::getPassengerCap() const {
-    return passengerCapacity;
 }
 
 /**----------------------------------------------

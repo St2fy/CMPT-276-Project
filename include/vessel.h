@@ -12,7 +12,6 @@ private:
     char name[26];
     float LCLLCapacity;
     float HCLLCapacity;
-    int passengerCapacity;
 
     char* to_string();
 
@@ -23,7 +22,6 @@ public:
     const char* getName() const;
     float getLCLLCap() const;
     float getHCLLCap() const;
-    int getPassengerCap() const;
     /**----------------------------------------------
      * creates a vessel, safe against duplicate vessels
      * @param name

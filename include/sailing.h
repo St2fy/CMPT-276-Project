@@ -1,4 +1,8 @@
-/**@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+/**@@@@@@@@@private:
+    char vesselName[26];
+    char sailingID[10];
+    float LCLLUsed;
+    float HCLLUsed;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
  * @file sailing.h
  * @author Dimitri Vahlas, Louise Ho, Wailok He, Jason Li
  * @brief manages sailing operations
@@ -31,17 +35,24 @@ public:
      * @param passengers 
      * @param vessel 
      */
-    Sailing(const char* vesselName, const char* sailingID, float LCLLUsed, float HCLLUsed, int passengers, Vessel* vessel);
+    /**----------------------------------------------
+     * constructor for sailing with parameters
+     * @param vesselName 
+     * @param sailingID 
+     * @param LCLLUsed 
+     * @param HCLLUsed 
+     * @param vessel 
+     * @return 
+     */
+    Sailing(const char* vesselName, const char* sailingID, float LCLLUsed, float HCLLUsed, Vessel* vessel);
     ~Sailing();
     const char* getSailingID() const;
     const char* getVesselName() const;
     float getHCLLUsed() const;
     float getLCLLUsed() const;
-    int getPassengers() const;
     
     void setHCLLUsed(float hcllUsed);
     void setLCLLUsed(float lcllUsed);
-    void setPassengers(int passengerCount);
 
 
     /**----------------------------------------------
@@ -52,7 +63,7 @@ public:
      * @param HCLLUsed
      * @return Sailing
      */
-    static Sailing* createSailing(const char* vesselName, const char* sailingID, float LCLLUsed, float HCLLUsed, int passengers, Vessel* vessel);
+    static Sailing* createSailing(const char* vesselName, const char* sailingID, float LCLLUsed, float HCLLUsed, Vessel* vessel);
 
     /**----------------------------------------------
      * deletes a sailing

@@ -224,7 +224,6 @@ void Utils::printAllDataFiles() {
         std::cout << "  Name: " << vessel.getName() << std::endl;
         std::cout << "  LCLL Capacity: " << vessel.getLCLLCap() << " meters" << std::endl;
         std::cout << "  HCLL Capacity: " << vessel.getHCLLCap() << " meters" << std::endl;
-        std::cout << "  Passenger Capacity: " << vessel.getPassengerCap() << std::endl;
         std::cout << std::endl;
     }
     if (vesselCount == 0) {
@@ -258,7 +257,6 @@ void Utils::printAllDataFiles() {
         std::cout << "Sailing #" << ++sailingCount << ":" << std::endl;
         std::cout << "  Sailing ID: " << sailing.getSailingID() << std::endl;
         std::cout << "  Vessel Name: " << sailing.getVesselName() << std::endl;
-        std::cout << "  Passengers: " << sailing.getPassengers() << std::endl;
         std::cout << "  LCLL Used: " << sailing.getLCLLUsed() << " meters" << std::endl;
         std::cout << "  HCLL Used: " << sailing.getHCLLUsed() << " meters" << std::endl;
         std::cout << std::endl;
