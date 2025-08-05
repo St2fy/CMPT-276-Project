@@ -1,6 +1,6 @@
 #include <iostream>
-#include "sailingASM.h"
-#include "sailing.h"
+#include "../include/sailingASM.h"
+#include "../include/sailing.h"
 
 void printAllSailings() {
     SailingASM::seekToBeginning();
@@ -24,9 +24,17 @@ int main() {
     // Add sample sailings
     std::cout << "[Adding Test Sailings...]\n";
     
-    Sailing s1("QueenOfOakBay", "SAIL001", 12.5f, 7.2f);
-    Sailing s2("SpiritOfBC", "SAIL002", 20.0f, 14.3f);
-    Sailing s3("CoastalRenaissance", "SAIL003", 18.5f, 8.0f);
+    // Create char arrays for vessel names and sailing IDs
+    char vessel1[] = "QueenOfOakBay";
+    char sailing1[] = "SAIL001";
+    char vessel2[] = "SpiritOfBC";
+    char sailing2[] = "SAIL002";
+    char vessel3[] = "CoastalRenaissance";
+    char sailing3[] = "SAIL003";
+    
+    Sailing s1(vessel1, sailing1, 12.5f, 7.2f, 25, nullptr);
+    Sailing s2(vessel2, sailing2, 20.0f, 14.3f, 40, nullptr);
+    Sailing s3(vessel3, sailing3, 18.5f, 8.0f, 30, nullptr);
 
     SailingASM::addSailing(s1);
     SailingASM::addSailing(s2);
@@ -35,9 +43,16 @@ int main() {
     // Display all sailings
     printAllSailings();
 
-    // Delete one sailing by ID
-    std::cout << "[Deleting Sailing ]\n";
+    // Delete one sailing by ID (delete the second sailing - SAIL002)
+    std::cout << "[Deleting Sailing SAIL002]\n";
+    SailingASM::seekToBeginning();
+    Sailing temp;
+    // Skip first sailing
+    SailingASM::getNextSailing(temp);
+    // Position at second sailing (SAIL002) and delete it
+    SailingASM::getNextSailing(temp);
     SailingASM::deleteSailing();
+    
     // Show sailings after deletion
     printAllSailings();
 

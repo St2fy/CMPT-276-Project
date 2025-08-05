@@ -28,6 +28,7 @@ public:
     static void seekToBeginning();
     static int getCurrentID();
     static void deleteSailing();
+    static bool overwriteSailing(const Sailing& sailing, int index);
 private:
     static std::fstream file;
     static const std::string filename;

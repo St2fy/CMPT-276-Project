@@ -20,17 +20,20 @@ private:
     char sailingID[9];
     char phoneNumber[14];
     bool onBoard;
+    bool special;
     Vehicle vehicle;
     char* to_string();
 
 public:
-    Reservation(char* license, char* sailingID, char* phoneNumber, Vehicle vehicle);
+    Reservation(char* license, char* sailingID, char* phoneNumber, Vehicle vehicle, bool special = false);
     Reservation();
     ~Reservation();
     char* getLicense();
     char* getSailingID();
     char* getPhoneNumber();
     bool getOnBoard();
+    bool getSpecial();
+    void setSpecial(bool isSpecial);
     const Vehicle& getVehicle() const;
     float calculateFare();
 
@@ -39,9 +42,11 @@ public:
      * @param license
      * @param sailingID
      * @param phoneNumber
+     * @param vehicle
+     * @param special - whether this is a special reservation (uses HCLL)
      * @return Reservation
      */
-    static Reservation* createReservation(char* license, char* sailingID, char* phoneNumber, Vehicle vehicle);
+    static Reservation* createReservation(char* license, char* sailingID, char* phoneNumber, Vehicle vehicle, bool special = false);
 
     /**----------------------------------------------
      * sets the reservation's onBoard to true

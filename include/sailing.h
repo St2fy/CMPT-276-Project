@@ -38,6 +38,11 @@ public:
     float getHCLLUsed();
     float getLCLLUsed();
     int getPassengers();
+    
+    // Setter methods for updating capacity usage
+    void setHCLLUsed(float hcllUsed);
+    void setLCLLUsed(float lcllUsed);
+    void setPassengers(int passengerCount);
 
 
     /**----------------------------------------------
@@ -63,6 +68,14 @@ public:
      * @return Sailing
      */
     static Sailing querySailing(char* sailingID);
+
+    /**----------------------------------------------
+     * updates an existing sailing
+     * @param sailingID
+     * @param sailing - the updated sailing object
+     * @return bool - true if the update is successful false otherwise
+     */
+    static bool updateSailing(char* sailingID, const Sailing& sailing);
 
     /**----------------------------------------------
      * converts the sailing information to a string

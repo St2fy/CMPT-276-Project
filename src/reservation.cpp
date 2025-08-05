@@ -72,7 +72,6 @@ float Reservation::calculateFare() {
 
 /**----------------------------------------------
  * creates a reservation for a sailing, safe against duplicate reservations
- * todo: update the corresponding sailing to add the hcll and lcll used + 5m margin and the number of passengers
  * @param license
  * @param sailingID
  * @param phoneNumber
@@ -105,24 +104,17 @@ Reservation* Reservation::createReservation(char* license, char* sailingID, char
     }
     ReservationASM::addReservation(r);
     
-    // Update the corresponding sailing with vehicle capacity usage
-    Sailing currentSailing = Sailing::querySailing(sailingID);
-    if (strcmp(currentSailing.getSailingID(), sailingID) == 0) { // Sailing found
-        // Vehicle length + safety margin
-        float vehicleSpace = vehicle.length + VEHICLE_LENGTH_MARGIN;
-
-        // Determine lane usage: special reservations always use HCLL
-        if (special) {
-            // High clearance lane (special reservations)
-            currentSailing.setHCLLUsed(currentSailing.getHCLLUsed() + vehicleSpace);
-        } else {
-            // Low clearance lane  
-            currentSailing.setLCLLUsed(currentSailing.getLCLLUsed() + vehicleSpace);
+    // Update sailing capacity if this is a special reservation
+    if (special) {
+        Sailing sailing = Sailing::querySailing(sailingID);
+        if (strlen(sailing.getSailingID()) > 0) { // Sailing found
+            // Add vehicle length + margin to HCLL used
+            float newHCLLUsed = sailing.getHCLLUsed() + vehicle.length + VEHICLE_LENGTH_MARGIN;
+            sailing.setHCLLUsed(newHCLLUsed);
+            
+            // Update the sailing in the file
+            Sailing::updateSailing(sailingID, sailing);
         }
-
-        currentSailing.setPassengers(currentSailing.getPassengers() + 1);
-
-        Sailing::updateSailing(sailingID, currentSailing);
     }
     
     return new Reservation(license, sailingID, phoneNumber, vehicle, special);

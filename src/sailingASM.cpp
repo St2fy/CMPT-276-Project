@@ -122,3 +122,21 @@ void SailingASM::deleteSailing() {
     file.open(filename, std::ios::in | std::ios::out | std::ios::binary);
     file.seekg(deletePos);
 }
+
+bool SailingASM::overwriteSailing(const Sailing& sailing, int index) {
+    if (!file.is_open()) {
+        std::cerr << "Error: File is not open." << std::endl;
+        return false;
+    }
+    
+    // Calculate position of the record to overwrite
+    std::streampos position = static_cast<std::streamoff>(index) * sizeof(Sailing);
+    
+    // Seek to the position and write the new sailing
+    file.seekp(position);
+    file.write(reinterpret_cast<const char*>(&sailing), sizeof(Sailing));
+    file.flush(); // Force write to disk
+    file.clear(); // Clear any error flags
+    
+    return file.good(); // Return true if write was successful
+}

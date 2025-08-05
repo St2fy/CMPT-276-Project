@@ -55,6 +55,18 @@ int Sailing::getPassengers() {
     return passengers;
 }
 
+void Sailing::setHCLLUsed(float hcllUsed) {
+    HCLLUsed = hcllUsed;
+}
+
+void Sailing::setLCLLUsed(float lcllUsed) {
+    LCLLUsed = lcllUsed;
+}
+
+void Sailing::setPassengers(int passengerCount) {
+    passengers = passengerCount;
+}
+
 /**----------------------------------------------
  * creates a sailing, safe against duplicate sailings
  * @param vesselName
@@ -108,6 +120,26 @@ Sailing Sailing::querySailing(char* sailingID) {
         }
     }
     return Sailing(); // empty sailing
+}
+
+/**----------------------------------------------
+ * updates an existing sailing
+ * @param sailingID
+ * @param sailing - the updated sailing object
+ * @return bool - true if the update is successful false otherwise
+ */
+bool Sailing::updateSailing(char* sailingID, const Sailing& sailing) {
+    SailingASM::seekToBeginning();
+    Sailing s;
+    int index = 0;
+    while (SailingASM::getNextSailing(s)) {
+        if (std::strcmp(s.getSailingID(), sailingID) == 0) {
+            // Found the sailing to update
+            return SailingASM::overwriteSailing(sailing, index);
+        }
+        index++;
+    }
+    return false; // Sailing not found
 }
 
 /**----------------------------------------------
