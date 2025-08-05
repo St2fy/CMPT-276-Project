@@ -128,8 +128,8 @@ Result handleCreateReservation() {
     do {
         if (!found && !sailingID.empty()) {
             std::cout << "Sailing ID: " << sailingID << " not found. Try again" << std::endl;
+            std::cout << "Enter Sailing ID terminal-day-hour:" << std::endl;
         }
-        
         std::cin >> sailingID;
         found = Utils::validSailing(sailingID.c_str());
     } while (!found);
