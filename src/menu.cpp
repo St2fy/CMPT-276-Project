@@ -375,14 +375,15 @@ Result handleCreateVessel() {
     std::cout << "Create New Vessel" << std::endl << std::endl;
     std::cout << "Enter Vessel Name: " << std::endl;
     std::string vesselName;
-    std::cin >> vesselName;
+    std::cin.ignore(); // Clear any leftover newline from previous input
+    std::getline(std::cin, vesselName);
 
     // check if the vessel name is > 25 characters
     while (vesselName.length() > 25) {
         printBar(BAR_LENGTH);
         std::cout << "Vessel Name is too long. Please enter a name with 25 characters or less." << std::endl;
         std::cout << "Re-enter Vessel Name: " << std::endl;
-        std::cin >> vesselName;
+        std::getline(std::cin, vesselName);
     }
 
     // Check if the vessel already exists
@@ -390,7 +391,7 @@ Result handleCreateVessel() {
         printBar(BAR_LENGTH);
         std::cout << "Cannot Create Duplicate Vessel" << std::endl;
         std::cout << "Re-enter Vessel Name" << std::endl;
-        std::cin >>vesselName;
+        std::getline(std::cin, vesselName);
     }
 
     
@@ -528,7 +529,8 @@ Result handleSearchVessel() {
     std::cout << "Search > Vessel" << std::endl << std::endl;
     std::cout << "Enter Vessel Name:" << std::endl;
     std::string vesselName;
-    std::cin >> vesselName;
+    std::cin.ignore(); // Clear any leftover newline from previous input
+    std::getline(std::cin, vesselName);
     Vessel* vessel = Utils::queryVessel(vesselName.c_str());
     printBar(BAR_LENGTH);
     std::cout << "Search > Vessel > " << vesselName.c_str() << std::endl << std::endl;
