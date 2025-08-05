@@ -1,8 +1,4 @@
-/**@@@@@@@@@private:
-    char vesselName[26];
-    char sailingID[10];
-    float LCLLUsed;
-    float HCLLUsed;@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+/**@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
  * @file sailing.h
  * @author Dimitri Vahlas, Louise Ho, Wailok He, Jason Li
  * @brief manages sailing operations
