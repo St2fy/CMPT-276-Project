@@ -54,14 +54,19 @@ int Vessel::getPassengerCap() {
  */
 Vessel* Vessel::createVessel(char* name, float LCLL, float HCLL) {
     VesselASM::seekToBeginning();
-    Vessel v(name, LCLL, HCLL);
-    while (VesselASM::getNextVessel(v)) {
-        if (strcmp(v.getName(), name) == 0) {
+    
+    // Check for duplicates using a separate vessel object
+    Vessel existingVessel;
+    while (VesselASM::getNextVessel(existingVessel)) {
+        if (strcmp(existingVessel.getName(), name) == 0) {
             // Duplicate vessel found
             return nullptr;
         }
     }
-    VesselASM::addVessel(v);
+    
+    // Create the new vessel with the correct values
+    Vessel newVessel(name, LCLL, HCLL);
+    VesselASM::addVessel(newVessel);
     return new Vessel(name, LCLL, HCLL);
 }
 
