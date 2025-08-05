@@ -9,7 +9,7 @@
 #include "VesselASM.h"
 #include <iostream>
 std::fstream VesselASM::file;
-const std::string VesselASM::filename = "vessel.dat";
+const std::string VesselASM::filename = "vessels.dat";
 
 void VesselASM::init(){
     file.open(filename, std::ios::in | std::ios::out | std::ios::binary);

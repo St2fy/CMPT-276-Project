@@ -76,4 +76,42 @@ public:
      * @return Vessel* - pointer to vessel if found, nullptr otherwise
      */
     static Vessel* queryVessel(const char* vessel);
+
+    /**----------------------------------------------
+     * determines if a vehicle is considered special based on dimensions
+     * @param length - vehicle length in meters
+     * @param height - vehicle height in meters
+     * @return bool - true if vehicle is special (>2m height OR >7m length), false otherwise
+     */
+    static bool isSpecialVehicle(float length, float height);
+
+    /**----------------------------------------------
+     * queries the sailing space availability for a vehicle
+     * @param sailingID - the sailing to check
+     * @param length - vehicle length in meters
+     * @param height - vehicle height in meters
+     * @return bool - true if space is available, false otherwise
+     */
+    static bool querySailingSpace(const char* sailingID, float length, float height);
+
+    /**----------------------------------------------
+     * gets a specific range of sailings from the data store (memory efficient)
+     * @param startIndex - starting index (0-based)
+     * @param count - number of sailings to read
+     * @return std::vector<Sailing>* - vector containing only the requested sailings
+     */
+    static std::vector<Sailing>* getSailings(int startIndex, int count);
+
+    /**----------------------------------------------
+     * checks if there are more sailings available beyond a given index
+     * @param index - the index to check after
+     * @return bool - true if more sailings exist, false otherwise
+     */
+    static bool hasMoreSailings(int index);
+
+    /**----------------------------------------------
+     * gets the list of all vessels
+     * @return std::vector<Vessel>* - vector containing all vessels
+     */
+    static std::vector<Vessel>* getVessels();
 };

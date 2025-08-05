@@ -15,12 +15,64 @@
 #include "vessel.h"
 #include "vesselASM.h"
 #include "vehicleASM.h"
+#include <cstdio>
 
 // Forward declaration for menu function
 void handleMenu();
 
+void preloadData() {
+    // Clear all existing data files first
+    std::remove("vessels.dat");
+    std::remove("vehicles.dat");
+    std::remove("sailings.dat"); 
+    std::remove("reservations.dat"); 
+    Utils::shutdown();
+    Utils::init();
+    
+    // Create ferry vessels
+    Vessel::createVessel(const_cast<char*>("Coastal Runner"), 111.0f, 222.0f); // LCLL: 111m, HCLL: 222m
+    Vessel::createVessel(const_cast<char*>("Island Voyager"), 0.0f, 70.0f); // LCLL: 0m, HCLL: 70m
+    Vessel::createVessel(const_cast<char*>("Wave Dancer"), 15.0f, 59.0f); // LCLL: 15m, HCLL: 59m
+    
+    // Create sailings
+    Vessel* coastalRunner = Utils::queryVessel("Coastal Runner");
+    Vessel* islandVoyager = Utils::queryVessel("Island Voyager");
+    Vessel* waveDancer = Utils::queryVessel("Wave Dancer");
+    
+    // Sailings for Coastal Runner
+    Sailing::createSailing(const_cast<char*>("Coastal Runner"), const_cast<char*>("ABC-01-07"), 0.0f, 0.0f, 0, coastalRunner);
+    Sailing::createSailing(const_cast<char*>("Coastal Runner"), const_cast<char*>("DEF-15-13"), 0.0f, 0.0f, 0, coastalRunner);
+    
+    // Sailings for Island Voyager
+    Sailing::createSailing(const_cast<char*>("Island Voyager"), const_cast<char*>("LMN-27-18"), 0.0f, 0.0f, 0, islandVoyager);
+    Sailing::createSailing(const_cast<char*>("Island Voyager"), const_cast<char*>("XYZ-28-24"), 0.0f, 0.0f, 0, islandVoyager);
+    Sailing::createSailing(const_cast<char*>("Island Voyager"), const_cast<char*>("QWE-10-09"), 0.0f, 0.0f, 0, islandVoyager);
+    
+    // Sailing for Wave Dancer
+    Sailing::createSailing(const_cast<char*>("Wave Dancer"), const_cast<char*>("RTY-03-01"), 0.0f, 0.0f, 0, waveDancer);
+    
+    delete coastalRunner;
+    delete islandVoyager;
+    delete waveDancer;
+    
+    // Create reservations
+    
+    // Reservation 1: Normal vehicle on ABC-01-07
+    Vehicle vehicle1 = {5.0f, 1.8f}; 
+    Reservation::createReservation(const_cast<char*>("BC1234"), const_cast<char*>("ABC-01-07"), const_cast<char*>("604-555-1234"), vehicle1, false);
+    
+    // Reservation 2: Special vehicle on ABC-01-07 
+    Vehicle vehicle2 = {60.0f, 4.1f}; 
+    Reservation::createReservation(const_cast<char*>("AB-TRK-222"), const_cast<char*>("ABC-01-07"), const_cast<char*>("604-787-8888"), vehicle2, true);
+    
+    // Reservation 3: Normal vehicle on DEF-15-13
+    Vehicle vehicle3 = {4.5f, 1.7f}; 
+    Reservation::createReservation(const_cast<char*>("BC5678"), const_cast<char*>("DEF-15-13"), const_cast<char*>("604-777-8888"), vehicle3, false);
+}
+
 int main() {
     Utils::init();
+    preloadData();
     handleMenu();
     Utils::shutdown();
     return 0;

@@ -12,7 +12,7 @@
 #include "vehicleASM.h"
 #include <cstring>
 
-const int VEHICLE_LENGTH_MARGIN = 5; // Safety margin for vehicle length in meters
+const float VEHICLE_LENGTH_MARGIN = 0.5f; // Safety margin for vehicle length in meters
 
 Reservation::Reservation() {
     license[0] = '\0';

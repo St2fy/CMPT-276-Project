@@ -8,6 +8,7 @@
 */
 #include "reservation.h"
 #include "sailing.h"
+#include "sailingASM.h"
 #include "utils.h"
 #include "vessel.h"
 #include <iostream>
@@ -28,32 +29,18 @@ void printBar(int length) {
 }
 // stub functions below
 /**
- * Queries the sailing space availability
+ * Checks if a reservation can be made for a specific sailing
+ * Validates space availability considering special vehicles (>2m height OR >7m length)
  * 
- * !!! This is a stub function, replace with actual query logic
- * 
- * @param length 
- * @param height 
- * @return true 
- * @return false 
- */
-bool querySailingSpace(float length, float height) {
-    return true;
-}
-/**
- * Checks if a reservation can be made
- * 
- * !!! This is a stub function, replace with actual check logic
- * 
+ * @param sailingID - the sailing to check
  * @param phoneNumber 
  * @param licenseNumber 
  * @param length 
  * @param height 
- * @return true 
- * @return false 
+ * @return true if reservation can be made, false otherwise
  */
-bool checkReservation(const char* phoneNumber, const char* licenseNumber, float length, float height) {
-    if (!querySailingSpace(length, height)) {
+bool checkReservation(const char* sailingID, const char* phoneNumber, const char* licenseNumber, float length, float height) {
+    if (!Utils::querySailingSpace(sailingID, length, height)) {
         return false;
     }
     //make the reservation
@@ -62,28 +49,6 @@ bool checkReservation(const char* phoneNumber, const char* licenseNumber, float 
 // temporary function to calculate a fare, refactor to Reservation
 float calculateFare(const Reservation* res) {
     return 40.5;
-}
-/**
- * Gets the list of vessels
- * 
- * @return std::vector<Vessel>* 
- */
-std::vector<Vessel>* getVessels() {
-    std::vector<Vessel>* v = new std::vector<Vessel>;
-    return v;
-}
-/**
- * Gets the list of sailings
- * 
- * @return std::vector<Sailing>* 
- */
-std::vector<Sailing>* getSailings() {
-    std::vector<Sailing>* s  = new std::vector<Sailing>;
-    Sailing* s1 = new Sailing();
-    Sailing* s2 = new Sailing();
-    s->push_back(*s1);
-    s->push_back(*s2);
-    return s;
 }
 // end of stub functions
 
@@ -95,12 +60,16 @@ std::vector<Sailing>* getSailings() {
  * @param high 
  */
 void printSailingReportLines(int low, int high) {
-    std::vector<Sailing>* sailings = getSailings();
-    for (int i = low; i < high; i++) {
-        if (static_cast<size_t>(i) == sailings->size()) {
-            std::cout << std::endl << "End of Sailings" << std::endl << std::endl;
-            return;
-        }
+    int count = high - low; // Number of records to read
+    std::vector<Sailing>* sailings = Utils::getSailings(low, count);
+    
+    if (sailings->empty()) {
+        std::cout << std::endl << "End of Sailings" << std::endl << std::endl;
+        delete sailings;
+        return;
+    }
+    
+    for (size_t i = 0; i < sailings->size(); i++) {
         char day[3];
         char hour[3];
         char sailingID[9];
@@ -109,16 +78,35 @@ void printSailingReportLines(int low, int high) {
         strncpy(hour, sailingID + 7, 2);
         day[2] = '\0';
         hour[2] = '\0';
-        std::cout << std::left << i << std::setw(5) << ")";
+        
+        // Get vessel information for capacity fractions
+        Vessel* vessel = Utils::queryVessel(sailings->at(i).getVesselName());
+        
+        std::cout << std::left << (low + i) << std::setw(5) << ")"; // Use actual index
         std::cout << std::setw(16) << sailings->at(i).getSailingID(); 
         std::cout << std::setw(24) << sailings->at(i).getVesselName();
         std::cout << day << std::setw(2) << "d";
         std::cout << hour << std::setw(2) << "h";
-        // !!! add fractions once oop for vessel is done
-        std::cout << std::setw(12) << sailings->at(i).getPassengers();
-        std::cout << std::setw(12) << sailings->at(i).getLCLLUsed();
-        std::cout << std::setw(12) << sailings->at(i).getHCLLUsed() << std::endl;
+        
+        // Display fractions: used/capacity
+        if (vessel != nullptr) {
+            std::cout << std::setw(12) << (std::to_string(sailings->at(i).getPassengers()) + "/" + std::to_string(vessel->getPassengerCap()));
+            std::cout << std::setw(12) << (std::to_string(static_cast<int>(sailings->at(i).getLCLLUsed())) + "/" + std::to_string(static_cast<int>(vessel->getLCLLCap())));
+            std::cout << std::setw(12) << (std::to_string(static_cast<int>(sailings->at(i).getHCLLUsed())) + "/" + std::to_string(static_cast<int>(vessel->getHCLLCap()))) << std::endl;
+        } else {
+            // Fallback if vessel not found
+            std::cout << std::setw(12) << sailings->at(i).getPassengers();
+            std::cout << std::setw(12) << sailings->at(i).getLCLLUsed();
+            std::cout << std::setw(12) << sailings->at(i).getHCLLUsed() << std::endl;
+        }
     }
+    
+    // If we got fewer records than requested, we've reached the end
+    if (sailings->size() < static_cast<size_t>(count)) {
+        std::cout << std::endl << "End of Sailings" << std::endl << std::endl;
+    }
+    
+    delete sailings; // Clean up memory
     std::cout << std::endl;
 }
 /**
@@ -158,7 +146,7 @@ Result handleCreateReservation() {
     std::cout << "Enter Vehicle Height in meters: " << std::endl;
     std::string height;
     std::cin >> height;
-    if (!checkReservation(phoneNumber.c_str(), license.c_str(), std::stof(length), std::stof(height))) {
+    if (!checkReservation(sailingID.c_str(), phoneNumber.c_str(), license.c_str(), std::stof(length), std::stof(height))) {
         std::cout << "Sailing is full. Reservation could not be made. " << std::endl;
         std::cout << "Select an Option: " << std::endl;
         std::cout << "1. Restart" << std::endl;
@@ -193,7 +181,8 @@ Result handleCreateReservation() {
                 Vehicle vehicle;
                 vehicle.length = std::stof(length);
                 vehicle.height = std::stof(height);
-                Reservation::createReservation(const_cast<char*>(license.c_str()), const_cast<char*>(sailingID.c_str()), const_cast<char*>(phoneNumber.c_str()), vehicle, false);
+                bool special = Utils::isSpecialVehicle(vehicle.length, vehicle.height);
+                Reservation::createReservation(const_cast<char*>(license.c_str()), const_cast<char*>(sailingID.c_str()), const_cast<char*>(phoneNumber.c_str()), vehicle, special);
             }
             return Success;
         case 2:
@@ -298,7 +287,14 @@ Result handleCreateSailing() {
     printBar(BAR_LENGTH);
     std::cout << "Create New Vessel Sailing" << std::endl << std::endl;
     std::cout << "Availiable Vessels: " << std::endl;
-    std::vector<Vessel>* vessels = getVessels();
+    std::vector<Vessel>* vessels = Utils::getVessels();
+    
+    if (vessels->empty()) {
+        std::cout << "No vessels available. Please create a vessel first." << std::endl;
+        delete vessels;
+        return Failure;
+    }
+    
     for (size_t i = 0; i < vessels->size(); i++) {
         std::cout << i + 1 << ". " << vessels->at(i).getName() << std::endl;
     }
@@ -306,16 +302,19 @@ Result handleCreateSailing() {
     std::string vesselInput;
     std::cin >> vesselInput;
 
-    bool validVessel = false;
-    for (size_t i = 0; i < vessels->size(); i++) {
-        if (atoi(vesselInput.c_str()) == static_cast<int>(i)) {
-            validVessel = true;
-            break;
-        }
-    }
+    int vesselIndex = atoi(vesselInput.c_str()) - 1; // Convert to 0-based index
+    bool validVessel = (vesselIndex >= 0 && vesselIndex < static_cast<int>(vessels->size()));
+    
     if (!validVessel) {
-        // invalid selection
+        std::cout << "Invalid vessel selection." << std::endl;
+        delete vessels;
+        return Failure;
     }
+    
+    // Get the actual vessel name
+    std::string selectedVesselName = vessels->at(vesselIndex).getName();
+    delete vessels; // Clean up memory
+    
     printBar(BAR_LENGTH);
     std::cout << "Enter Departure Terminal (3-letter code):" << std::endl;
     std::string departureTerminal;
@@ -331,12 +330,11 @@ Result handleCreateSailing() {
     std::string departureHour;
     std::cin >> departureHour;
 
-
     printBar(BAR_LENGTH);
     std::string sailingID = Utils::makeSailingID(departureTerminal, departureDay, departureHour);
     std::cout << "Create New Sailing" << std::endl;
     std::cout << "Sailing ID: " << sailingID << std::endl << std::endl;
-    std::cout << std::left << std::setw(20) << "Vessel Name: " << vesselInput << std::endl;
+    std::cout << std::left << std::setw(20) << "Vessel Name: " << selectedVesselName << std::endl;
     std::cout << std::left << std::setw(20) << "Departure Terminal: " << departureTerminal << std::endl;
     std::cout << std::left << std::setw(20) << "Departure Day: " << departureDay << std::endl;
     std::cout << std::left << std::setw(20) << "Departure Hour: " << departureHour << std::endl;
@@ -347,14 +345,16 @@ Result handleCreateSailing() {
     switch (atoi(confirmOption.c_str())) {
         case 1:
             {
-                Vessel* vessel = Utils::queryVessel(const_cast<char*>(vesselInput.c_str()));
-                Sailing::createSailing(const_cast<char*>(vesselInput.c_str()), const_cast<char*>(sailingID.c_str()), 0.0f, 0.0f, 0, vessel);
+                Vessel* vessel = Utils::queryVessel(selectedVesselName.c_str());
+                Sailing::createSailing(const_cast<char*>(selectedVesselName.c_str()), const_cast<char*>(sailingID.c_str()), 0.0f, 0.0f, 0, vessel);
+                delete vessel; // Clean up memory
             }
             return Success;
         case 2:
             {
-                Vessel* vessel = Utils::queryVessel(const_cast<char*>(vesselInput.c_str()));
-                Sailing::createSailing(const_cast<char*>(vesselInput.c_str()), const_cast<char*>(sailingID.c_str()), 0.0f, 0.0f, 0, vessel);
+                Vessel* vessel = Utils::queryVessel(selectedVesselName.c_str());
+                Sailing::createSailing(const_cast<char*>(selectedVesselName.c_str()), const_cast<char*>(sailingID.c_str()), 0.0f, 0.0f, 0, vessel);
+                delete vessel; // Clean up memory
             }
             return Restart;
         case 3: 
@@ -438,21 +438,30 @@ Result handleSailingReport() {
 
         std::cout << "Select an Option:" << std::endl;
         printBar(EXTENDED_BAR_LENGTH);
-        std::cout << "1. Print Current Selection" << std::endl << "2. Show Next" << std::endl << "3. Exit" << std::endl;
+        
+        // Only show "Show Next" if there are more sailings
+        if (Utils::hasMoreSailings(highIndex - 1)) {
+            std::cout << "1. Show Next" << std::endl << "2. Exit" << std::endl;
+        } else {
+            std::cout << "1. Exit" << std::endl;
+        }
+        
         std::cin >> option;
         switch (atoi(option.c_str())) {
             case 1:
-                return Success;
-            case 2:
-                lowIndex += SAILINGS_PER_REPORT;
-                highIndex += SAILINGS_PER_REPORT;
+                if (Utils::hasMoreSailings(highIndex - 1)) {
+                    lowIndex += SAILINGS_PER_REPORT;
+                    highIndex += SAILINGS_PER_REPORT;
+                } else {
+                    return Exit;
+                }
                 break;
-            case 3:
+            case 2:
                 return Exit;
         }
     } while (atoi(option.c_str()) != Exit);
     
-    return Success; // Default return in case loop exits unexpectedly
+    return Success;
 }
 /**
  * Handles the search of a sailing

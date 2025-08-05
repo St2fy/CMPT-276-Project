@@ -83,9 +83,106 @@ Sailing* Utils::querySailing(const char* sailingID) {
 
 Vessel* Utils::queryVessel(const char* vessel) {
     Vessel vesselObj = Vessel::queryVessel(const_cast<char*>(vessel));
-    // Check if vessel was found (assuming empty name means not found)
+    // Check if vessel was found
     if (strlen(vesselObj.getName()) > 0) {
         return new Vessel(vesselObj);
     }
     return nullptr;
+}
+
+// Vehicle utility functions
+const float VEHICLE_HEIGHT_THRESHOLD = 2.0f; // vehicles above this height need HCLL space
+const float VEHICLE_LENGTH_THRESHOLD = 7.0f; // vehicles above this length need HCLL space
+
+bool Utils::isSpecialVehicle(float length, float height) {
+    return (height > VEHICLE_HEIGHT_THRESHOLD) || (length > VEHICLE_LENGTH_THRESHOLD);
+}
+
+bool Utils::querySailingSpace(const char* sailingID, float length, float height) {
+    // Get the sailing information
+    Sailing* sailing = Utils::querySailing(sailingID);
+    if (sailing == nullptr) {
+        return false; // Sailing doesn't exist
+    }
+    
+    // Get the vessel to check total capacity
+    Vessel* vessel = Utils::queryVessel(sailing->getVesselName());
+    if (vessel == nullptr) {
+        delete sailing;
+        return false; // Vessel doesn't exist
+    }
+    
+    // Special vehicles: height > 2.0m OR length > 7.0m
+    bool specialVehicle = isSpecialVehicle(length, height);
+    
+    bool result;
+    if (specialVehicle) {
+        // Special vehicle - check HCLL capacity
+        float availableHCLL = vessel->getHCLLCap() - sailing->getHCLLUsed();
+        result = length <= availableHCLL;
+    } else {
+        // Regular vehicle - check LCLL capacity  
+        float availableLCLL = vessel->getLCLLCap() - sailing->getLCLLUsed();
+        result = length <= availableLCLL;
+    }
+    
+    delete sailing;
+    delete vessel;
+    return result;
+}
+
+// Sailing data access functions
+std::vector<Sailing>* Utils::getSailings(int startIndex, int count) {
+    std::vector<Sailing>* sailings = new std::vector<Sailing>;
+    
+    // Seek to beginning and skip to the start index
+    SailingASM::seekToBeginning();
+    Sailing sailing;
+    
+    // Skip to the starting index
+    for (int i = 0; i < startIndex; i++) {
+        if (!SailingASM::getNextSailing(sailing)) {
+            // Reached end of file before startIndex
+            return sailings; // Return empty vector
+        }
+    }
+    
+    // Read the requested number of sailings
+    for (int i = 0; i < count; i++) {
+        if (SailingASM::getNextSailing(sailing)) {
+            sailings->push_back(sailing);
+        } else {
+            // Reached end of file
+            break;
+        }
+    }
+    
+    return sailings;
+}
+
+bool Utils::hasMoreSailings(int index) {
+    SailingASM::seekToBeginning();
+    Sailing sailing;
+    
+    // Skip to the index + 1
+    for (int i = 0; i <= index; i++) {
+        if (!SailingASM::getNextSailing(sailing)) {
+            return false; // Reached end of file
+        }
+    }
+    
+    return true; // There is at least one more sailing
+}
+
+std::vector<Vessel>* Utils::getVessels() {
+    std::vector<Vessel>* vessels = new std::vector<Vessel>;
+    
+    VesselASM::seekToBeginning();
+    Vessel vessel;
+    
+    while (VesselASM::getNextVessel(vessel)) {
+        vessels->push_back(vessel);
+    }
+    
+    return vessels;
 }
