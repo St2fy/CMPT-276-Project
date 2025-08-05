@@ -266,9 +266,7 @@ Result handleCheckIn() {
     std::cout << "Reservation " << reservation->getPhoneNumber() << " for Sailing " << reservation->getSailingID() << std::endl << std::endl;
     float fare = calculateFare(reservation);
     reservation->checkIn();
-    std::cout << reservation->getVehicle().length << "m Long Vehicle @ $" << LENGTH_RATE << "/m" << std::endl << std::endl;
-    std::cout << "=> Amount to be Paid: $" << fare << " <=" << std::endl << std::endl;
-    std::cout << "Collect Payment and Select and Option:" << std::endl;
+    std::cout << "Check-in successful, collect payment and Select an Option:" << std::endl;
     std::cout << "1. Continue" << std::endl;
     std::cout << "2. Exit" << std::endl;
     std::string option;
@@ -290,7 +288,7 @@ Result handleCheckIn() {
 Result handleCreateSailing() {
     printBar(BAR_LENGTH);
     std::cout << "Create New Vessel Sailing" << std::endl << std::endl;
-    std::cout << "Availiable Vessels: " << std::endl;
+    std::cout << "Available Vessels: " << std::endl;
     std::vector<Vessel>* vessels = Utils::getVessels();
     
     if (vessels->empty()) {

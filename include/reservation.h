@@ -17,7 +17,7 @@ class Reservation {
 
 private:
     char license[10];
-    char sailingID[9];
+    char sailingID[10];
     char phoneNumber[14];
     bool onBoard;
     bool special;
