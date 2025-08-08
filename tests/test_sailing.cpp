@@ -20,7 +20,6 @@ void printAllSailings() {
                   << ", ID: " << s.getSailingID()
                   << ", LCLL: " << s.getLCLLUsed()
                   << ", HCLL: " << s.getHCLLUsed()
-                  << ", Passengers: " << s.getPassengers()
                   << "\n";
     }
     std::cout << "------------------------------------\n";
@@ -34,16 +33,21 @@ int main() {
     std::cout << "[Adding Test Sailings...]\n";
     
     // Create char arrays for vessel names and sailing IDs
-    char vessel1[] = "QueenOfOakBay";
+    const char vessel1[] = "QueenOfOakBay";
     char sailing1[] = "SAIL001";
-    char vessel2[] = "SpiritOfBC";
+    const char vessel2[] = "SpiritOfBC";
     char sailing2[] = "SAIL002";
-    char vessel3[] = "CoastalRenaissance";
+    const char vessel3[] = "CoastalRenaissance";
     char sailing3[] = "SAIL003";
-    
-    Sailing s1(vessel1, sailing1, 12.5f, 7.2f, 25, nullptr);
-    Sailing s2(vessel2, sailing2, 20.0f, 14.3f, 40, nullptr);
-    Sailing s3(vessel3, sailing3, 18.5f, 8.0f, 30, nullptr);
+
+
+    Vessel* vesselPtr1 = Vessel::createVessel(vessel1, 100.0f, 200.0f);
+    Vessel* vesselPtr2 = Vessel::createVessel(vessel2, 150.0f, 250.0f);
+    Vessel* vesselPtr3 = Vessel::createVessel(vessel3, 120.0f, 220.0f);
+
+    Sailing s1(vessel1, sailing1, 12.5f, 7.2f, vesselPtr1);
+    Sailing s2(vessel2, sailing2, 20.0f, 14.3f, vesselPtr2);
+    Sailing s3(vessel3, sailing3, 18.5f, 8.0f, vesselPtr3);
 
     SailingASM::addSailing(s1);
     SailingASM::addSailing(s2);
