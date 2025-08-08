@@ -17,10 +17,153 @@
 #include <iomanip>
 #include <vector>
 #include <sstream>
+#include <stdexcept>
+#include <algorithm>
+#include <cctype>
 
 const int BAR_LENGTH = 40; // constants for the length of the - bar in the menu
 const float LENGTH_RATE = 10; // !!!temporary rate for vehicle cost per meter of length
 enum Result { Success, Failure, Exit, Restart }; // enum for the result of the menu operations, more readable than integers
+
+/**----------------------------------------------
+ * Validates if a string represents a valid positive float
+ * @param input - the string to validate
+ * @return bool - true if valid float, false otherwise
+ */
+bool isValidFloat(const std::string& input) {
+    if (input.empty()) return false;
+    
+    try {
+        float value = std::stof(input);
+        return value >= 0.0f; // Only allow positive values
+    } catch (const std::invalid_argument& e) {
+        return false;
+    } catch (const std::out_of_range& e) {
+        return false;
+    }
+}
+
+/**----------------------------------------------
+ * Validates if a string represents a valid positive integer
+ * @param input - the string to validate
+ * @return bool - true if valid integer, false otherwise
+ */
+bool isValidInt(const std::string& input) {
+    if (input.empty()) return false;
+    
+    try {
+        int value = std::stoi(input);
+        return value >= 0; // Only allow positive values
+    } catch (const std::invalid_argument& e) {
+        return false;
+    } catch (const std::out_of_range& e) {
+        return false;
+    }
+}
+
+/**----------------------------------------------
+ * Gets a valid float input from user with error handling
+ * @param prompt - the prompt to display
+ * @param minValue - minimum allowed value
+ * @param maxValue - maximum allowed value
+ * @return float - the validated input
+ */
+float getValidFloatInput(const std::string& prompt, float minValue = 0.0f, float maxValue = 1000.0f) {
+    std::string input;
+    float value;
+    
+    do {
+        std::cout << prompt << std::endl;
+        std::cin >> input;
+        
+        if (!isValidFloat(input)) {
+            std::cout << "Error: Please enter a valid positive number." << std::endl;
+            continue;
+        }
+        
+        value = std::stof(input);
+        break;
+    } while (true);
+    
+    return value;
+}
+
+/**----------------------------------------------
+ * Gets a valid integer input from user with error handling
+ * @param prompt - the prompt to display
+ * @param minValue - minimum allowed value
+ * @param maxValue - maximum allowed value
+ * @return int - the validated input
+ */
+/**----------------------------------------------
+ * Validates if a string represents a valid phone number
+ * @param phoneNumber - the phone number to validate
+ * @return bool - true if valid format (e.g., 604-555-1234), false otherwise
+ */
+bool isValidPhoneNumber(const std::string& phoneNumber) {
+    if (phoneNumber.empty()) return false;
+    
+    // Count digits only
+    int digitCount = 0;
+    for (char c : phoneNumber) {
+        if (std::isdigit(c)) {
+            digitCount++;
+        } else if (c != '-' && c != '(' && c != ')' && c != ' ') {
+            return false; // Invalid character
+        }
+    }
+    
+    // Check if we have exactly 10 digits (North American format)
+    return digitCount == 10;
+}
+
+/**----------------------------------------------
+ * Gets a valid phone number input from user with error handling
+ * @param prompt - the prompt to display
+ * @return std::string - the validated phone number
+ */
+std::string getValidPhoneInput(const std::string& prompt) {
+    std::string input;
+    
+    do {
+        std::cout << prompt << std::endl;
+        std::cin >> input;
+        
+        if (!isValidPhoneNumber(input)) {
+            std::cout << "Error: Please enter a valid 10-digit phone number (e.g., 604-555-1234 or 6045551234)." << std::endl;
+            continue;
+        }
+        
+        break;
+    } while (true);
+    
+    return input;
+}
+
+int getValidIntInput(const std::string& prompt, int minValue = 1, int maxValue = 100) {
+    std::string input;
+    int value;
+    
+    do {
+        std::cout << prompt << std::endl;
+        std::cin >> input;
+        
+        if (!isValidInt(input)) {
+            std::cout << "Error: Please enter a valid positive integer." << std::endl;
+            continue;
+        }
+        
+        value = std::stoi(input);
+        if (value < minValue || value > maxValue) {
+            std::cout << "Error: Please enter a number between " << minValue << " and " << maxValue << "." << std::endl;
+            continue;
+        }
+        
+        break;
+    } while (true);
+    
+    return value;
+}
 
 void printBar(int length) {
     for (int i = 0; i < length; i++) {
@@ -135,22 +278,16 @@ Result handleCreateReservation() {
     } while (!found);
     printBar(BAR_LENGTH);
     std::cout << "Sailing " << sailingID << " found " << std::endl << std::endl;
-    std::cout << "Enter Phone Number (10 digits): " << std::endl;
-    std::string phoneNumber;
-    std::cin >> phoneNumber;
+    std::string phoneNumber = getValidPhoneInput("Enter Phone Number (10 digits):");
     printBar(BAR_LENGTH);
     std::cout << "Enter License Plate (10 characters): " << std::endl;
     std::string license;
     std::cin >> license;
     printBar(BAR_LENGTH);
-    std::cout << "Enter Vehicle Length in meters: " << std::endl;
-    std::string length;
-    std::cin >> length;
+    float length = getValidFloatInput("Enter Vehicle Length in meters:", 0.1f, 50.0f);
     printBar(BAR_LENGTH);
-    std::cout << "Enter Vehicle Height in meters: " << std::endl;
-    std::string height;
-    std::cin >> height;
-    if (!checkReservation(sailingID.c_str(), phoneNumber.c_str(), license.c_str(), std::stof(length), std::stof(height))) {
+    float height = getValidFloatInput("Enter Vehicle Height in meters:", 0.1f, 10.0f);
+    if (!checkReservation(sailingID.c_str(), phoneNumber.c_str(), license.c_str(), length, height)) {
         std::cout << "Sailing is full. Reservation could not be made. " << std::endl;
         std::cout << "Select an Option: " << std::endl;
         std::cout << "1. Restart" << std::endl;
@@ -171,8 +308,8 @@ Result handleCreateReservation() {
     std::cout << std::left << std::setw(16) << "Sailing ID: " << sailingID << std::endl;
     std::cout << std::left << std::setw(16) << "Phone Number: " << phoneNumber << std::endl;
     std::cout << std::left << std::setw(16) << "License Number: " << license << std::endl;
-    std::cout << std::left << std::setw(16) << "Length: " << length << std::endl;
-    std::cout << std::left << std::setw(16) << "Height: " << height << std::endl << std::endl;
+    std::cout << std::left << std::setw(16) << "Length: " << std::fixed << std::setprecision(1) << length << " meters" << std::endl;
+    std::cout << std::left << std::setw(16) << "Height: " << std::fixed << std::setprecision(1) << height << " meters" << std::endl << std::endl;
     std::cout << "Confirm Create New Reservation: " << std::endl;
     std::cout << "1. Yes" << std::endl;
     std::cout << "2. Restart" << std::endl;
@@ -183,8 +320,8 @@ Result handleCreateReservation() {
         case 1:
             {
                 Vehicle vehicle;
-                vehicle.length = std::stof(length);
-                vehicle.height = std::stof(height);
+                vehicle.length = length;
+                vehicle.height = height;
                 bool special = Utils::isSpecialVehicle(vehicle.length, vehicle.height);
                 Reservation::createReservation(license.c_str(), sailingID.c_str(), phoneNumber.c_str(), vehicle, special);
             }
@@ -300,18 +437,9 @@ Result handleCreateSailing() {
     for (size_t i = 0; i < vessels->size(); i++) {
         std::cout << i + 1 << ". " << vessels->at(i).getName() << std::endl;
     }
-    std::cout << std::endl << "Select Vessel: " << std::endl;
-    std::string vesselInput;
-    std::cin >> vesselInput;
-
-    int vesselIndex = atoi(vesselInput.c_str()) - 1; // Convert to 0-based index
-    bool validVessel = (vesselIndex >= 0 && vesselIndex < static_cast<int>(vessels->size()));
     
-    if (!validVessel) {
-        std::cout << "Invalid vessel selection." << std::endl;
-        delete vessels;
-        return Failure;
-    }
+    int vesselChoice = getValidIntInput("Select Vessel (1-" + std::to_string(vessels->size()) + "):", 1, static_cast<int>(vessels->size()));
+    int vesselIndex = vesselChoice - 1; // Convert to 0-based index
     
     // Get the actual vessel name
     std::string selectedVesselName = vessels->at(vesselIndex).getName();
@@ -399,27 +527,23 @@ Result handleCreateVessel() {
     
 
     printBar(BAR_LENGTH);
-    std::cout << "Enter High Ceiling Capacity (HCC):" << std::endl;
-    std::string HCC;
-    std::cin >> HCC;
+    float HCC = getValidFloatInput("Enter High Ceiling Capacity (HCC):", 1.0f, 500.0f);
 
     printBar(BAR_LENGTH);
-    std::cout << "Enter Low Ceiling Capacity (LCC):" << std::endl;
-    std::string LCC;
-    std::cin >> LCC;
+    float LCC = getValidFloatInput("Enter Low Ceiling Capacity (LCC):", 0.0f, 500.0f);
 
     printBar(BAR_LENGTH);
     std::cout << "Create New Vessel" << std::endl << std::endl;
     std::cout << std::left << std::setw(16) << "Name: " << vesselName << std::endl;
-    std::cout << std::left << std::setw(16) << "HCC: " << HCC << std::endl;
-    std::cout << std::left << std::setw(16) << "LCC: " << LCC << std::endl;
+    std::cout << std::left << std::setw(16) << "HCC: " << std::fixed << std::setprecision(1) << HCC << " meters" << std::endl;
+    std::cout << std::left << std::setw(16) << "LCC: " << std::fixed << std::setprecision(1) << LCC << " meters" << std::endl;
     std::cout << "Confirm Create New Vessel:" << std::endl;
     std::cout << "1. Yes" << std::endl << "2. Restart" << std::endl << "3. Exit" << std::endl;
     std::string confirmOption;
     std::cin >> confirmOption;
     switch (atoi(confirmOption.c_str())) {
         case 1:
-            Vessel::createVessel(vesselName.c_str(), atof(LCC.c_str()), atof(HCC.c_str()));
+            Vessel::createVessel(vesselName.c_str(), LCC, HCC);
             return Success;
         case 2:
             return Restart;
