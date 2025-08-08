@@ -10,6 +10,7 @@
 #include "reservationASM.h"
 #include "sailing.h"
 #include "vehicleASM.h"
+#include "utils.h"
 #include <cstring>
 
 const float VEHICLE_LENGTH_MARGIN = 0.5f; // Safety margin for vehicle length in meters
@@ -76,7 +77,7 @@ float Reservation::calculateFare() const {
  * @param sailingID
  * @param phoneNumber
  * @param vehicle
- * @param special - whether this is a special reservation (uses HCLL)
+ * @param special - whether this is a special reservation (for business logic)
  * @return Reservation
  */
 Reservation* Reservation::createReservation(const char* license, const char* sailingID, const char* phoneNumber, Vehicle vehicle, bool special) {
@@ -104,17 +105,24 @@ Reservation* Reservation::createReservation(const char* license, const char* sai
     }
     ReservationASM::addReservation(r);
     
-    // Update sailing capacity if this is a special reservation
-    if (special) {
-        Sailing sailing = Sailing::querySailing(sailingID);
-        if (strlen(sailing.getSailingID()) > 0) { // Sailing found
-            // Add vehicle length + margin to HCLL used
+    // Update sailing capacity based on vehicle type
+    Sailing sailing = Sailing::querySailing(sailingID);
+    if (strlen(sailing.getSailingID()) > 0) { // Sailing found
+        // Check if this is a special vehicle (height > 2.0m OR length > 7.0m)
+        bool isSpecial = Utils::isSpecialVehicle(vehicle.length, vehicle.height);
+        
+        if (isSpecial) {
+            // Special vehicle - update HCLL used
             float newHCLLUsed = sailing.getHCLLUsed() + vehicle.length + VEHICLE_LENGTH_MARGIN;
             sailing.setHCLLUsed(newHCLLUsed);
-            
-            // Update the sailing in the file
-            Sailing::updateSailing(sailingID, sailing);
+        } else {
+            // Regular vehicle - update LCLL used
+            float newLCLLUsed = sailing.getLCLLUsed() + vehicle.length + VEHICLE_LENGTH_MARGIN;
+            sailing.setLCLLUsed(newLCLLUsed);
         }
+        
+        // Update the sailing in the file
+        Sailing::updateSailing(sailingID, sailing);
     }
     
     return new Reservation(license, sailingID, phoneNumber, vehicle, special);
